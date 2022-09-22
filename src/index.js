@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import App from "./App";
+import Layout from './components/Layout/Layout';
 import reportWebVitals from "./reportWebVitals";
 
 Sentry.init({
@@ -16,7 +17,11 @@ Sentry.init({
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(
+    <Layout>
+        <App />
+    </Layout>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
