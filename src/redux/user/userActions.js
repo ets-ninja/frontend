@@ -3,17 +3,22 @@ import axios from 'axios';
 
 export const registerUser = createAsyncThunk(
   'user/register',
-  async ({ firstName, email, password }, { rejectWithValue }) => {
+  async (
+    { firstName, lastName, publicName, email, password },
+    { rejectWithValue }
+  ) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
 
+    console.log(firstName, lastName, publicName, email, password);
+
     try {
       await axios.post(
-        `${process.env.API_URL}/api/user/register`,
-        { firstName, email, password },
+        '/api/user/signup',
+        { firstName, lastName, publicName, email, password },
         config
       );
     } catch (error) {
@@ -36,8 +41,8 @@ export const loginUser = createAsyncThunk(
     };
 
     try {
-      const { data } = await axios(
-        `${process.env.API_URL}api/user/login`,
+      const { data } = await axios.post(
+        'api/auth/login',
         { email, password },
         config
       );
@@ -65,7 +70,7 @@ export const getUserDetails = createAsyncThunk(
     };
 
     try {
-      const { data } = await axios.get(`${process.env.API_URL}/api/user/profile`, config);
+      const { data } = await axios.get('/api/user', config);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

@@ -50,7 +50,7 @@ const RegistrationForm = () => {
           {loading && <h1>Loading...</h1>}
           <TextField
             type="text"
-            {...register('nickname', {
+            {...register('publicName', {
               required: true,
               maxLength: 70,
             })}
