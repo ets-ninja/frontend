@@ -7,6 +7,8 @@ const Layout = (props) => {
     return (
         <>
             <Router>
+                <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'></link>
+
                 <Header />
                 <main style={{ backgroundColor: "white" }}>{props.children}</main>
                 <Footer/>

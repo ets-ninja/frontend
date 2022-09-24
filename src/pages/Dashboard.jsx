@@ -10,6 +10,7 @@ import Menu from '@mui/material/Menu';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import BasketBox from '../components/BasketBox'
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -52,60 +53,105 @@ const StyledMenu = styled((props) => (
     },
   }));
 
-const Dashboard = () => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
+const Dashboard = () => {
+    const [hiddenFilterAnchor, sethiddenFilterAnchor] = React.useState(null);
+    const hiddenFilterMenuOpen = Boolean(hiddenFilterAnchor);
+
+    const handleFilterClick = (event) => {
+      sethiddenFilterAnchor(event.currentTarget);
     };
-    const handleClose = () => {
-      setAnchorEl(null);
+    const handleFilterClose = () => {
+      sethiddenFilterAnchor(null);
     };
+
+    const [createByMeState, setCreateByMeState] = React.useState(true);
+    const [coownedByMeState, setCoownedByMeState] = React.useState(false);
+    const [hotBasketsState, sethotBasketsState] = React.useState(false);
+    const [publicBasketsState, setPublicBasketsState] = React.useState(false);
+    const [privateBasketsState, setPrivateBasketsState] = React.useState(false);
+
+    const testData = [
+      {
+        id: 21312,
+        name: 'lol'
+      },
+      {
+        id: 21312,
+        name: 'lol'
+      },
+      {
+        id: 21312,
+        name: 'lol'
+      },
+      {
+        id: 21312,
+        name: 'lol'
+      },
+      {
+        id: 21312,
+        name: 'lol'
+      },
+      {
+        id: 21312,
+        name: 'lol'
+      },
+      {
+        id: 21312,
+        name: 'lol'
+      },
+      {
+        id: 21312,
+        name: 'lol'
+      },
+      {
+        id: 2131,
+        name: 'shit'
+      }
+    ]
 
     return (
         <>
-        <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'></link>
-
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position='static' sx={{ bgcolor: 'white', boxShadow: 0,}}>
-                <Toolbar sx={{ bgcolor: 'white', p: 2, minWidth: 300, color: 'black' }}>
-                    <Typography variant='h1' sx={{ fontFamily: 'Ubuntu', fontWeight: 700, fontSize: 46, flexGrow: 1 }}>Dashboard</Typography>
-                    <Button 
-                        variant="contained" 
-                        color="inherit" 
-                        sx={{ mr: 1 }} 
-                        endIcon={<KeyboardArrowDownIcon />}
-                        onClick={handleClick}>
-                        Filter
-                    </Button>
-                    <StyledMenu
-                        id="demo-customized-menu"
-                        MenuListProps={{
-                        'aria-labelledby': 'demo-customized-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        >
-                            <FormGroup sx={{ marginLeft: 2 }}>
-                                <FormControlLabel control={<Switch defaultChecked />} label="Created by me" />
-                                <FormControlLabel control={<Switch />} label="Co-owned by me" />
-                                <FormControlLabel control={<Switch />} label="Hot baskets" />
-                                <FormControlLabel control={<Switch />} label="Public baskets" />
-                                <FormControlLabel control={<Switch />} label="Private baskets" />
-                            </FormGroup>
-                    </StyledMenu>
-                    <Button variant="contained" color="success">Create new</Button>
-                </Toolbar>
-            </AppBar>
+          <AppBar position='static' sx={{ bgcolor: 'white', boxShadow: 0,}}>
+            <Toolbar sx={{ bgcolor: 'white', p: 2, minWidth: 300, color: 'black' }}>
+              <Typography variant='h1' sx={{ fontFamily: 'Ubuntu', fontWeight: 700, fontSize: 46, flexGrow: 1 }}>Dashboard</Typography>
+              <Button 
+                variant="contained" 
+                color="inherit" 
+                sx={{ mr: 1 }} 
+                endIcon={<KeyboardArrowDownIcon />}
+                onClick={handleFilterClick}>
+                Filter
+              </Button>
+              <StyledMenu
+                id="hidden-filter-menu"
+                MenuListProps={{
+                'aria-labelledby': 'hidden-filter-button',
+                }}
+                anchorEl={hiddenFilterAnchor}
+                open={hiddenFilterMenuOpen}
+                onClose={handleFilterClose}
+                >
+                <FormGroup sx={{ marginLeft: 2 }}>
+                  <FormControlLabel control={<Switch checked={createByMeState} onChange={() => { setCreateByMeState(!createByMeState) }} />} label="Created by me" />
+                  <FormControlLabel control={<Switch checked={coownedByMeState} onChange={() => { setCoownedByMeState(!coownedByMeState) }} />} label="Co-owned by me" />
+                  <FormControlLabel control={<Switch checked={hotBasketsState} onChange={() => { sethotBasketsState(!hotBasketsState) }} />} label="Hot baskets" />
+                  <FormControlLabel control={<Switch checked={publicBasketsState} onChange={() => { setPublicBasketsState(!publicBasketsState) }} />} label="Public baskets" />
+                  <FormControlLabel control={<Switch checked={privateBasketsState} onChange={() => { setPrivateBasketsState(!privateBasketsState) }} />} label="Private baskets" />
+                </FormGroup>
+              </StyledMenu>
+              <Button variant="contained" color="success">Create new</Button>
+            </Toolbar>
+          </AppBar>
         </Box>
 
-        <Box sx={{ bgcolor: 'white', boxShadow: 1, borderRadius: 3, p: 2, minWidth: 300, color: 'black', marginLeft: 5, marginRight: 5, borderColor: "black" }}>
-            <p>There should be a dashboard</p>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', bgcolor: 'white', boxShadow: 1, borderRadius: 3, p: 2, minWidth: 300, color: 'black', marginLeft: 5, marginRight: 5, borderColor: "black" }}>
+            {testData.map((basket) => { return(<BasketBox data={basket} />) })}
         </Box>
         </>
     )
 }
+
 
 export default Dashboard
