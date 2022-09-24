@@ -12,7 +12,7 @@ export const registerUser = createAsyncThunk(
 
     try {
       await axios.post(
-        '/api/user/register',
+        `${process.env.API_URL}/api/user/register`,
         { firstName, email, password },
         config
       );
@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-  'user/login',
+  `user/login',
   async ({ email, password }, { rejectWithValue }) => {
     const config = {
       headers: {
@@ -37,7 +37,7 @@ export const loginUser = createAsyncThunk(
 
     try {
       const { data } = await axios(
-        'api/user/login',
+        `${process.env.API_URL}api/user/login`,
         { email, password },
         config
       );
@@ -65,7 +65,7 @@ export const getUserDetails = createAsyncThunk(
     };
 
     try {
-      const { data } = await axios.get(`/api/user/profile`, config);
+      const { data } = await axios.get(`${process.env.API_URL}/api/user/profile`, config);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
