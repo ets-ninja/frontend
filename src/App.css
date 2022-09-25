@@ -18,3 +18,14 @@ main{
         min-height: calc(100vh - 56px - 304px);
     }
 }
+.mySwiper{
+    max-width: 1000px;
+    /* max-height: 00px; */
+}
+.swiper-slide {
+    height: auto;
+  }
+
+@media(max-width: 599px){
+
+}
