@@ -6,13 +6,13 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import { Typography, Box } from '@mui/material';
 
-const BasketBox = ({ data: { id, name } }) => {
+const BasketBox = ({ data: { id, name, ownerId, description, finalGoal, value, expirationDate, isPublic, createdAt } }) => {
     return (
         <>
-            <Card sx={{ width: 300, minHeight: 400, marginLeft: 3, marginRight: 3, borderRadius: 4, marginBottom: 10, boxShadow: 3 }}>
+            <Card sx={{ width: 300, minHeight: 400, marginLeft: 3, marginRight: 3, borderRadius: 4, marginBottom: 10, boxShadow: 4 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: 1, marginBottom: 2 }}>
-                    <Typography sx={{ userSelect: 'none', fontFamily: 'Ubuntu', fontWeight: 700, marginLeft: 2, flexGrow: 1 }}>{id}</Typography>
-                    <Typography sx={{ userSelect: 'none', fontFamily: 'Ubuntu', fontWeight: 700, marginRight: 2 }}>{name}</Typography>
+                    <Typography sx={{ userSelect: 'none', fontFamily: 'Ubuntu', fontWeight: 700, marginLeft: 2, flexGrow: 1 }}>{name}</Typography>
+                    <Typography sx={{ userSelect: 'none', fontFamily: 'Ubuntu', fontWeight: 700, marginRight: 2 }}>{new Date(Date.parse(expirationDate) - Date.now()).getDate() + ' days left'}</Typography>
                 </Box>
                 <CardMedia
                     component="img"
@@ -21,7 +21,7 @@ const BasketBox = ({ data: { id, name } }) => {
                     alt="Live from space album cover"
                 />
                 <Box sx={{ display: 'flex', flexDirection: 'row', backgroundColor: 'lightGreen', alignItems: 'center' }}>
-                    <Typography sx={{ userSelect: 'none', fontFamily: 'Ubuntu', fontWeight: 700, marginLeft: 2, flexGrow: 1, marginBottom: 1, marginTop: 1 }}>Public/Private</Typography>
+                    <Typography sx={{ userSelect: 'none', fontFamily: 'Ubuntu', fontWeight: 700, marginLeft: 2, flexGrow: 1, marginBottom: 1, marginTop: 1 }}>{ isPublic ? 'Public' : 'Private' }</Typography>
                     <Button sx={{ fontFamily: 'Ubuntu', fontWeight: 700, marginRight: 2, marginBottom: 1, marginTop: 1 }}>More detail</Button>
                 </Box>
             </Card>

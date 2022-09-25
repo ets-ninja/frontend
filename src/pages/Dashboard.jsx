@@ -73,42 +73,68 @@ const Dashboard = () => {
 
     const testData = [
       {
-        id: 21312,
-        name: 'lol'
+        id: 0,
+        name: 'Basket A',
+        ownerId: 321312,
+        description: "I am a good basket",
+        finalGoal: 400,
+        value: 200,
+        expirationDate: '2022-09-30',
+        isPublic: false,
+        createdAt: '2022-09-20'
       },
       {
-        id: 21312,
-        name: 'lol'
+        id: 1,
+        name: 'Basket B',
+        ownerId: 12312,
+        description: "I am a bad basket",
+        finalGoal: 2000,
+        value: 100,
+        expirationDate: '2022-10-11',
+        isPublic: false,
+        createdAt: '2022-09-25'
       },
       {
-        id: 21312,
-        name: 'lol'
+        id: 2,
+        name: 'Basket C',
+        ownerId: 12312,
+        description: "I am a bad basket",
+        finalGoal: 2000,
+        value: 100,
+        expirationDate: '2022-10-11',
+        isPublic: true,
+        createdAt: '2022-09-25'
       },
-      {
-        id: 21312,
-        name: 'lol'
-      },
-      {
-        id: 21312,
-        name: 'lol'
-      },
-      {
-        id: 21312,
-        name: 'lol'
-      },
-      {
-        id: 21312,
-        name: 'lol'
-      },
-      {
-        id: 21312,
-        name: 'lol'
-      },
-      {
-        id: 2131,
-        name: 'shit'
-      }
     ]
+
+    const getBaskets = () => {
+      let baskets = [];
+
+      testData.forEach((basket, index) => {
+        if(createByMeState === true && basket.ownerId === 12312){
+          baskets.push(basket);
+          return;
+        }
+        if(coownedByMeState === true && basket.ownerId !== 12312){
+          baskets.push(basket);
+          return;
+        }
+        if(hotBasketsState === true && new Date(Date.parse(basket.expirationDate) - Date.now()).getDate() < 7){
+          baskets.push(basket);
+          return;
+        }
+        if(publicBasketsState === true && basket.isPublic === true){
+          baskets.push(basket);
+          return;
+        }
+        if(privateBasketsState === true && basket.isPublic === false){
+          baskets.push(basket);
+          return;
+        }
+      })
+      
+      return baskets;
+    }
 
     return (
         <>
@@ -147,7 +173,8 @@ const Dashboard = () => {
         </Box>
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', bgcolor: 'white', boxShadow: 1, borderRadius: 3, p: 2, minWidth: 300, color: 'black', marginLeft: 5, marginRight: 5, borderColor: "black" }}>
-            {testData.map((basket) => { return(<BasketBox data={basket} />) })}
+            { getBaskets().map((basket) => { return(<BasketBox data={basket} />) }) }
+            { getBaskets().length === 0 && <Typography variant='h2' sx={{ fontFamily: 'Ubuntu', fontWeight: 500, fontSize: 30, flexGrow: 1 }}> No baskets available! </Typography> }
         </Box>
         </>
     )
