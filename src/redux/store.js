@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 import {
   persistReducer,
   persistStore,
@@ -8,15 +8,17 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from "redux-persist";
+} from 'redux-persist';
+import userReducer from './user/userSlice';
 
 // for testing purposes, delete when redundant
-import testExampleSlice from "./testExample/testExampleSlice";
-import testExampleConfig from "./testExample/testExampleConfig";
+import testExampleSlice from './testExample/testExampleSlice';
+import testExampleConfig from './testExample/testExampleConfig';
 
 export const store = configureStore({
   reducer: {
     testExample: persistReducer(testExampleConfig, testExampleSlice.reducer),
+    user: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
