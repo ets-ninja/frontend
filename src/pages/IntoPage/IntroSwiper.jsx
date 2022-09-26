@@ -27,7 +27,9 @@ const IntroSwiper = () => {
 
     return (
         <div>
-            <Swiper
+            <Swiper 
+                spaceBetween={10}
+                style={{padding: '5px'}}
                 onSwiper={(swiper) => {
                     swiperRef.current = swiper;
                 }}
@@ -40,24 +42,18 @@ const IntroSwiper = () => {
             >
 
                 {/* 1 slide */}
-                <SwiperSlide
-
-                //  style={{maxHeight: '700px'}}
-                 >
+                <SwiperSlide>
                     <Card variant="outlined" sx={{
                         margin: '0 auto',
                         maxWidth: '500px',
                         px: '20px',
-                        borderRadius: '10px',
-                        // minheight: '100%',
-                        // pb: '99999px',
-                        // mb: '-99999px',
-                        // overflow: 'hidden'
+                        borderRadius: 4,
+                        boxShadow: 4,
                     }}>
                         <Typography
                             sx={{
                                 fontSize: '24px',
-                                fontFamily: 'Lato',
+                                fontFamily: 'Roboto',
                                 fontWeight: 500,
                                 letterSpacing: '.1rem',
                                 textAlign: 'center',
@@ -78,7 +74,7 @@ const IntroSwiper = () => {
                             <Typography
                                 sx={{
                                     fontSize: '18px',
-                                    fontFamily: 'Arial',
+                                    fontFamily: 'Roboto',
                                     fontWeight: 400,
                                     letterSpacing: '.1rem',
                                     textAlign: 'center',
@@ -113,18 +109,14 @@ const IntroSwiper = () => {
                 </SwiperSlide>
 
                 {/* 2 slide */}
-                <SwiperSlide style={{height: 'auto'}}
-                    // style={{maxHeight: '700px'}} 
-                >
+                <SwiperSlide style={{height: 'auto'}}>
                     <Card variant="outlined" sx={{
                         margin: '0 auto',
                         maxWidth: '500px',
                         px: '20px',
-                        borderRadius: '10px',
+                        borderRadius: 4,
                         height: '100%',
-                        // pb: '99999px',
-                        // mb: '-99999px',
-                        // overflow: 'hidden'
+                        boxShadow: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between'
@@ -132,7 +124,7 @@ const IntroSwiper = () => {
                         <Typography
                             sx={{
                                 fontSize: '24px',
-                                fontFamily: 'Lato',
+                                fontFamily: 'Roboto',
                                 fontWeight: 500,
                                 letterSpacing: '.1rem',
                                 textAlign: 'center',
@@ -150,14 +142,11 @@ const IntroSwiper = () => {
                         }}>
                             <img style={{ width: '100%', height: '100%' }} src={kartinka5} alt="kartinka1" />
                         </Box>
-                        <Box sx={{
-                            // flex: '1 0 auto',
-                        }}
-                        >
+                        <Box>
                             <Typography
                                 sx={{
                                     fontSize: '18px',
-                                    fontFamily: 'Arial',
+                                    fontFamily: 'Roboto',
                                     fontWeight: 400,
                                     letterSpacing: '.1rem',
                                     textAlign: 'center',
@@ -192,18 +181,14 @@ const IntroSwiper = () => {
                 </SwiperSlide>
 
                 {/* 3 slide */}
-                <SwiperSlide style={{height: 'auto'}}
-                    // style={{maxHeight: '700px'}} 
-                >
+                <SwiperSlide style={{height: 'auto'}}>
                     <Card variant="outlined" sx={{
                         margin: '0 auto',
                         maxWidth: '500px',
                         px: '20px',
-                        borderRadius: '10px',
+                        borderRadius: 4,
                         height: '100%',
-                        // pb: '99999px',
-                        // mb: '-99999px',
-                        // overflow: 'hidden'
+                        boxShadow: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between'
@@ -211,7 +196,7 @@ const IntroSwiper = () => {
                         <Typography
                             sx={{
                                 fontSize: '24px',
-                                fontFamily: 'Lato',
+                                fontFamily: 'Roboto',
                                 fontWeight: 500,
                                 letterSpacing: '.1rem',
                                 textAlign: 'center',
@@ -229,14 +214,11 @@ const IntroSwiper = () => {
                         }}>
                             <img style={{ width: '150%', height: '100%',position: 'relative', right: '25%' }} src={kartinka3} alt="kartinkaWishlist" />
                         </Box>
-                        <Box sx={{
-                            // flex: '1 0 auto',
-                        }}
-                        >
+                        <Box>
                             <Typography
                                 sx={{
                                     fontSize: '18px',
-                                    fontFamily: 'Arial',
+                                    fontFamily: 'Roboto',
                                     fontWeight: 400,
                                     letterSpacing: '.1rem',
                                     textAlign: 'center',
@@ -271,18 +253,14 @@ const IntroSwiper = () => {
                 </SwiperSlide>
 
                 {/* 4 slide */}
-                <SwiperSlide style={{height: 'auto'}}
-                    // style={{maxHeight: '700px'}} 
-                >
+                <SwiperSlide style={{height: 'auto'}}>
                     <Card variant="outlined" sx={{
                         margin: '0 auto',
                         maxWidth: '500px',
                         px: '20px',
-                        borderRadius: '10px',
+                        borderRadius: 4,
                         height: '100%',
-                        // pb: '99999px',
-                        // mb: '-99999px',
-                        // overflow: 'hidden'
+                        boxShadow: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between'
@@ -290,7 +268,7 @@ const IntroSwiper = () => {
                         <Typography
                             sx={{
                                 fontSize: '24px',
-                                fontFamily: 'Lato',
+                                fontFamily: 'Roboto',
                                 fontWeight: 500,
                                 letterSpacing: '.1rem',
                                 textAlign: 'center',
@@ -308,14 +286,11 @@ const IntroSwiper = () => {
                         }}>
                             <img style={{ width: '150%', height: '100%', position: 'relative', right: '26%' }} src={kartinka2} alt="kartinka1" />
                         </Box>
-                        <Box sx={{
-                            // flex: '1 0 auto',
-                        }}
-                        >
+                        <Box>
                             <Typography
                                 sx={{
                                     fontSize: '18px',
-                                    fontFamily: 'Arial',
+                                    fontFamily: 'Roboto',
                                     fontWeight: 400,
                                     letterSpacing: '.1rem',
                                     textAlign: 'center',
@@ -331,7 +306,6 @@ const IntroSwiper = () => {
                             justifyContent: 'space-between',
                             pb: '25px',
                             px: '30px',
-                            // flex: '0 1 10%',
                         }}>
                             <Button onClick={() => swiperRef.current.slidePrev(200)}
                                 variant="outlined"
