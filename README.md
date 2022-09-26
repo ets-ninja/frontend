@@ -4,9 +4,7 @@
 ### Install client dependencies.
 
 ```
-
 npm i
-
 ```
 
 ## Sentry logger usage
