@@ -29,6 +29,8 @@ try {
 
 ```javascript
 
+import * as Sentry from "@sentry/react";
+
 Sentry.captureMessage("Something went wrong");
 
 ```
