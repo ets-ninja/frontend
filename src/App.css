@@ -23,5 +23,4 @@ main{
 }
 .swiper-pagination, .swiper-pagination-bullets, .swiper-pagination-horizontal, .swiper-pagination-bullets-dynamic{
     bottom: 25px !important;
-    margin-top: -5px !important;
 } 
