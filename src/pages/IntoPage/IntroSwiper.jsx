@@ -319,7 +319,7 @@ const IntroSwiper = () => {
                                 sx={{
 
                                 }}
-                            >Sign Up</Button>
+                            >Get In</Button>
                         </Box>
                     </Card>
                 </SwiperSlide>
