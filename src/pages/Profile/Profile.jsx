@@ -1,40 +1,30 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails, updateUserInfo } from '../../redux/user/userActions';
+import { getUserDetails } from '../../redux/user/userActions';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import ProfileFormUpdateInfo from '../../components/forms/ProfileForm/ProfileFormUpdateInfo';
+import ProfileFormUpdatePassword from '../../components/forms/ProfileForm/ProfileFormUpdatePassword';
+
 import {
+  Alert,
   Avatar,
   Button,
   Card,
+  Collapse,
   Divider,
   Grid,
   List,
   ListItem,
-  TextField,
   Typography,
 } from '@mui/material';
 
 import style from './Profile.module.css';
 
 const Profile = memo(() => {
-  const { userInfo, userToken, info } = useSelector(state => state.user);
+  const [open, setOpen] = useState(true);
+  const { userInfo, userToken, info, error } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const submitForm = data => {
-    dispatch(updateUserInfo(data));
-    if (!!info.message) {
-      alert(info.message);
-    }
-    console.log(data);
-  };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
   useEffect(() => {
     if (!userInfo) {
@@ -43,10 +33,29 @@ const Profile = memo(() => {
     dispatch(getUserDetails(userToken));
   }, [navigate, info]);
 
-  console.log(userInfo);
-
   return (
     <div className={style.profile}>
+      {error && (
+        <Collapse in={open}>
+          <Alert
+            severity="error"
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                UNDO
+              </Button>
+            }
+            sx={{ mb: 2 }}
+          >
+            {error}
+          </Alert>
+        </Collapse>
+      )}
       <div>
         <Card>
           <Grid container alignItems="center">
@@ -102,81 +111,8 @@ const Profile = memo(() => {
 
       <div>
         <Card sx={{ p: '1rem' }}>
-          <form
-            className={style.changeUserInfo}
-            onSubmit={handleSubmit(submitForm)}
-          >
-            <Divider>Public Information</Divider>
-            <div>
-              <Typography className={style.infoText} variant="h5">
-                First name & Last name
-              </Typography>
-              <div className={style.firstAndLastName}>
-                <div className={style.input}>
-                  <TextField
-                    type="text"
-                    {...register('firstName')}
-                    label="First name"
-                    autoComplete="firstName"
-                    error={!!errors.firstName}
-                  />
-                  <Button type="submit" size="medium" variant="contained">
-                    Save
-                  </Button>
-                </div>
-                <div className={style.input}>
-                  <TextField
-                    type="text"
-                    {...register('lastName')}
-                    label="Last name"
-                    autoComplete="lastName"
-                    error={!!errors.lastName}
-                  />
-                  <Button type="submit" variant="contained">
-                    Save
-                  </Button>
-                </div>
-              </div>
-              <div className={style.publicName}>
-                <Typography className={style.infoText} variant="h5">
-                  Public name
-                </Typography>
-                <div className={style.input}>
-                  <TextField
-                    type="text"
-                    {...register('publicName')}
-                    label="Public name"
-                    autoComplete="publicName"
-                    error={!!errors.publicName}
-                  />
-                  <Button type="submit" variant="contained">
-                    Save
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <Divider sx={{ p: '10px' }}>Security</Divider>
-            <div className={style.security}>
-              <Typography className={style.infoText} variant="h5">
-                Change your password
-              </Typography>
-              <div className={style.securityInput}>
-                <TextField
-                  type="password"
-                  {...register('password', {
-                    required: true,
-                    minLength: 6,
-                  })}
-                  label="Password"
-                  autoComplete="password"
-                  error={!!errors.password}
-                />
-                <Button type="submit" variant="contained">
-                  Save
-                </Button>
-              </div>
-            </div>
-          </form>
+          <ProfileFormUpdateInfo setOpen={setOpen} />
+          <ProfileFormUpdatePassword setOpen={setOpen} />
         </Card>
       </div>
     </div>

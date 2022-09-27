@@ -73,8 +73,8 @@ export const getUserDetails = createAsyncThunk(
       const { data } = await axios.get('/api/user', config);
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -85,7 +85,7 @@ export const getUserDetails = createAsyncThunk(
 export const updateUserInfo = createAsyncThunk(
   'user/updateUserInfo',
   async (
-    { firstName, lastName, publicName, password },
+    { firstName, lastName, publicName },
     { getState, rejectWithValue },
   ) => {
     const { user } = getState();
@@ -93,19 +93,46 @@ export const updateUserInfo = createAsyncThunk(
       headers: {
         Authorization: `${user.userToken}`,
       },
-      params: {
-        email: user.userInfo.email,
-      },
     };
 
     try {
       const { data } = await axios.patch(
         '/api/user/update',
         {
-          firstName: firstName || user.userInfo.firstName,
-          lastName: lastName || user.userInfo.lastName,
-          publicName: publicName || user.userInfo.publicName,
-          password: password || user.userInfo.password,
+          firstName,
+          lastName,
+          publicName,
+        },
+        config,
+      );
+
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const updateUserPassword = createAsyncThunk(
+  'user/updateUserPassword',
+  async ({ password, newPassword }, { getState, rejectWithValue }) => {
+    const { user } = getState();
+    const config = {
+      headers: {
+        Authorization: `${user.userToken}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.patch(
+        '/api/user/update_password',
+        {
+          password,
+          newPassword,
         },
         config,
       );

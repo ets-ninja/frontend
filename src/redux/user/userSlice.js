@@ -4,6 +4,7 @@ import {
   loginUser,
   getUserDetails,
   updateUserInfo,
+  updateUserPassword,
 } from './userActions';
 
 const userToken = localStorage.getItem('userToken')
@@ -14,10 +15,8 @@ const initialState = {
   loading: false,
   userInfo: {},
   userToken,
-  info: {
-    id: null,
-    message: '',
-  },
+  info: {},
+  infoPassword: {},
   error: null,
   success: false,
 };
@@ -75,7 +74,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
-    // updateUser
+    // updateUserInfo
     [updateUserInfo.pending]: state => {
       state.loading = true;
       state.error = null;
@@ -83,8 +82,22 @@ const userSlice = createSlice({
     [updateUserInfo.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.info = payload;
+      console.log(payload);
     },
     [updateUserInfo.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    // updateUserPassword
+    [updateUserPassword.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserPassword.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.infoPassword = payload;
+    },
+    [updateUserPassword.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },

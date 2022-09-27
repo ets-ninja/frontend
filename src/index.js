@@ -31,7 +31,8 @@ root.render(
   </Provider>
 );
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.baseURL = 'http://localhost:8000'
+// process.env.REACT_APP_API_URL;
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
