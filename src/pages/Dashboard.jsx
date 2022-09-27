@@ -167,7 +167,7 @@ const Dashboard = () => {
                   <FormControlLabel control={<Switch checked={privateBasketsState} onChange={() => { setPrivateBasketsState(!privateBasketsState) }} />} label="Private baskets" />
                 </FormGroup>
               </StyledMenu>
-              <Button variant="contained" color="success">Create new</Button>
+              <Button variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white" } }} >Create new</Button>
             </Toolbar>
           </AppBar>
         </Box>
