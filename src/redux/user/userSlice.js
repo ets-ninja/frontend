@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { registerUser, loginUser, getUserDetails } from './userActions';
 
-// const userToken = localStorage.getItem('userToken')
-//   ? localStorage.getItem('userToken')
-//   : null;
-
 const initialState = {
   loading: false,
   userInfo: null,
@@ -18,7 +14,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: state => {
-      // localStorage.removeItem('userToken');
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;
