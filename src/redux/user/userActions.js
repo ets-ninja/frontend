@@ -5,7 +5,7 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (
     { firstName, lastName, publicName, email, password },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     const config = {
       headers: {
@@ -19,7 +19,7 @@ export const registerUser = createAsyncThunk(
       await axios.post(
         '/api/user/signup',
         { firstName, lastName, publicName, email, password },
-        config
+        config,
       );
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -28,7 +28,7 @@ export const registerUser = createAsyncThunk(
         return rejectWithValue(error.message);
       }
     }
-  }
+  },
 );
 
 export const loginUser = createAsyncThunk(
@@ -44,7 +44,7 @@ export const loginUser = createAsyncThunk(
       const { data } = await axios.post(
         'api/auth/login',
         { email, password },
-        config
+        config,
       );
       localStorage.setItem('userToken', data.userToken);
       return data;
@@ -55,7 +55,7 @@ export const loginUser = createAsyncThunk(
         return rejectWithValue(error.message);
       }
     }
-  }
+  },
 );
 
 export const getUserDetails = createAsyncThunk(
@@ -79,5 +79,5 @@ export const getUserDetails = createAsyncThunk(
         return rejectWithValue(error.message);
       }
     }
-  }
+  },
 );
