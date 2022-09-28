@@ -7,18 +7,14 @@ export const registerUser = createAsyncThunk(
     { firstName, lastName, publicName, email, password },
     { rejectWithValue },
   ) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
     try {
-      await axios.post(
-        '/api/user/signup',
-        { firstName, lastName, publicName, email, password },
-        config,
-      );
+      await axios.post('/api/user/signup', {
+        firstName,
+        lastName,
+        publicName,
+        email,
+        password,
+      });
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);

@@ -10,7 +10,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const ErrorMessage = () => {
-  const { error } = useSelector(state => state.user);
+  const user = useSelector(state => state.user);
+  const request = useSelector(state => state.request);
   const [state, setState] = useState({
     open: false,
     Transition: Fade,
@@ -19,12 +20,16 @@ const ErrorMessage = () => {
   });
 
   useEffect(() => {
-    if (error) {
+    if (user.error || request.error) {
       setState(prevValue => ({ ...prevValue, open: true }));
     } else {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
-  }, [error]);
+  }, [user.error, request.error]);
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
 
   return (
     <>
@@ -37,8 +42,11 @@ const ErrorMessage = () => {
         autoHideDuration={5000}
         TransitionComponent={state.Transition}
         key={state.Transition.name}
+        onClose={handleClose}
       >
-        <Alert severity="error">{error}</Alert>
+        <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
+          {user.error ? user.error : request.error}
+        </Alert>
       </Snackbar>
     </>
   );
