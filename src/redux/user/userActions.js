@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios from '../../services/axios/';
 
 export const registerUser = createAsyncThunk(
   'user/register',
@@ -12,8 +12,6 @@ export const registerUser = createAsyncThunk(
         'Content-Type': 'application/json',
       },
     };
-
-    console.log(firstName, lastName, publicName, email, password);
 
     try {
       await axios.post(
@@ -34,19 +32,9 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   'user/login',
   async ({ email, password }, { rejectWithValue }) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
     try {
-      const { data } = await axios.post(
-        'api/auth/login',
-        { email, password },
-        config,
-      );
-      localStorage.setItem('userToken', data.userToken);
+      const { data } = await axios.post('api/auth/login', { email, password });
+      localStorage.setItem('userToken', data.token);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -61,16 +49,8 @@ export const loginUser = createAsyncThunk(
 export const getUserDetails = createAsyncThunk(
   'user/getUserDetails',
   async (arg, { getState, rejectWithValue }) => {
-    const { user } = getState();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${user.userToken}`,
-      },
-    };
-
     try {
-      const { data } = await axios.get('/api/user', config);
+      const { data } = await axios.get('/api/user');
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
