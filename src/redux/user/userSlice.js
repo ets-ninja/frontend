@@ -7,16 +7,17 @@ import {
   updateUserPassword,
 } from './userActions';
 
-const userToken = localStorage.getItem('userToken')
-  ? localStorage.getItem('userToken')
-  : null;
-
 const initialState = {
   loading: false,
-  userInfo: {},
-  userToken,
-  info: {},
-  infoPassword: {},
+// <<<<<<< HEAD
+//   userInfo: {},
+//   userToken,
+//   info: {},
+//   infoPassword: {},
+// =======
+  userInfo: null,
+  userToken: null,
+// >>>>>>> 96058ebfc0cdf256c88dbec31dd361b12ae4096f
   error: null,
   success: false,
 };
@@ -26,7 +27,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: state => {
-      localStorage.removeItem('userToken');
+// <<<<<<< HEAD
+//       localStorage.removeItem('userToken');
+// =======
+// >>>>>>> 96058ebfc0cdf256c88dbec31dd361b12ae4096f
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;
@@ -95,7 +99,7 @@ const userSlice = createSlice({
     },
     [updateUserPassword.fulfilled]: (state, { payload }) => {
       state.loading = false;
-      state.infoPassword = payload;
+      state.success = true;
     },
     [updateUserPassword.rejected]: (state, { payload }) => {
       state.loading = false;
