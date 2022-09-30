@@ -18,6 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import { useSelector } from 'react-redux';
 
 const pages = [
   {
@@ -37,6 +38,8 @@ const pages = [
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const { userInfo } = useSelector(state => state.user);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -150,7 +153,7 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src={userInfo.userPhoto} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -190,7 +193,7 @@ const Header = () => {
             >
               <MenuLink to="/profile">
                 <MenuItem>
-                  <Avatar />
+                  <Avatar src={userInfo.userPhoto} />
                   Profile
                 </MenuItem>
               </MenuLink>

@@ -9,15 +9,8 @@ import {
 
 const initialState = {
   loading: false,
-// <<<<<<< HEAD
-//   userInfo: {},
-//   userToken,
-//   info: {},
-//   infoPassword: {},
-// =======
   userInfo: null,
   userToken: null,
-// >>>>>>> 96058ebfc0cdf256c88dbec31dd361b12ae4096f
   error: null,
   success: false,
 };
@@ -27,10 +20,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: state => {
-// <<<<<<< HEAD
-//       localStorage.removeItem('userToken');
-// =======
-// >>>>>>> 96058ebfc0cdf256c88dbec31dd361b12ae4096f
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;
