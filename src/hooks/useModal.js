@@ -11,12 +11,13 @@ export default function useModal() {
     navigate(`/modal/${path}`, {
       state: { backgroundLocation: location },
     });
-    dispatch(
-      modalSlice.actions.setModalData({
-        path,
-        data,
-      }),
-    );
+    if (data)
+      dispatch(
+        modalSlice.actions.setModalData({
+          path,
+          data,
+        }),
+      );
   };
 
   const close = () => {
