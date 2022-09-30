@@ -2,8 +2,6 @@ import { Avatar, Box, Button, LinearProgress, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { linearProgressClasses } from '@mui/material/LinearProgress';
 
-import supraImg from './supra.jpg';
-
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 40,
   borderRadius: 20,
@@ -39,8 +37,7 @@ export default function PublicJarModal() {
       <Box sx={{ pl: 3, pr: 3, mt: 2 }}>
         <Box sx={{ mb: 2 }}>
           <img
-            // src="https://images.unsplash.com/photo-1603811478698-0b1d6256f79a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-            src={supraImg}
+            src="https://images.unsplash.com/photo-1603811478698-0b1d6256f79a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
             alt="Toyota Supra"
             style={{ width: '100%', borderRadius: '10px' }}
           />
