@@ -7,10 +7,6 @@ import {
   updateUserPassword,
 } from './userActions';
 
-const userToken = localStorage.getItem('userToken')
-  ? localStorage.getItem('userToken')
-  : null;
-
 const initialState = {
   loading: false,
   userInfo: {},
