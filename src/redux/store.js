@@ -9,19 +9,16 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+
 import userReducer from './user/userSlice';
+import userConfig from './user/userConfig';
 
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
 
-// for testing purposes, delete when redundant
-import testExampleSlice from './testExample/testExampleSlice';
-import testExampleConfig from './testExample/testExampleConfig';
-
 export const store = configureStore({
   reducer: {
-    testExample: persistReducer(testExampleConfig, testExampleSlice.reducer),
-    user: userReducer,
+    user: persistReducer(userConfig, userReducer),
     modal: persistReducer(modalConfig, modalSlice.reducer),
   },
   middleware: getDefaultMiddleware =>

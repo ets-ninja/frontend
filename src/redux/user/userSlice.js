@@ -1,14 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { registerUser, loginUser, getUserDetails } from './userActions';
 
-const userToken = localStorage.getItem('userToken')
-  ? localStorage.getItem('userToken')
-  : null;
-
 const initialState = {
   loading: false,
   userInfo: null,
-  userToken,
+  userToken: null,
   error: null,
   success: false,
 };
@@ -17,8 +13,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logout: (state) => {
-      localStorage.removeItem('userToken');
+    logout: state => {
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;
@@ -27,7 +22,7 @@ const userSlice = createSlice({
   },
   extraReducers: {
     //register
-    [registerUser.pending]: (state) => {
+    [registerUser.pending]: state => {
       state.loading = true;
       state.error = null;
     },
@@ -40,21 +35,21 @@ const userSlice = createSlice({
       state.error = payload;
     },
     //login
-    [loginUser.pending]: (state) => {
+    [loginUser.pending]: state => {
       state.loading = true;
       state.error = null;
     },
     [loginUser.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.userInfo = payload;
-      state.userToken = payload.userToken;
+      state.userToken = payload.token;
     },
     [loginUser.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
     //getUser
-    [getUserDetails.pending]: (state) => {
+    [getUserDetails.pending]: state => {
       state.loading = true;
       state.error = null;
     },
