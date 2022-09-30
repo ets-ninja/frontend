@@ -27,9 +27,6 @@ const Profile = memo(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!userInfo) {
-      navigate('/login');
-    }
     dispatch(getUserDetails(userToken));
   }, [navigate, info]);
 
