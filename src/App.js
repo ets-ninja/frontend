@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react';
 import { Routes, Route } from 'react-router-dom';
-import './App.css';
+import './App.scss';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Profile from './pages/Profile/Profile';
@@ -10,15 +10,17 @@ import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
 import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
-import Dashboard from "./pages/Dashboard";
-import Basket from "./pages/Basket";
+import Dashboard from './pages/Dashboard';
+import Basket from './pages/Basket';
+import ModalWindow from './modal';
+import PublicJarModal from './modal/PublicJarModal';
 
 const App = () => {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Dashboard/>} />
-        <Route path="/basket/:basket" element={<Basket/>}/>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/basket/:basket" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
@@ -47,6 +49,9 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
+        <Route path="modal" element={<ModalWindow />}>
+          <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+        </Route>
       </Routes>
     </div>
   );
