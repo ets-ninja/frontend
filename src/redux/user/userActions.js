@@ -146,3 +146,33 @@ export const updateUserPassword = createAsyncThunk(
     }
   },
 );
+
+export const updateUserPhoto = createAsyncThunk(
+  'user/updateUserPhoto',
+  async ({ userPhoto }, { getState, rejectWithValue }) => {
+    const { user } = getState();
+    const config = {
+      headers: {
+        Authorization: `${user.userToken}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.put(
+        '/api/user/update_photo',
+        {
+          userPhoto,
+        },
+        config,
+      );
+
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);

@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 
 import style from './Profile.module.css';
+import useModal from '../../hooks/useModal';
 
 const Profile = memo(() => {
   const [open, setOpen] = useState(true);
@@ -29,6 +30,8 @@ const Profile = memo(() => {
   useEffect(() => {
     dispatch(getUserDetails(userToken));
   }, [navigate, info]);
+
+  const modal = useModal();
 
   return (
     <div className={style.profile}>
@@ -72,7 +75,11 @@ const Profile = memo(() => {
                 src={userInfo.userPhoto}
               />
 
-              <Button sx={{ m: '10px' }} variant="contained">
+              <Button
+                sx={{ m: '10px' }}
+                variant="contained"
+                onClick={() => modal.open('update-photo')}
+              >
                 Change photo
               </Button>
             </Grid>

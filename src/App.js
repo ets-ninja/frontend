@@ -14,6 +14,7 @@ import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
+import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
         />
         <Route path="modal" element={<ModalWindow />}>
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+          <Route path='/modal/update-photo' element={<UpdatePhotoModal />} />
         </Route>
       </Routes>
     </div>
