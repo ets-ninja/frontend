@@ -11,6 +11,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import BasketBox from '../components/BasketBox'
+import { Link } from 'react-router-dom';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -167,7 +168,10 @@ const Dashboard = () => {
                   <FormControlLabel control={<Switch checked={privateBasketsState} onChange={() => { setPrivateBasketsState(!privateBasketsState) }} />} label="Private baskets" />
                 </FormGroup>
               </StyledMenu>
-              <Button variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white" } }} >Create new</Button>
+              <Button component={Link} to="/creation"
+               variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white" } }} >
+                  Create new
+                </Button>
             </Toolbar>
           </AppBar>
         </Box>

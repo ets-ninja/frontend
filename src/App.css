@@ -19,3 +19,29 @@ main {
     min-height: calc(100vh - 56px - 304px);
   }
 }
+.MuiStepLabel-labelContainer span {
+  font-size: 18px;
+}
+
+
+/*  *custom scroll bar*  */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: lightblue;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: lightskyblue;
+}

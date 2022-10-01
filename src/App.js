@@ -12,6 +12,7 @@ import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
 import Dashboard from "./pages/Dashboard";
 import Basket from "./pages/Basket";
+import CreationPage from './pages/CreationPage';
 
 const App = () => {
   return (
@@ -22,6 +23,11 @@ const App = () => {
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
+        <Route
+          exect
+          element={<CreationPage />}
+          path="/creation"
+        />
         <Route
           exect
           element={<ProtectedRoute component={Profile} />}
