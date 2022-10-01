@@ -43,7 +43,7 @@ const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const { userToken } = useSelector(state => state.user);
+  const { userToken, userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -164,7 +164,9 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {userInfo && (
+                  <Avatar alt="Remy Sharp" src={userInfo.userPhoto} />
+                )}
               </IconButton>
             </Tooltip>
             <Menu
@@ -204,7 +206,9 @@ const Header = () => {
             >
               <MenuLink to="/profile">
                 <MenuItem>
-                  <Avatar />
+                  {userInfo && (
+                    <Avatar alt="Remy Sharp" src={userInfo.userPhoto} />
+                  )}
                   Profile
                 </MenuItem>
               </MenuLink>

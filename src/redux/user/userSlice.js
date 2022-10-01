@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser, loginUser, getUserDetails } from './userActions';
-
-const userToken = localStorage.getItem('userToken')
-  ? localStorage.getItem('userToken')
-  : null;
+import {
+  registerUser,
+  loginUser,
+  getUserDetails,
+  updateUserInfo,
+  updateUserPassword,
+} from './userActions';
 
 const initialState = {
   loading: false,
   userInfo: null,
-  userToken,
+  userToken: null,
   error: null,
   success: false,
 };
@@ -18,7 +20,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: state => {
-      localStorage.removeItem('userToken');
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;
@@ -63,6 +64,33 @@ const userSlice = createSlice({
       state.userInfo = payload;
     },
     [getUserDetails.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    // updateUserInfo
+    [updateUserInfo.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserInfo.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.info = payload;
+      console.log(payload);
+    },
+    [updateUserInfo.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    // updateUserPassword
+    [updateUserPassword.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserPassword.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+    },
+    [updateUserPassword.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },

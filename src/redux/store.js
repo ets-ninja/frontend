@@ -11,15 +11,11 @@ import {
 } from 'redux-persist';
 import userReducer from './user/userSlice';
 import requestReducer from './request/requestSlice';
-
-// for testing purposes, delete when redundant
-import testExampleSlice from './testExample/testExampleSlice';
-import testExampleConfig from './testExample/testExampleConfig';
+import userConfig from './user/userConfig';
 
 export const store = configureStore({
   reducer: {
-    testExample: persistReducer(testExampleConfig, testExampleSlice.reducer),
-    user: userReducer,
+    user: persistReducer(userConfig, userReducer),
     request: requestReducer,
   },
   middleware: getDefaultMiddleware =>

@@ -30,7 +30,6 @@ export const loginUser = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post('api/auth/login', { email, password });
-      localStorage.setItem('userToken', data.token);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -44,9 +43,53 @@ export const loginUser = createAsyncThunk(
 
 export const getUserDetails = createAsyncThunk(
   'user/getUserDetails',
-  async (arg, { getState, rejectWithValue }) => {
+  async (arg, { rejectWithValue }) => {
     try {
       const { data } = await axios.get('/api/user');
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const updateUserInfo = createAsyncThunk(
+  'user/updateUserInfo',
+  async (
+    { firstName, lastName, publicName },
+    { getState, rejectWithValue },
+  ) => {
+    try {
+      const { data } = await axios.patch('/api/user/update', {
+        firstName,
+        lastName,
+        publicName,
+      });
+
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const updateUserPassword = createAsyncThunk(
+  'user/updateUserPassword',
+  async ({ password, newPassword }, { getState, rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch('/api/user/update_password', {
+        password,
+        newPassword,
+      });
+
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
