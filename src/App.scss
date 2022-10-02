@@ -19,8 +19,9 @@ main {
         min-height: calc(100vh - 56px - 304px);
     }
 }
-.mySwiper{
-    max-width: 1000px;
+.swiper{
+    // max-width: 1000px;
+    min-width: none !important;
 }
 .swiper-pagination, .swiper-pagination-bullets, .swiper-pagination-horizontal, .swiper-pagination-bullets-dynamic{
     bottom: 25px !important;

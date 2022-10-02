@@ -12,10 +12,26 @@ import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
 import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
+import IntroPage from './pages/IntoPage/IntroPage';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
+import IntroSwiper from './pages/IntoPage/IntroSwiper';
+import useModal from './hooks/useModal';
+import { useEffect, useState } from 'react';
 
 const App = () => {
+
+  const modal = useModal();
+  // debugger
+  const [isFirstTime, setIsFirstTime] = useState(!localStorage.getItem('notFirstTime?'))
+  
+  useEffect(()=>{
+    if (isFirstTime){
+      modal.open('intro-page')
+      localStorage.setItem('notFirstTime?', true)
+    }
+  }, [isFirstTime])
+  
   return (
     <div className="App">
       <Routes>
@@ -51,6 +67,9 @@ const App = () => {
         />
         <Route path="modal" element={<ModalWindow />}>
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+        </Route>
+        <Route path="modal" element={<ModalWindow />}>
+          <Route path="/modal/intro-page" element={<IntroSwiper />} />
         </Route>
       </Routes>
     </div>

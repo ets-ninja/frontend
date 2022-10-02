@@ -12,23 +12,31 @@ import "swiper/css/pagination";
 // import required modules
 import { Pagination } from "swiper";
 import { Box, Button, Card, CardHeader, Typography } from '@mui/material';
+import useModal from '../../hooks/useModal';
+import { useNavigate } from 'react-router-dom';
 
 
 const IntroSwiper = () => {
 
+    const navigate = useNavigate()
+    const modal = useModal()
+
     const swiperRef = useRef();
 
     const onSignUpClick = () => {
-        alert('Done!')
-        localStorage.setItem('notFirstTime?', true)
-        window.location.reload();
-        //TODO redirect
+        // alert('Done!')
+        // TODO ВСПЛИВАШКА
+        modal.close('intro-page')
+        navigate('/login')
+        // localStorage.setItem('notFirstTime?', true)
+        // window.location.reload();
+        // //TODO redirect
     }
 
     return (
-        <div>
             <Swiper 
-                spaceBetween={10}
+                
+                spaceBetween={100}
                 style={{padding: '5px'}}
                 onSwiper={(swiper) => {
                     swiperRef.current = swiper;
@@ -325,7 +333,7 @@ const IntroSwiper = () => {
                 </SwiperSlide>
 
             </Swiper>
-        </div>
+
     )
 }
 

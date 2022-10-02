@@ -5,19 +5,21 @@ import IntroTitle from './IntroTitle'
 
 const IntroPage = () => {
     return (
-      <div style={{ paddingTop: '10%' }}>
+      <div
+      //  style={{ paddingTop: '10%' }}
+       >
 
-        {window.innerWidth > 900 ? (
+        {/* {window.innerWidth > 900 ? (
           <div style={{ marginTop: '-10%' }}>
             <IntroTitle />
           </div>
         ) : (
           <></>
-        )}
+        )} */}
 
-        {/* must be more content */}
+        must be more content
         
-        <IntroSwiper />
+        {/* <IntroSwiper /> */}
       </div>
     );
 }
