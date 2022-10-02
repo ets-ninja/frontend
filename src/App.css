@@ -22,8 +22,22 @@ main {
 .MuiStepLabel-labelContainer span {
   font-size: 18px;
 }
+@media(max-width: 450px){
+  .MuiStepLabel-labelContainer span {
+    font-size: 12px;
+  } 
+}
+@media(max-width: 375px){
+  .MuiStepLabel-labelContainer span {
+    font-size: 10px;
+  } 
+}
 
-
+@media(max-width: 840px){
+  .jwhenl{
+    justify-content: center;
+  }
+}
 /*  *custom scroll bar*  */
 
 /* width */

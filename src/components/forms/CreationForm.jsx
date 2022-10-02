@@ -3,25 +3,26 @@ import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectBasket, setBasketName, setDescription, setMoneyGoal } from '../../redux/basket/basketSlice'
 
 
 const CreationForm = ({setTestAmount, testAmount}) => {
 
+  const basket = useSelector(selectBasket);
+  const dispatch = useDispatch()
   // const {
   //   handleSubmit,
   //   formState: { errors },
   // } = useForm();
-
-
-
   return (
-    <Box
-      sx={{
+    <Box className="jwhenl"
+      sx={{ 
         display: 'flex',
         gap: '120px'
       }}
     >
-      {window.innerWidth > 900 ? (
+      {window.innerWidth > 840 ? (
         <Card
           sx={{ml: '100px'}}
         >
@@ -38,11 +39,16 @@ const CreationForm = ({setTestAmount, testAmount}) => {
       )}
 
       <Stack spacing={3} sx={{display: 'flex'}}>
-        <TextField type="text" label="BasketName" />
-        <TextareaAutosize style={{resize: 'none'}} type="text" placeholder="Description" minRows={3} maxRows={7} />
-        <TextField  type='number' 
+
+        <TextField type="text" label="BasketName" value={basket.basketName} onChange={(e)=> dispatch(setBasketName(e.target.value))}/>
+
+        <TextareaAutosize value={basket.description} onChange={(e)=> dispatch(setDescription(e.target.value))}
+        style={{resize: 'none'}} type="text" placeholder="Description" minRows={3} maxRows={7} />
+
+        <TextField  type='number' value={basket.moneyGoal} onChange={(e)=> dispatch(setMoneyGoal(e.target.value))}
         inputProps={{ inputMode: 'numeric', pattern: '/[^0-9]/g' }}
-         value={testAmount} onChange={(e)=> (setTestAmount(e.target.value))} label="Amount of Money" />
+          label="Amount of Money" />
+
       </Stack>
     </Box>
   );

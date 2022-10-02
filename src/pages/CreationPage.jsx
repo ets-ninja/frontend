@@ -11,15 +11,23 @@ import CreationForm2 from '../components/forms/CreationForm2';
 import CreationForm3 from '../components/forms/CreationForm3';
 import { useState } from 'react';
 // import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { pushBasketToSomewhere, selectBasket} from '../redux/basket/basketSlice'
+import { CardMedia } from '@mui/material';
 
-const Testing = () => {
-  return <div>HI!</div>;
-};
 const steps = ['TextInfo', 'AdditionSettings', 'Finishing!'];
 
 const CreationPage = () => {
+  
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
+
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [isChecked3, setIsChecked3] = useState(false);
+
+
+  const basket = useSelector(selectBasket);
+  const dispatch = useDispatch()
 
   const isStepOptional = step => {
     return step === 1;
@@ -30,6 +38,20 @@ const CreationPage = () => {
   };
 
   const handleNext = () => {
+
+    if (!basket.basketName && !basket.moneyGoal){
+      alert('Basket name and money goal are required')
+      return
+    } 
+    if (isChecked1 && !basket.daysCount){
+      alert('If you set time limited you need to set amount of limits')
+      return
+    }
+    if (basket.daysCount <= 0  && basket.moneyGoal <= 0){
+      alert('Less then zero? -_- ')
+      return
+    }
+
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -38,7 +60,13 @@ const CreationPage = () => {
 
     setActiveStep(prevActiveStep => prevActiveStep + 1);
     setSkipped(newSkipped);
+
+    if (activeStep === steps.length - 1) {
+      dispatch(pushBasketToSomewhere())
+     }
   };
+
+
 
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -63,29 +91,23 @@ const CreationPage = () => {
     setActiveStep(0);
   };
 
-  const [testAmount, setTestAmount] = useState();
-
-  const [isChecked1, setIsChecked1] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false);
-  const [isChecked3, setIsChecked3] = useState(false);
-  const [isChecked4, setIsChecked4] = useState(false);
-
+ 
   return (
     <Box sx={{ maxWidth: '1200px', margin: '0 auto' }}>
       <Stepper activeStep={activeStep} sx={{ mb: '50px', mx: '10px' }}>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography
-                sx={{ fontSize: '12px !important' }}
-                variant="caption"
-              >
-                Optional
-              </Typography>
-            );
-          }
+          // if (isStepOptional(index)) {
+          //   labelProps.optional = (
+          //     <Typography
+          //       sx={{ fontSize: '12px !important' }}
+          //       variant="caption"
+          //     >
+          //       Optional
+          //     </Typography>
+          //   );
+          // }
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }
@@ -99,29 +121,31 @@ const CreationPage = () => {
 
       {/* main content */}
       {activeStep === steps.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
+        <Box sx={{height: '100%'}}>
+          <Typography sx={{ mt: 2, mb: 3, display: 'flex', justifyContent: 'center',   }}>
             All steps completed - you&apos;re finished, basket is created!
           </Typography>
+          <Box>
+            <CardMedia 
+            sx={{maxWidth: '350px', maxHeight: '400px', margin: '0 auto'}}
+            component='img'
+            src='https://papik.pro/en/uploads/posts/2022-06/1654763453_11-papik-pro-p-cute-piggy-drawing-11.png'
+            />
+          </Box>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
+            {/* could be icon */}
+            <Button onClick={handleReset}>Go back</Button>
           </Box>
-        </React.Fragment>
+        </Box>
       ) : (
         <React.Fragment>
 
           {/* TODO this !  */}
           {activeStep === 0 ? (
-            <CreationForm
-              testAmount={testAmount}
-              setTestAmount={setTestAmount}
-            />
+            <CreationForm/>
           ) : activeStep === 1 ? (
-            <CreationForm2 
-              setIsChecked2={setIsChecked2}
-              isChecked2={isChecked2}
-              
+            <CreationForm2               
               setIsChecked1={setIsChecked1}
               isChecked1={isChecked1}
             />
@@ -135,7 +159,7 @@ const CreationPage = () => {
           {/* <Typography sx={{ mt: 2, mb: 1 }}><Testing /> {activeStep + 1}</Typography> */}
 
           {/* KNOPKI:) */}
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2,mx: '10px' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2,mx: '10px', mb: '25px'}}>
             <Button
               color="inherit"
               disabled={activeStep === 0}
@@ -157,7 +181,7 @@ const CreationPage = () => {
               variant="outlined"
               onClick={handleNext}
               color={activeStep === steps.length - 1 ? 'success' : 'primary'}
-            >
+              >
               {activeStep === steps.length - 1 ? 'Create' : 'Next'}
             </Button>
           </Box>

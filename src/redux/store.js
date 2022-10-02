@@ -12,9 +12,12 @@ import {
 import userReducer from './user/userSlice';
 import userConfig from './user/userConfig';
 
+import basketReducer from './basket/basketSlice'
+
 export const store = configureStore({
   reducer: {
     user: persistReducer(userConfig, userReducer),
+    basket: basketReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

@@ -3,16 +3,29 @@ import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectBasket, setDaysCount, setIsPublic} from '../../redux/basket/basketSlice'
 
-const CreationForm2 = ({setIsChecked1, isChecked1, isChecked2, setIsChecked2 }) => {
+const CreationForm2 = ({setIsChecked1, isChecked1}) => {
+
+  const basket = useSelector(selectBasket);
+  const dispatch = useDispatch()
+
+  const switchHandler = (e) => {
+    setIsChecked1(e)
+    if(basket.daysCount) {
+      dispatch(setDaysCount(''))
+    }
+  }
+
   return (
-    <Box
+    <Box className="jwhenl"
       sx={{
         display: 'flex',
         gap: '120px',
       }}
     >
-      {window.innerWidth > 900 ? (
+      {window.innerWidth > 840 ? (
         <Card sx={{ ml: '100px' }}>
           <CardMedia
             style={{ filter: 'grayscale(50%)' }}
@@ -36,14 +49,17 @@ const CreationForm2 = ({setIsChecked1, isChecked1, isChecked2, setIsChecked2 }) 
           <Typography>Is time limited?</Typography>
           <Switch
             checked={isChecked1}
-            onChange={e => setIsChecked1(e.target.checked)}
+            onChange={e => switchHandler(e.target.checked)}
           />
         </Box>
+
         {isChecked1 ? (
           <Box sx = {{pl: '50px'}}>
             <TextField
               sx={{ maxWidth: '100px'}}
               type="number"
+              value={basket.daysCount}
+              onChange={(e)=> dispatch(setDaysCount(e.target.value)) }
               label="Days count"
               // id="outlined-number"
               InputLabelProps={{
@@ -61,8 +77,8 @@ const CreationForm2 = ({setIsChecked1, isChecked1, isChecked2, setIsChecked2 }) 
         >
           <Typography>Public?</Typography>
           <Switch
-            checked={isChecked2}
-            onChange={e => setIsChecked2(e.target.checked)}
+            checked={basket.isPublic}
+            onChange={e => dispatch(setIsPublic(e.target.checked))}
           />
         </Box>
 

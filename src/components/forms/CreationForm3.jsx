@@ -3,8 +3,14 @@ import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectBasket} from '../../redux/basket/basketSlice'
 
 const CreationForm3 = ({isChecked3, setIsChecked3}) => {
+
+  const basket = useSelector(selectBasket);
+  const dispatch = useDispatch()
+
   return (
     <Box
       sx={{
@@ -12,7 +18,7 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
         gap: '120px',
       }}
     >
-      {window.innerWidth > 900 ? (
+      {window.innerWidth > 840 ? (
         <Card sx={{ ml: '100px' }}>
           <CardMedia
             component="img"
@@ -26,13 +32,13 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
       )}
 
       <Stack spacing={3} sx={{ display: 'flex' }}>
-        <Box
+        <Box className="jwhenl"
           sx={{
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <Typography>Public?</Typography>
+          <Typography>Solo/Team</Typography>
           <Switch
             checked={isChecked3}
             onChange={e => setIsChecked3(e.target.checked)}
@@ -58,7 +64,7 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
             Banka tag:
           </Typography>
           <img style={{position: 'absolute', width: '20px', height: '20px', right: '-10px', top: '45px', cursor: 'pointer', backgroundColor: "white" }}
-          src="https://www.freeiconspng.com/thumbs/edit-icon-png/edit-new-icon-22.png" alt="" srcset="" />
+          src="https://www.freeiconspng.com/thumbs/edit-icon-png/edit-new-icon-22.png" alt="" srcSet="" />
           <CardMedia 
             component="img"
             sx={{ width: 200, height: 180, ml:'30px', border: 'solid 1px black'  }}
