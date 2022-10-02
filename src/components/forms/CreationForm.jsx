@@ -18,6 +18,7 @@ const CreationForm = ({setTestAmount, testAmount}) => {
   return (
     <Box className="jwhenl"
       sx={{ 
+        minHeight: '300px',
         display: 'flex',
         gap: '120px'
       }}

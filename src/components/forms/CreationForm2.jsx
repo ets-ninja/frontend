@@ -21,6 +21,7 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
   return (
     <Box className="jwhenl"
       sx={{
+        minHeight: '300px',
         display: 'flex',
         gap: '120px',
       }}

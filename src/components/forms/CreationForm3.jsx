@@ -13,7 +13,9 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
 
   return (
     <Box
+    className='jwhenl'
       sx={{
+        minHeight: '270px',
         display: 'flex',
         gap: '120px',
       }}
@@ -31,7 +33,7 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
         <> </>
       )}
 
-      <Stack spacing={3} sx={{ display: 'flex' }}>
+      <Stack spacing={3} sx={{ display: 'flex' }} >
         <Box className="jwhenl"
           sx={{
             display: 'flex',
