@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import './App.scss';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
@@ -16,9 +16,11 @@ import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 
 const App = () => {
+  const location = useLocation();
+
   return (
     <div className="App">
-      <Routes>
+      <Routes location={location.state?.backgroundLocation || location}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/basket/:basket" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
@@ -49,6 +51,8 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
+      </Routes>
+      <Routes>
         <Route path="modal" element={<ModalWindow />}>
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
         </Route>
