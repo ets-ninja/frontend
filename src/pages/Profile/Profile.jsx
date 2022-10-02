@@ -2,8 +2,8 @@ import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../../redux/user/userActions';
 import { useNavigate } from 'react-router-dom';
-import ProfileFormUpdateInfo from '../../components/forms/ProfileForm/ProfileFormUpdateInfo';
-import ProfileFormUpdatePassword from '../../components/forms/ProfileForm/ProfileFormUpdatePassword';
+import ProfileFormUpdateInfo from '../../components/Forms/ProfileForm/ProfileFormUpdateInfo';
+import ProfileFormUpdatePassword from '../../components/Forms/ProfileForm/ProfileFormUpdatePassword';
 
 import {
   Alert,
@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 
 import style from './Profile.module.css';
+import StripeIndex from '../../components/Stripe/StripeIndex';
 
 const Profile = memo(() => {
   const [open, setOpen] = useState(true);
@@ -111,6 +112,7 @@ const Profile = memo(() => {
         <Card sx={{ p: '1rem' }}>
           <ProfileFormUpdateInfo setOpen={setOpen} />
           <ProfileFormUpdatePassword setOpen={setOpen} />
+          <StripeIndex />
         </Card>
       </div>
     </div>

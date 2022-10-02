@@ -13,6 +13,7 @@ import Settings from './pages/Settings';
 import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
 import RestorePassword from './pages/RestorePassword';
+import PaymentStatus from './pages/PaymentStatus';
 
 const App = () => {
   return (
@@ -24,6 +25,11 @@ const App = () => {
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<LostPassword />} path="/lost-password" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
+        <Route
+          exect
+          element={<ProtectedRoute component={PaymentStatus} />}
+          path="/payment-status"
+        />
         <Route
           exect
           element={<ProtectedRoute component={Profile} />}

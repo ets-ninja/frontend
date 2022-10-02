@@ -48,8 +48,8 @@ export const getUserDetails = createAsyncThunk(
       const { data } = await axios.get('/api/user');
       return data;
     } catch (error) {
-      if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data);
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
       } else {
         return rejectWithValue(error.message);
       }
