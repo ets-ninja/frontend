@@ -10,17 +10,13 @@ import {
   REGISTER,
 } from 'redux-persist';
 import userReducer from './user/userSlice';
-
-// for testing purposes, delete when redundant
-import testExampleSlice from './testExample/testExampleSlice';
-import testExampleConfig from './testExample/testExampleConfig';
+import userConfig from './user/userConfig';
 
 export const store = configureStore({
   reducer: {
-    testExample: persistReducer(testExampleConfig, testExampleSlice.reducer),
-    user: userReducer,
+    user: persistReducer(userConfig, userReducer),
   },
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
