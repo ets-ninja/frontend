@@ -64,9 +64,9 @@ const Layout = (props) => {
     return (
         <>
             <Router>
-                <ThemeProvider theme={theme}>
-                    <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'></link>
+                <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'></link>
 
+                <ThemeProvider theme={theme}>
                     <Header />
                     <main style={{ backgroundColor: "white" }}>{props.children}</main>
                     <Footer/>

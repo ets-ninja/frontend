@@ -56,7 +56,7 @@ const Basket = () => {
                             <Typography variant='h3'>Expiration date:</Typography>
                             <Typography variant='h3'>22/09/2022</Typography>
                         </Box>
-                        <IconButton variant="edit" component={Link}>
+                        <IconButton sx={{ height: 32, width: 32, mr: 2, mt: 1}} component={Link}>
                             <EditIcon sx={{ fontSize: 25 }} />
                         </IconButton>
                     </Box>
