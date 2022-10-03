@@ -3,9 +3,9 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import './App.scss';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
-import Profile from './pages/Profile';
+import Profile from './pages/Profile/Profile';
 import Register from './pages/Register';
-import RestorePassword from './pages/RestorePassword';
+import LostPassword from './pages/LostPassword';
 import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
 import SavingsSchemes from './pages/SavingsSchemes';
@@ -14,6 +14,7 @@ import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
+import RestorePassword from './pages/RestorePassword';
 
 const App = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/basket/:basket" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
+        <Route exect element={<LostPassword />} path="/lost-password" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
         <Route
           exect
