@@ -64,12 +64,78 @@ export const getUserDetails = createAsyncThunk(
 
     const config = {
       headers: {
-        Authorization: `Bearer ${user.userToken}`,
+        Authorization: `${user.userToken}`,
       },
     };
 
     try {
       const { data } = await axios.get('/api/user', config);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const updateUserInfo = createAsyncThunk(
+  'user/updateUserInfo',
+  async (
+    { firstName, lastName, publicName },
+    { getState, rejectWithValue },
+  ) => {
+    const { user } = getState();
+    const config = {
+      headers: {
+        Authorization: `${user.userToken}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.patch(
+        '/api/user/update',
+        {
+          firstName,
+          lastName,
+          publicName,
+        },
+        config,
+      );
+
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const updateUserPassword = createAsyncThunk(
+  'user/updateUserPassword',
+  async ({ password, newPassword }, { getState, rejectWithValue }) => {
+    const { user } = getState();
+    const config = {
+      headers: {
+        Authorization: `${user.userToken}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.patch(
+        '/api/user/update_password',
+        {
+          password,
+          newPassword,
+        },
+        config,
+      );
+
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

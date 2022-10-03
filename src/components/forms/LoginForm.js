@@ -13,7 +13,7 @@ import Grid from '@mui/material/Grid';
 import { loginUser } from '../../redux/user/userActions';
 
 const LoginForm = () => {
-  const { loading, error, userInfo } = useSelector((state) => state.user);
+  const { loading, error, userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const LoginForm = () => {
     }
   }, [navigate, userInfo]);
 
-  const submitForm = (data) => {
+  const submitForm = data => {
     dispatch(loginUser(data));
   };
   return (

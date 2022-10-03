@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
-import Profile from './pages/Profile';
+import Profile from './pages/Profile/Profile';
 import Register from './pages/Register';
 import RestorePassword from './pages/RestorePassword';
 import MyJars from './pages/MyJars';
