@@ -164,9 +164,7 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {userInfo && (
-                  <Avatar alt="Remy Sharp" src={userInfo.userPhoto} />
-                )}
+                <Avatar alt="Remy Sharp" src={userInfo?.userPhoto} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -206,9 +204,7 @@ const Header = () => {
             >
               <MenuLink to="/profile">
                 <MenuItem>
-                  {userInfo && (
-                    <Avatar alt="Remy Sharp" src={userInfo.userPhoto} />
-                  )}
+                  <Avatar src={userInfo?.userPhoto} />
                   Profile
                 </MenuItem>
               </MenuLink>

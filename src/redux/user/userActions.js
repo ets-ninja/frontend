@@ -48,8 +48,8 @@ export const getUserDetails = createAsyncThunk(
       const { data } = await axios.get('/api/user');
       return data;
     } catch (error) {
-      if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data);
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
       } else {
         return rejectWithValue(error.message);
       }
@@ -59,10 +59,7 @@ export const getUserDetails = createAsyncThunk(
 
 export const updateUserInfo = createAsyncThunk(
   'user/updateUserInfo',
-  async (
-    { firstName, lastName, publicName },
-    { getState, rejectWithValue },
-  ) => {
+  async ({ firstName, lastName, publicName }, { rejectWithValue }) => {
     try {
       const { data } = await axios.patch('/api/user/update', {
         firstName,
@@ -83,13 +80,9 @@ export const updateUserInfo = createAsyncThunk(
 
 export const updateUserPassword = createAsyncThunk(
   'user/updateUserPassword',
-  async ({ password, newPassword }, { getState, rejectWithValue }) => {
+  async ({ password, newPassword }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.patch('/api/user/update_password', {
-        password,
-        newPassword,
-      });
-
+      const { data } = await axios.get('/api/user');
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

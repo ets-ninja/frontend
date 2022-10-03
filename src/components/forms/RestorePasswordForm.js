@@ -51,7 +51,7 @@ const RestorePasswordForm = ({ token, id }) => {
       {isSuccessful ? (
         <FormSuccessful
           subtitle="Your Password was successfully restored"
-          navigateTo="/"
+          navigateTo="/login"
           buttonText="To login page"
         />
       ) : (
