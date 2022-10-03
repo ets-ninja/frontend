@@ -25,11 +25,7 @@ const App = () => {
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<LostPassword />} path="/lost-password" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
-        <Route
-          exect
-          element={<ProtectedRoute component={PaymentStatus} />}
-          path="/payment-status"
-        />
+        <Route exect element={<PaymentStatus />} path="/payment-status" />
         <Route
           exect
           element={<ProtectedRoute component={Profile} />}
