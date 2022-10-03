@@ -4,7 +4,9 @@ import request from '../../hooks/useRequest';
 
 import Divider from '@mui/material/Divider';
 import LoadingSpinner from '../UIElements/LoadingSpinner';
-import { Button, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import PaymentsMethods from './PaymentsMethods';
 import AddPaymentMethod from './AddPaymentMethod';
 //import AddPaymentMethod from './AddPaymentMethod';
@@ -30,20 +32,61 @@ const StripeIndex = () => {
 
   if (!loading) {
     return (
-      <>
-        <Divider>Payment Information</Divider>
-        <Typography>
-          {new Intl.NumberFormat('en-IN', {
-            style: 'currency',
-            currency: 'USD',
-          }).format(userBalance)}
-        </Typography>
-        <PaymentsMethods />
-        <Button variant="contained" onClick={() => setShowAddCardMenu(true)}>
+      <Box
+        p={1}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+        }}
+      >
+        <Divider flexItem={true}>Payment Information</Divider>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: '10px',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              minWidth: '300px',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography variant="h6">Your Balance</Typography>
+            <Typography variant="h4">
+              {new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'USD',
+              }).format(userBalance)}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              minWidth: '300px',
+            }}
+          >
+            <PaymentsMethods />
+          </Box>
+        </Box>
+        <Button
+          variant="contained"
+          disabled={showAddCardMenu}
+          onClick={() => setShowAddCardMenu(true)}
+        >
           Add new payment method
         </Button>
         {showAddCardMenu && <AddPaymentMethod />}
-      </>
+      </Box>
     );
   } else {
     return <LoadingSpinner />;

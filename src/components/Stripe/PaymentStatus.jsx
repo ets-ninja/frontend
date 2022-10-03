@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useStripe } from '@stripe/react-stripe-js';
+
+import Box from '@mui/system/Box';
+import Typography from '@mui/material/Typography';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { Button } from '@mui/material';
 
 const PaymentStatus = () => {
   const stripe = useStripe();
+  const navigate = useNavigate();
+
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
@@ -31,12 +39,35 @@ const PaymentStatus = () => {
           );
           break;
         default:
-          return 'hello';
+          setMessage('Failed to process payment details.');
+          break;
       }
     });
   }, [stripe]);
 
-  return message;
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '10px',
+      }}
+    >
+      <Typography variant="h5" align="center">
+        {message}
+      </Typography>
+      <CheckCircleOutlineIcon style={{ fontSize: '50px', color: '#0CD100' }} />
+      <Button
+        variant="contained"
+        onClick={() => {
+          navigate('/profile');
+        }}
+      >
+        To profile Page
+      </Button>
+    </Box>
+  );
 };
 
 export default PaymentStatus;
