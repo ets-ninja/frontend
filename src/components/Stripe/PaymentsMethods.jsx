@@ -20,7 +20,7 @@ const PaymentsMethods = () => {
   console.log(userPaymentMethods);
 
   const loadUserPaymentMethods = useCallback(async () => {
-    const data = await sendRequest('api/payment/usercards', 'POST');
+    const data = await sendRequest('api/payment/usercards');
     setUserPaymentMethods(data);
   }, [sendRequest]);
 

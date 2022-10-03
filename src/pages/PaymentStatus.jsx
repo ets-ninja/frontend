@@ -31,7 +31,7 @@ const PaymentStatus = () => {
           );
           break;
         default:
-          return;
+          return 'hello';
       }
     });
   }, [stripe]);

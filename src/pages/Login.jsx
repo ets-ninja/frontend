@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import LoginForm from '../components/Forms/LoginForm';
+import LoginForm from '../components/forms/LoginForm';
 
 const Login = () => {
   return (

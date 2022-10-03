@@ -24,7 +24,7 @@ const StripeIndex = () => {
   }, []);
 
   const loadUserBalance = useCallback(async () => {
-    const data = await sendRequest('api/payment/userbalance', 'POST');
+    const data = await sendRequest('api/payment/userbalance');
     setUserBalance(data);
   }, [sendRequest]);
 

@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 
 import request from '../../hooks/useRequest';
 
-import SetupForm from '../Forms/Stripe/SetupFrom';
+import SetupForm from '../forms/Stripe/SetupFrom';
 import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST);
