@@ -10,11 +10,13 @@ import {
   REGISTER,
 } from 'redux-persist';
 import userReducer from './user/userSlice';
+import requestReducer from './request/requestSlice';
 import userConfig from './user/userConfig';
 
 export const store = configureStore({
   reducer: {
     user: persistReducer(userConfig, userReducer),
+    request: requestReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

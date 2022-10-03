@@ -22,13 +22,13 @@ import style from './Profile.module.css';
 
 const Profile = memo(() => {
   const [open, setOpen] = useState(true);
-  const { userInfo, userToken, info, error } = useSelector(state => state.user);
+  const { userInfo, info, error } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUserDetails(userToken));
-  }, [navigate, info]);
+    dispatch(getUserDetails());
+  }, [navigate, info, dispatch]);
 
   return (
     <div className={style.profile}>

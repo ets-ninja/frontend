@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getUserDetails } from '../../../redux/user/userActions';
+import { logout } from '../../../redux/user/userSlice';
+
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -18,7 +23,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import { useSelector } from 'react-redux';
 
 const pages = [
   {
@@ -39,7 +43,14 @@ const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const { userInfo } = useSelector(state => state.user);
+  const { userToken, userInfo } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userToken) {
+      dispatch(getUserDetails());
+    }
+  }, [dispatch, userToken]);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -206,7 +217,7 @@ const Header = () => {
                 </MenuItem>
               </MenuLink>
               <Divider />
-              <MenuLink to="/logout">
+              <MenuLink onClick={() => dispatch(logout())}>
                 <MenuItem>
                   <ListItemIcon>
                     <Logout fontSize="small" />
