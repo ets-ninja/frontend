@@ -96,6 +96,33 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
+    // updateUserInfo
+    [updateUserInfo.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserInfo.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.info = payload;
+      console.log(payload);
+    },
+    [updateUserInfo.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    // updateUserPassword
+    [updateUserPassword.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserPassword.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+    },
+    [updateUserPassword.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
   },
 });
 

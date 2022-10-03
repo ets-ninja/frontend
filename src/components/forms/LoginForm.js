@@ -16,7 +16,6 @@ import LoadingSpinner from '../UIElements/LoadingSpinner';
 const LoginForm = () => {
   const { loading, userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const {

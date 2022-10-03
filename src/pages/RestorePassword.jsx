@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 
 import useQuery from '../hooks/useQuery';
-import RestorePasswordForm from '../components/Forms/RestorePasswordForm';
+import RestorePasswordForm from '../components/forms/RestorePasswordForm';
 
 const RestorePassword = () => {
   let query = useQuery();

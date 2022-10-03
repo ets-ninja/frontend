@@ -59,10 +59,7 @@ export const getUserDetails = createAsyncThunk(
 
 export const updateUserInfo = createAsyncThunk(
   'user/updateUserInfo',
-  async (
-    { firstName, lastName, publicName },
-    { getState, rejectWithValue },
-  ) => {
+  async ({ firstName, lastName, publicName }, { rejectWithValue }) => {
     try {
       const { data } = await axios.patch('/api/user/update', {
         firstName,
@@ -83,7 +80,7 @@ export const updateUserInfo = createAsyncThunk(
 
 export const updateUserPassword = createAsyncThunk(
   'user/updateUserPassword',
-  async ({ password, newPassword }, { getState, rejectWithValue }) => {
+  async ({ password, newPassword }, { rejectWithValue }) => {
     try {
       const { data } = await axios.patch('/api/user/update_password', {
         password,
