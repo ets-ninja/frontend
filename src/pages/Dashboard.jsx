@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,6 +12,8 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import BasketBox from '../components/BasketBox'
+import { useTheme } from '@mui/material/styles';
+import { get_owner_baskets, get_coowner_baskets, get_hot_baskets, get_public_baskets, get_private_baskets } from '../redux/basket/basketActions';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -53,131 +56,141 @@ const StyledMenu = styled((props) => (
     },
   }));
 
+const buttonOptions = [
+  "Created by me",
+  "Coowned by me",
+  "Hot baskets",
+  "Public baskets",
+  "Private baskets"
+]
+
 
 const Dashboard = () => {
-    const [hiddenFilterAnchor, sethiddenFilterAnchor] = React.useState(null);
-    const hiddenFilterMenuOpen = Boolean(hiddenFilterAnchor);
+  const theme = useTheme();
 
-    const handleFilterClick = (event) => {
-      sethiddenFilterAnchor(event.currentTarget);
-    };
-    const handleFilterClose = () => {
-      sethiddenFilterAnchor(null);
-    };
+  const [hiddenFilterAnchor, sethiddenFilterAnchor] = React.useState(null);
+  const hiddenFilterMenuOpen = Boolean(hiddenFilterAnchor);
 
-    const [createByMeState, setCreateByMeState] = React.useState(true);
-    const [coownedByMeState, setCoownedByMeState] = React.useState(false);
-    const [hotBasketsState, sethotBasketsState] = React.useState(false);
-    const [publicBasketsState, setPublicBasketsState] = React.useState(false);
-    const [privateBasketsState, setPrivateBasketsState] = React.useState(false);
+  const handleFilterClick = (event) => {
+    sethiddenFilterAnchor(event.currentTarget);
+  };
+  const handleFilterClose = () => {
+    sethiddenFilterAnchor(null);
+  };
 
-    const testData = [
-      {
-        id: 0,
-        name: 'Basket A',
-        ownerId: 321312,
-        description: "I am a good basket",
-        finalGoal: 400,
-        value: 200,
-        expirationDate: '2022-09-30',
-        isPublic: false,
-        createdAt: '2022-09-20'
-      },
-      {
-        id: 1,
-        name: 'Basket B',
-        ownerId: 12312,
-        description: "I am a bad basket",
-        finalGoal: 2000,
-        value: 100,
-        expirationDate: '2022-10-11',
-        isPublic: false,
-        createdAt: '2022-09-25'
-      },
-      {
-        id: 2,
-        name: 'Basket C',
-        ownerId: 12312,
-        description: "I am a bad basket",
-        finalGoal: 2000,
-        value: 100,
-        expirationDate: '2022-10-11',
-        isPublic: true,
-        createdAt: '2022-09-25'
-      },
-    ]
+  const [buttonAnchorEl, setButtonAnchorEL] = React.useState(buttonOptions[0]);
 
-    const getBaskets = () => {
-      let baskets = [];
+  const [finishedBasketsState, setFinishedBasketsState] = React.useState(false);
 
-      testData.forEach((basket, index) => {
-        if(createByMeState === true && basket.ownerId === 12312){
-          baskets.push(basket);
-          return;
-        }
-        if(coownedByMeState === true && basket.ownerId !== 12312){
-          baskets.push(basket);
-          return;
-        }
-        if(hotBasketsState === true && new Date(Date.parse(basket.expirationDate) - Date.now()).getDate() < 7){
-          baskets.push(basket);
-          return;
-        }
-        if(publicBasketsState === true && basket.isPublic === true){
-          baskets.push(basket);
-          return;
-        }
-        if(privateBasketsState === true && basket.isPublic === false){
-          baskets.push(basket);
-          return;
-        }
-      })
-      
-      return baskets;
+  const { baskets, loading, error, success } = useSelector(state => state.basket);
+  const dispatch = useDispatch();
+
+  const handleBasketGroupButton = (option) => {
+    setButtonAnchorEL(option);
+
+    if(option === buttonOptions[0]){
+      dispatch(get_owner_baskets());
     }
+    if(option === buttonOptions[1]){
+      dispatch(get_coowner_baskets());
+    }
+    if(option === buttonOptions[2]){
+      dispatch(get_hot_baskets());
+    }
+    if(option === buttonOptions[3]){
+      dispatch(get_public_baskets());
+    }
+    if(option === buttonOptions[4]){
+      dispatch(get_private_baskets());
+    }
+  }
 
-    return (
-        <>
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position='static' sx={{ bgcolor: 'white', boxShadow: 0,}}>
-            <Toolbar sx={{ bgcolor: 'white', p: 2, minWidth: 300, color: 'black' }}>
-              <Typography variant='h1' sx={{ fontFamily: 'Ubuntu', fontWeight: 700, fontSize: 46, flexGrow: 1 }}>Dashboard</Typography>
-              <Button 
+  const testData = [
+    {
+      id: 0,
+      name: 'Basket A',
+      ownerId: 321312,
+      description: "I am a good basket",
+      finalGoal: 400,
+      value: 200,
+      expirationDate: '2022-09-30',
+      isPublic: false,
+      createdAt: '2022-09-20'
+    },
+    {
+      id: 1,
+      name: 'Basket B',
+      ownerId: 12312,
+      description: "I am a bad basket",
+      finalGoal: 2000,
+      value: 100,
+      expirationDate: '2022-10-11',
+      isPublic: false,
+      createdAt: '2022-09-25'
+    },
+    {
+      id: 2,
+      name: 'Basket C',
+      ownerId: 12312,
+      description: "I am a bad basket",
+      finalGoal: 2000,
+      value: 100,
+      expirationDate: '2022-10-11',
+      isPublic: true,
+      createdAt: '2022-09-25'
+    },
+  ]
+
+  return (
+    <>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position='static' sx={{ bgcolor: 'white', boxShadow: 0,}}>
+        <Toolbar sx={{ bgcolor: 'white', p: 2, minWidth: 300, color: 'black' }}>
+          <Typography variant='h1' sx={{ fontFamily: 'Ubuntu', fontWeight: 700, fontSize: 46, flexGrow: 1 }}>Dashboard</Typography>
+          {
+            buttonOptions.map((option) => {
+              return(<Button 
                 variant="contained" 
-                color="inherit" 
-                sx={{ mr: 1 }} 
-                endIcon={<KeyboardArrowDownIcon />}
-                onClick={handleFilterClick}>
-                Filter
-              </Button>
-              <StyledMenu
-                id="hidden-filter-menu"
-                MenuListProps={{
-                'aria-labelledby': 'hidden-filter-button',
-                }}
-                anchorEl={hiddenFilterAnchor}
-                open={hiddenFilterMenuOpen}
-                onClose={handleFilterClose}
-                >
-                <FormGroup sx={{ marginLeft: 2 }}>
-                  <FormControlLabel control={<Switch checked={createByMeState} onChange={() => { setCreateByMeState(!createByMeState) }} />} label="Created by me" />
-                  <FormControlLabel control={<Switch checked={coownedByMeState} onChange={() => { setCoownedByMeState(!coownedByMeState) }} />} label="Co-owned by me" />
-                  <FormControlLabel control={<Switch checked={hotBasketsState} onChange={() => { sethotBasketsState(!hotBasketsState) }} />} label="Hot baskets" />
-                  <FormControlLabel control={<Switch checked={publicBasketsState} onChange={() => { setPublicBasketsState(!publicBasketsState) }} />} label="Public baskets" />
-                  <FormControlLabel control={<Switch checked={privateBasketsState} onChange={() => { setPrivateBasketsState(!privateBasketsState) }} />} label="Private baskets" />
-                </FormGroup>
-              </StyledMenu>
-              <Button variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white" } }} >Create new</Button>
-            </Toolbar>
-          </AppBar>
-        </Box>
+                
+                sx={{ mr: 1, backgroundColor: option === buttonAnchorEl ? theme.colors.blue : theme.colors.yellow, color: option === buttonAnchorEl ? 'white' : 'black', '&:hover': { color: 'white' } }} 
+                onClick={() => {handleBasketGroupButton(option)}}>
+                {option}
+              </Button>)
+            })
+          }
+          <Button 
+            variant="contained" 
+            color="inherit" 
+            sx={{ mr: 1 }} 
+            endIcon={<KeyboardArrowDownIcon />}
+            onClick={handleFilterClick}>
+            Filter
+          </Button>
+          <StyledMenu
+            id="hidden-filter-menu"
+            MenuListProps={{
+            'aria-labelledby': 'hidden-filter-button',
+            }}
+            anchorEl={hiddenFilterAnchor}
+            open={hiddenFilterMenuOpen}
+            onClose={handleFilterClose}
+            >
+            <FormGroup sx={{ marginLeft: 2 }}>
+              <FormControlLabel control={<Switch checked={finishedBasketsState} onChange={() => { setFinishedBasketsState(!finishedBasketsState) }}/>} label="Finished" />
+            </FormGroup>
+          </StyledMenu>
+          <Button variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white" } }} >Create new</Button>
+        </Toolbar>
+      </AppBar>
+    </Box>
 
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', bgcolor: 'white', boxShadow: 1, borderRadius: 3, p: 2, minWidth: 300, color: 'black', marginLeft: 5, marginRight: 5, borderColor: "black" }}>
-            { getBaskets().map((basket) => { return(<BasketBox data={basket} />) }) }
-            { getBaskets().length === 0 && <Typography variant='h2' sx={{ fontFamily: 'Ubuntu', fontWeight: 500, fontSize: 30, flexGrow: 1 }}> No baskets available! </Typography> }
-        </Box>
-        </>
-    )
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', bgcolor: 'white', boxShadow: 1, borderRadius: 3, p: 2, minWidth: 300, color: 'black', marginLeft: 5, marginRight: 5, borderColor: "black" }}>
+        { loading && <p>Loading</p> }
+        { !loading && baskets.map((basket) => { return(<BasketBox data={basket} />) }) }
+        { !loading && baskets.length === 0 && <Typography variant='h2' sx={{ fontFamily: 'Ubuntu', fontWeight: 500, fontSize: 30, flexGrow: 1 }}> No baskets available! </Typography> }
+    </Box>
+    </>
+)
 }
 
 
