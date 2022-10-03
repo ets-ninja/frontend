@@ -193,7 +193,7 @@ const Header = () => {
             >
               <MenuLink to="/profile">
                 <MenuItem>
-                  <Avatar src={userInfo.userPhoto} />
+                  <Avatar src={userInfo?.userPhoto} />
                   Profile
                 </MenuItem>
               </MenuLink>
