@@ -9,7 +9,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import PaymentsMethods from './PaymentsMethods';
 import AddPaymentMethod from './AddPaymentMethod';
-//import AddPaymentMethod from './AddPaymentMethod';
 
 const StripeIndex = () => {
   const { loading, sendRequest } = request();

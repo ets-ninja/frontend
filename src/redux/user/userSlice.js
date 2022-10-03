@@ -77,7 +77,6 @@ const userSlice = createSlice({
     [updateUserInfo.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.info = payload;
-      console.log(payload);
     },
     [updateUserInfo.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -104,7 +103,6 @@ const userSlice = createSlice({
     [updateUserInfo.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.info = payload;
-      console.log(payload);
     },
     [updateUserInfo.rejected]: (state, { payload }) => {
       state.loading = false;

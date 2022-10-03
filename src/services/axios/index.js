@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { store } from '../../redux/store';
 import { setError } from '../../redux/request/requestSlice';
+import { logout } from '../../redux/user/userSlice';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -33,6 +34,9 @@ instance.interceptors.response.use(
     return response;
   },
   error => {
+    if (error.response.status === 401) {
+      store.dispatch(logout());
+    }
     if (error.response && error.response.data.message) {
       store.dispatch(setError(error.response.data.message));
     } else {
