@@ -1,12 +1,12 @@
 import React from 'react';
 import { updateUserInfo } from '../../../redux/user/userActions';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux';
 import { Button, Divider, TextField, Typography } from '@mui/material';
 
 import style from '../../../pages/Profile/Profile.module.css';
 
-const ProfileFormUpdateInfo = ({ setOpen }) => {
+const ProfileFormUpdateInfo = () => {
   const dispatch = useDispatch();
 
   const defaultValue = {
@@ -53,12 +53,7 @@ const ProfileFormUpdateInfo = ({ setOpen }) => {
                 />
               )}
             />
-            <Button
-              onClick={() => setOpen(true)}
-              type="submit"
-              size="medium"
-              variant="contained"
-            >
+            <Button type="submit" size="medium" variant="contained">
               Save
             </Button>
           </div>
@@ -79,11 +74,7 @@ const ProfileFormUpdateInfo = ({ setOpen }) => {
                 />
               )}
             />
-            <Button
-              onClick={() => setOpen(true)}
-              type="submit"
-              variant="contained"
-            >
+            <Button type="submit" variant="contained">
               Save
             </Button>
           </div>
@@ -109,11 +100,7 @@ const ProfileFormUpdateInfo = ({ setOpen }) => {
                 />
               )}
             />
-            <Button
-              onClick={() => setOpen(true)}
-              type="submit"
-              variant="contained"
-            >
+            <Button type="submit" variant="contained">
               Save
             </Button>
           </div>

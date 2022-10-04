@@ -11,11 +11,11 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 
 import { loginUser } from '../../redux/user/userActions';
+import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const LoginForm = () => {
-  const { loading, error, userInfo } = useSelector(state => state.user);
+  const { loading, userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const {
@@ -25,7 +25,7 @@ const LoginForm = () => {
   } = useForm();
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo?.id) {
       navigate('/profile');
     }
   }, [navigate, userInfo]);
@@ -33,11 +33,14 @@ const LoginForm = () => {
   const submitForm = data => {
     dispatch(loginUser(data));
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit(submitForm)}>
-        {error && <h1>Error</h1>}
-        {loading && <h1>Loading...</h1>}
         <Stack m={2} spacing={2}>
           <TextField
             type="email"
@@ -94,7 +97,7 @@ const LoginForm = () => {
           >
             <Link
               href="#"
-              onClick={() => navigate('/restorepassword')}
+              onClick={() => navigate('/lost-password')}
               underline="hover"
               color="black"
             >

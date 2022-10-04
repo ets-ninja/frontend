@@ -22,8 +22,9 @@ import style from './Profile.module.css';
 import useModal from '../../hooks/useModal';
 
 const Profile = memo(() => {
-  const [open, setOpen] = useState(true);
-  const { userInfo, userToken, successInfo, error } = useSelector(state => state.user);
+  const { userInfo, userToken, successInfo } = useSelector(
+    state => state.user,
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,27 +36,6 @@ const Profile = memo(() => {
 
   return (
     <div className={style.profile}>
-      {error && (
-        <Collapse in={open}>
-          <Alert
-            severity="error"
-            action={
-              <Button
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setOpen(false);
-                }}
-              >
-                UNDO
-              </Button>
-            }
-            sx={{ mb: 2 }}
-          >
-            {error}
-          </Alert>
-        </Collapse>
-      )}
       <div>
         <Card>
           <Grid container alignItems="center">
@@ -116,8 +96,8 @@ const Profile = memo(() => {
 
       <div>
         <Card sx={{ p: '1rem' }}>
-          <ProfileFormUpdateInfo setOpen={setOpen} />
-          <ProfileFormUpdatePassword setOpen={setOpen} />
+          <ProfileFormUpdateInfo />
+          <ProfileFormUpdatePassword />
         </Card>
       </div>
     </div>

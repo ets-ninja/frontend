@@ -114,7 +114,6 @@ const UpdatePhotoModal = () => {
             >
               <img
                 ref={imgRef}
-                alt="Crop me"
                 src={imgSrc}
                 style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
                 onLoad={onImageLoad}
@@ -122,26 +121,36 @@ const UpdatePhotoModal = () => {
             </ReactCrop>
           )}
         </Grid>
-        <Grid item container xs justifyContent="center" gap="10px">
-          {completedCrop && (
-            <canvas
-              ref={previewCanvasRef}
-              style={{
-                border: '1px solid black',
-                objectFit: 'contain',
-                width: '250px',
-                height: '250px',
-                borderRadius: '50%',
-                margin: '10px',
-              }}
-            />
-          )}
-          <Grid container xs={12} md={6} justifyContent='center' alignItems='center' direction='row'>
+        <Grid container item xs={12} md={12} justifyContent="center" gap="10px">
+          <Grid item>
+            {completedCrop && (
+              <canvas
+                ref={previewCanvasRef}
+                style={{
+                  border: '1px solid black',
+                  objectFit: 'contain',
+                  width: '250px',
+                  height: '250px',
+                  borderRadius: '50%',
+                  margin: '10px',
+                }}
+              />
+            )}
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            md={6}
+            justifyContent="center"
+            alignItems="center"
+            direction="row"
+          >
             <Grid item xs={10}>
               <Typography>Scale: {scale}</Typography>
               <Slider
                 defaultValue={1}
-                min={1}
+                min={0.5}
                 max={5}
                 aria-label="Default"
                 valueLabelDisplay="auto"

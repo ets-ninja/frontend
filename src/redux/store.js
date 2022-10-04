@@ -11,6 +11,7 @@ import {
 } from 'redux-persist';
 
 import userReducer from './user/userSlice';
+import requestReducer from './request/requestSlice';
 import userConfig from './user/userConfig';
 
 import modalSlice from './modal/modalSlice';
@@ -20,6 +21,7 @@ export const store = configureStore({
   reducer: {
     user: persistReducer(userConfig, userReducer),
     modal: persistReducer(modalConfig, modalSlice.reducer),
+    request: requestReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
