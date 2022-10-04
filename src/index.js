@@ -28,7 +28,7 @@ root.render(
         <App />
       </Layout>
     </PersistGate>
-  </Provider>
+  </Provider>,
 );
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;

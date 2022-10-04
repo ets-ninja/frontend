@@ -11,10 +11,13 @@ import {
 } from 'redux-persist';
 import userReducer from './user/userSlice';
 import userConfig from './user/userConfig';
+import wishlistReducer from './wishlist/wishlistSlice';
+import wishlistConfig from './wishlist/wishlistConfig';
 
 export const store = configureStore({
   reducer: {
     user: persistReducer(userConfig, userReducer),
+    wishlist: persistReducer(wishlistConfig, wishlistReducer),
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
