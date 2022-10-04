@@ -65,9 +65,6 @@ const userSlice = createSlice({
     },
     [getUserDetails.rejected]: (state, { payload }) => {
       state.loading = false;
-      state.userInfo = null;
-      state.userToken = null;
-      state.error = payload;
     },
     // updateUserInfo
     [updateUserInfo.pending]: state => {

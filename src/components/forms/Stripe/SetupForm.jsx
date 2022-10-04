@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   useStripe,
   useElements,
   PaymentElement,
 } from '@stripe/react-stripe-js';
+
+import { setError } from '../../../redux/request/requestSlice';
+
 import Button from '@mui/material/Button';
 
 const SetupForm = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [errorMessage, setErrorMessage] = useState(null);
+  const dispatch = useDispatch();
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -27,7 +31,7 @@ const SetupForm = () => {
     });
 
     if (error) {
-      setErrorMessage(error.message);
+      dispatch(setError(error.message));
     } else {
     }
   };
@@ -37,7 +41,6 @@ const SetupForm = () => {
       <Button variant="contained" type="submit" disabled={!stripe}>
         Submit
       </Button>
-      {errorMessage && <div>{errorMessage}</div>}
     </form>
   );
 };

@@ -22,6 +22,8 @@ instance.interceptors.request.use(
   error => {
     if (error.response && error.response.data.message) {
       store.dispatch(setError(error.response.data.message));
+    } else if (error.response && error.response.data) {
+      return store.dispatch(setError(error.response.data));
     } else {
       store.dispatch(setError(error.message));
     }
@@ -39,6 +41,8 @@ instance.interceptors.response.use(
     }
     if (error.response && error.response.data.message) {
       store.dispatch(setError(error.response.data.message));
+    } else if (error.response && error.response.data) {
+      return store.dispatch(setError(error.response.data));
     } else {
       store.dispatch(setError(error.message));
     }

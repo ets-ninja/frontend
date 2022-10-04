@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 
 import request from '../../hooks/useRequest';
 
-import SetupForm from '../forms/Stripe/SetupFrom';
+import SetupForm from '../forms/Stripe/SetupForm';
 import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST);
@@ -24,7 +24,6 @@ const AddPaymentMethod = () => {
 
   const createSetupIntent = useCallback(async () => {
     const data = await sendRequest('api/payment/setup_secret', 'POST');
-    console.log(data);
     setSetupIntent(data);
   }, [sendRequest]);
 

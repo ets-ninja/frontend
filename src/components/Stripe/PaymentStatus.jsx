@@ -5,7 +5,9 @@ import { useStripe } from '@stripe/react-stripe-js';
 import Box from '@mui/system/Box';
 import Typography from '@mui/material/Typography';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { Button } from '@mui/material';
+import LoopIcon from '@mui/icons-material/Loop';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Button from '@mui/material/Button';
 
 const PaymentStatus = () => {
   const stripe = useStripe();
@@ -24,22 +26,50 @@ const PaymentStatus = () => {
     stripe.retrieveSetupIntent(clientSecret).then(({ setupIntent }) => {
       switch (setupIntent.status) {
         case 'succeeded':
-          setMessage('Success! Your payment method has been saved.');
+          setMessage(
+            <>
+              <Typography variant="h5" align="center">
+                Success! Your payment method has been saved.
+              </Typography>
+              <CheckCircleOutlineIcon
+                style={{ fontSize: '50px', color: '#0CD100' }}
+              />
+            </>,
+          );
           break;
 
         case 'processing':
           setMessage(
-            "Processing payment details. We'll update you when processing is complete.",
+            <>
+              <Typography variant="h5" align="center">
+                Processing payment details. We'll update you when processing is
+                complete.
+              </Typography>
+              <LoopIcon style={{ fontSize: '50px', color: '#0003D1' }} />
+            </>,
           );
           break;
 
         case 'requires_payment_method':
           setMessage(
-            'Failed to process payment details. Please try another payment method.',
+            <>
+              <Typography variant="h5" align="center">
+                Failed to process payment details. Please try another payment
+                method.
+              </Typography>
+              <CancelIcon style={{ fontSize: '50px', color: 'red' }} />
+            </>,
           );
           break;
         default:
-          setMessage('Failed to process payment details.');
+          setMessage(
+            <>
+              <Typography variant="h5" align="center">
+                Failed to process payment details.
+              </Typography>
+              <CancelIcon style={{ fontSize: '50px', color: 'red' }} />
+            </>,
+          );
           break;
       }
     });
@@ -54,10 +84,7 @@ const PaymentStatus = () => {
         gap: '10px',
       }}
     >
-      <Typography variant="h5" align="center">
-        {message}
-      </Typography>
-      <CheckCircleOutlineIcon style={{ fontSize: '50px', color: '#0CD100' }} />
+      {message}
       <Button
         variant="contained"
         onClick={() => {
