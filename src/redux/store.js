@@ -15,6 +15,8 @@ import authPersistConfig from './auth/authPersistConfig';
 import authReducer from './auth/authSlice';
 import userReducer from './user/userSlice';
 import requestReducer from './request/requestSlice';
+import modalSlice from './modal/modalSlice';
+import modalConfig from './modal/modalConfig';
 
 // Actions
 import { refresh } from './auth/authActions';
@@ -38,10 +40,12 @@ listenerMiddleware.startListening({
     }
   },
 });
+
 export const store = configureStore({
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
     user: userReducer,
+    modal: persistReducer(modalConfig, modalSlice.reducer),
     request: requestReducer,
   },
   middleware: getDefaultMiddleware =>

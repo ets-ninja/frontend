@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react';
-import { Routes, Route } from 'react-router-dom';
-import './App.css';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import './App.scss';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Profile from './pages/Profile/Profile';
@@ -12,12 +12,16 @@ import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
 import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
+import ModalWindow from './modal';
+import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
 
 const App = () => {
+  const location = useLocation();
+
   return (
     <div className="App">
-      <Routes>
+      <Routes location={location.state?.backgroundLocation || location}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/basket/:basket" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
@@ -49,6 +53,11 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
+      </Routes>
+      <Routes>
+        <Route path="modal" element={<ModalWindow />}>
+          <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+        </Route>
       </Routes>
     </div>
   );
