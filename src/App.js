@@ -67,8 +67,6 @@ const App = () => {
         />
         <Route path="modal" element={<ModalWindow />}>
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
-        </Route>
-        <Route path="modal" element={<ModalWindow />}>
           <Route path="/modal/intro-page" element={<IntroSwiper />} />
         </Route>
       </Routes>
