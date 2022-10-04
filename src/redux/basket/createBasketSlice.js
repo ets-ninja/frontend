@@ -5,7 +5,7 @@ const initialState = {
     basketName: '',
     description: '',
     moneyGoal: '',
-    daysCount: '',
+    daysCount: undefined,  //! only when undefined comp works as expected  
     isPublic: false,
 
 }
@@ -32,6 +32,15 @@ const basketSlice = createSlice({
         },
         // TODO axios.post(maybe) and try catch from (sentry)
         pushBasketToSomewhere: (state) => {
+
+            const Basket = {
+              basketName: state.basketName,
+              description: state.description,
+              moneyGoal: state.moneyGoal,
+              daysCount: state.daysCount,
+              isPublic: state.isPublic,
+            };
+
             state.basketName = ''
             state.description = ''
             state.moneyGoal = ''
@@ -46,3 +55,6 @@ export default basketSlice.reducer;
 export const {setBasketName, setDescription, setMoneyGoal, setDaysCount, setIsPublic, pushBasketToSomewhere} = basketSlice.actions
 
 export const selectBasket = (state) => state.basket;
+
+// todo: basket slice rename + calendar (expire time) + num comp(reusable)
+// todo: + backend creation + check modal + vsplivashka + crop :) (BOGD1Y) 

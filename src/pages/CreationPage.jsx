@@ -12,8 +12,11 @@ import CreationForm3 from '../components/forms/CreationForm3';
 import { useState } from 'react';
 // import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { pushBasketToSomewhere, selectBasket} from '../redux/basket/basketSlice'
+import { pushBasketToSomewhere, selectBasket} from '../redux/basket/createBasketSlice'
 import { CardMedia } from '@mui/material';
+
+
+
 
 const steps = ['TextInfo', 'AdditionSettings', 'Finishing!'];
 
@@ -39,7 +42,7 @@ const CreationPage = () => {
 
   const handleNext = () => {
 
-    if (!basket.basketName && !basket.moneyGoal){
+    if (!basket.basketName || !basket.moneyGoal){
       alert('Basket name and money goal are required')
       return
     } 
@@ -122,12 +125,12 @@ const CreationPage = () => {
       {/* main content */}
       {activeStep === steps.length ? (
         <Box sx={{height: '100%'}}>
-          <Typography sx={{ mt: 2, mb: 3, display: 'flex', justifyContent: 'center',   }}>
+          <Typography sx={{ mt: 2, mb: 3, display: 'flex', justifyContent: 'center', textAlign: 'center', px: '10px'  }}>
             All steps completed - you&apos;re finished, basket is created!
           </Typography>
           <Box>
             <CardMedia 
-            sx={{maxWidth: '350px', maxHeight: '400px', margin: '0 auto'}}
+            sx={{maxWidth: '300px', maxHeight: '400px', margin: '0 auto', p: '10px'}}
             component='img'
             src='https://papik.pro/en/uploads/posts/2022-06/1654763453_11-papik-pro-p-cute-piggy-drawing-11.png'
             />

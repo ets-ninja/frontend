@@ -12,7 +12,7 @@ import {
 import userReducer from './user/userSlice';
 import userConfig from './user/userConfig';
 
-import basketReducer from './basket/basketSlice'
+import basketReducer from './basket/createBasketSlice'
 
 export const store = configureStore({
   reducer: {

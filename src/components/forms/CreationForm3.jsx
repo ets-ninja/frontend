@@ -4,7 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBasket} from '../../redux/basket/basketSlice'
+import { selectBasket} from '../../redux/basket/createBasketSlice'
 
 const CreationForm3 = ({isChecked3, setIsChecked3}) => {
 

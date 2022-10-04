@@ -4,9 +4,15 @@ import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBasket, setDaysCount, setIsPublic} from '../../redux/basket/basketSlice'
+import { selectBasket, setDaysCount, setIsPublic} from '../../redux/basket/createBasketSlice'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 
 const CreationForm2 = ({setIsChecked1, isChecked1}) => {
+  // todo redux problem (with hook all right) 
+  const [test, setTest] = useState()
 
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()
@@ -19,7 +25,8 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
   }
 
   return (
-    <Box className="jwhenl"
+    <Box
+      className="jwhenl"
       sx={{
         minHeight: '300px',
         display: 'flex',
@@ -55,20 +62,32 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
         </Box>
 
         {isChecked1 ? (
-          <Box sx = {{pl: '50px'}}>
-            <TextField
-              sx={{ maxWidth: '100px'}}
-              type="number"
+          // <Box sx = {{pl: '50px'}}>
+          //   <TextField
+          //     sx={{ maxWidth: '100px'}}
+          //     type="number"
+          //     value={basket.daysCount}
+          //     onChange={(e)=> dispatch(setDaysCount(e.target.value)) }
+          //     label="Days count"
+          //     // id="outlined-number"
+          //     InputLabelProps={{
+          //       shrink: true,
+          //     }}
+          //   />
+          // </Box>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Expired Date"
               value={basket.daysCount}
-              onChange={(e)=> dispatch(setDaysCount(e.target.value)) }
-              label="Days count"
-              // id="outlined-number"
-              InputLabelProps={{
-                shrink: true,
-              }}
+              onChange={(e)=> dispatch(setDaysCount(e)) }
+              // value={test}
+              // onChange={e => setTest(e) }
+              renderInput={params => <TextField {...params} />}
             />
-          </Box>
-        ) : (<> </>)}
+          </LocalizationProvider>
+        ) : (
+          <> </>
+        )}
 
         <Box
           sx={{
@@ -82,7 +101,6 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
             onChange={e => dispatch(setIsPublic(e.target.checked))}
           />
         </Box>
-
       </Stack>
     </Box>
   );
