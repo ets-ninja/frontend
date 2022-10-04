@@ -6,6 +6,7 @@ import request from '../../hooks/useRequest';
 
 import SetupForm from '../forms/Stripe/SetupForm';
 import LoadingSpinner from '../UIElements/LoadingSpinner';
+import Typography from '@mui/material/Typography';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST);
 
@@ -27,8 +28,16 @@ const AddPaymentMethod = () => {
     setSetupIntent(data);
   }, [sendRequest]);
 
-  if (loading || !setupIntent?.client_secret) {
+  if (loading) {
     return <LoadingSpinner />;
+  } else if (!setupIntent?.client_secret) {
+    return (
+      <>
+        <Typography variant="h5" align="center">
+          Loading failed, try again later
+        </Typography>
+      </>
+    );
   } else {
     const options = {
       clientSecret: setupIntent?.client_secret,
