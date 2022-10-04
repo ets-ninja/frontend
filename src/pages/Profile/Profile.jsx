@@ -22,11 +22,8 @@ import style from './Profile.module.css';
 import useModal from '../../hooks/useModal';
 import StripeIndex from '../../components/Stripe/StripeIndex';
 
-
 const Profile = memo(() => {
-  const { userInfo, userToken, successInfo } = useSelector(
-    state => state.user,
-  );
+  const { userInfo, successInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -59,7 +56,14 @@ const Profile = memo(() => {
               <Button
                 sx={{ m: '10px' }}
                 variant="contained"
-                onClick={() => modal.open('update-photo')}
+                onClick={() =>
+                  modal.open('update-photo', {
+                    width: 250,
+                    height: 250,
+                    aspect: 1,
+                    canvasBorderRadius: 50,
+                  })
+                }
               >
                 Change photo
               </Button>

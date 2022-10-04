@@ -3,10 +3,11 @@ import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
 import { useDebounceEffect } from '../../hooks/useDebounceEffect';
 import { canvasPreview } from './canvasPreview';
 import 'react-image-crop/src/ReactCrop.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
 import useModal from '../../hooks/useModal';
-import { Box, Button, Grid, Slider, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, Slider, Typography } from '@mui/material';
+import getModalData from '../../redux/modal/modalSelectors';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -28,11 +29,12 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
 }
 
 const UpdatePhotoModal = () => {
+  const { data } = useSelector(state => state.modal);
   const [imgSrc, setImgSrc] = useState();
   const [crop, setCrop] = useState({});
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [aspect, setAspect] = useState(1);
+  const [aspect, setAspect] = useState(data.aspect);
   const [completedCrop, setCompletedCrop] = useState('');
   const previewCanvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -66,7 +68,6 @@ const UpdatePhotoModal = () => {
         imgRef.current &&
         previewCanvasRef.current
       ) {
-        // We use canvasPreview as it's much faster than imgPreview.
         canvasPreview(
           imgRef.current,
           previewCanvasRef.current,
@@ -129,9 +130,9 @@ const UpdatePhotoModal = () => {
                 style={{
                   border: '1px solid black',
                   objectFit: 'contain',
-                  width: '250px',
-                  height: '250px',
-                  borderRadius: '50%',
+                  width: `${data.width}px`,
+                  height: `${data.height}px`,
+                  borderRadius: `${data.canvasBorderRadius}%`,
                   margin: '10px',
                 }}
               />
