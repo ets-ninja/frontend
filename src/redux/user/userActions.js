@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../services/axios/';
+import axios from '../../services/axios/user';
 
 export const registerUser = createAsyncThunk(
   'user/register',
@@ -18,6 +18,8 @@ export const registerUser = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -34,6 +36,8 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -43,25 +47,15 @@ export const loginUser = createAsyncThunk(
 
 export const getUserDetails = createAsyncThunk(
   'user/getUserDetails',
-// <<<<<<< HEAD
-//   async (arg, { getState, rejectWithValue }) => {
-//     const { user } = getState();
-
-//     const config = {
-//       headers: {
-//         Authorization: `${user.userToken}`,
-//       },
-//     };
-
-// =======
   async (arg, { rejectWithValue }) => {
-// >>>>>>> bc1cd3b3d436c17781791f91329299b1826f3203
     try {
       const { data } = await axios.get('/api/user');
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -83,6 +77,8 @@ export const updateUserInfo = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -98,9 +94,12 @@ export const updateUserPassword = createAsyncThunk(
         password,
         newPassword,
       });
+
       return data;
     } catch (error) {
-      if (error.response && error.response.data) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);

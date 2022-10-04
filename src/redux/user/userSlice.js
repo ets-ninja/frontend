@@ -67,7 +67,6 @@ const userSlice = createSlice({
     },
     [getUserDetails.rejected]: (state, { payload }) => {
       state.loading = false;
-      state.error = payload;
     },
     // updateUserInfo
     [updateUserInfo.pending]: state => {
@@ -90,7 +89,6 @@ const userSlice = createSlice({
     [updateUserPassword.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
-      state.successInfo = payload
     },
     [updateUserPassword.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -103,7 +101,7 @@ const userSlice = createSlice({
     [updateUserPhoto.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
-      state.successInfo = payload
+      state.successInfo = payload;
     },
     [updateUserPhoto.rejected]: (state, { payload }) => {
       state.loading = false;

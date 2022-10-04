@@ -25,7 +25,7 @@ const LoginForm = () => {
   } = useForm();
 
   useEffect(() => {
-    if (userInfo?.id) {
+    if (userInfo) {
       navigate('/profile');
     }
   }, [navigate, userInfo]);

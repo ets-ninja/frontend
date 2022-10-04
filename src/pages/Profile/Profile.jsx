@@ -20,6 +20,8 @@ import {
 
 import style from './Profile.module.css';
 import useModal from '../../hooks/useModal';
+import StripeIndex from '../../components/Stripe/StripeIndex';
+
 
 const Profile = memo(() => {
   const { userInfo, userToken, successInfo } = useSelector(
@@ -29,9 +31,8 @@ const Profile = memo(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUserDetails(userToken));
-  }, [navigate, successInfo]);
-
+    dispatch(getUserDetails());
+  }, [navigate, successInfo, dispatch]);
   const modal = useModal();
 
   return (
@@ -98,6 +99,7 @@ const Profile = memo(() => {
         <Card sx={{ p: '1rem' }}>
           <ProfileFormUpdateInfo />
           <ProfileFormUpdatePassword />
+          <StripeIndex />
         </Card>
       </div>
     </div>

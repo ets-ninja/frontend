@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { request } from '../../redux/request/requestAction';
+import request from '../../hooks/useRequest';
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -14,8 +13,7 @@ import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const LostPasswordForm = () => {
   const [isSuccessful, setIsSuccessful] = useState(false);
-  const { success, loading } = useSelector(state => state.request);
-  const dispatch = useDispatch();
+  const { loading, sendRequest } = request();
 
   const {
     register,
@@ -23,15 +21,14 @@ const LostPasswordForm = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    if (success) {
-      setIsSuccessful(true);
-    }
-  }, [success]);
-
-  const submitForm = data => {
+  const submitForm = async data => {
     data.email = data.email.toLowerCase();
-    dispatch(request({ method: 'POST', url: 'api/auth/restore', body: data }));
+    try {
+      await sendRequest('api/auth/restore', 'POST', data);
+    } catch (err) {
+      return;
+    }
+    setIsSuccessful(true);
   };
 
   if (loading) {

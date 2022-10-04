@@ -15,7 +15,9 @@ import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
+import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+
 
 const App = () => {
   const location = useLocation();
@@ -29,6 +31,11 @@ const App = () => {
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<LostPassword />} path="/lost-password" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
+        <Route
+          exect
+          element={<StripeStatusContainer />}
+          path="/payment-status"
+        />
         <Route
           exect
           element={<ProtectedRoute component={Profile} />}
