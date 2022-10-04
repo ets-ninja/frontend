@@ -23,13 +23,13 @@ import useModal from '../../hooks/useModal';
 
 const Profile = memo(() => {
   const [open, setOpen] = useState(true);
-  const { userInfo, userToken, info, error } = useSelector(state => state.user);
+  const { userInfo, userToken, successInfo, error } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUserDetails(userToken));
-  }, [navigate, info]);
+  }, [navigate, successInfo]);
 
   const modal = useModal();
 

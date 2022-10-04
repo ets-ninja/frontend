@@ -6,15 +6,17 @@ import 'react-image-crop/src/ReactCrop.scss';
 import { useDispatch } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
 import useModal from '../../hooks/useModal';
-import { Box, Button, Grid } from '@mui/material';
-
+import { Box, Button, Grid, Slider, Stack, Typography } from '@mui/material';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
     makeAspectCrop(
       {
         unit: '%',
-        width: 90,
+        width: 50,
+        height: 50,
+        x: 25,
+        y: 25,
       },
       aspect,
       mediaWidth,
@@ -27,7 +29,9 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
 
 const UpdatePhotoModal = () => {
   const [imgSrc, setImgSrc] = useState();
-  const [crop, setCrop] = useState();
+  const [crop, setCrop] = useState({});
+  const [scale, setScale] = useState(1);
+  const [rotate, setRotate] = useState(0);
   const [aspect, setAspect] = useState(1);
   const [completedCrop, setCompletedCrop] = useState('');
   const previewCanvasRef = useRef(null);
@@ -62,18 +66,44 @@ const UpdatePhotoModal = () => {
         imgRef.current &&
         previewCanvasRef.current
       ) {
-
-        canvasPreview(imgRef.current, previewCanvasRef.current, completedCrop);
+        // We use canvasPreview as it's much faster than imgPreview.
+        canvasPreview(
+          imgRef.current,
+          previewCanvasRef.current,
+          completedCrop,
+          scale,
+          rotate,
+        );
       }
     },
     100,
-    [completedCrop],
+    [completedCrop, scale, rotate],
   );
+
+  const saveUserPhoto = () => {
+    dispatch(
+      updateUserPhoto({
+        userPhoto: `${previewCanvasRef.current.toDataURL()}`,
+      }),
+    );
+    modal.close();
+  };
 
   return (
     <Box sx={{ maxWidth: '600px' }}>
       <Grid container>
-        <Grid item xs={12}>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            bgcolor: '#eee',
+            mb: '10px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '150px',
+          }}
+        >
           {imgSrc && (
             <ReactCrop
               style={{ maxWidth: '600px' }}
@@ -86,12 +116,13 @@ const UpdatePhotoModal = () => {
                 ref={imgRef}
                 alt="Crop me"
                 src={imgSrc}
+                style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
                 onLoad={onImageLoad}
               />
             </ReactCrop>
           )}
         </Grid>
-        <Grid item container xs justifyContent="center" gap='10px'>
+        <Grid item container xs justifyContent="center" gap="10px">
           {completedCrop && (
             <canvas
               ref={previewCanvasRef}
@@ -101,11 +132,38 @@ const UpdatePhotoModal = () => {
                 width: '250px',
                 height: '250px',
                 borderRadius: '50%',
-                margin: '10px'
+                margin: '10px',
               }}
             />
           )}
-
+          <Grid container xs={12} md={6} justifyContent='center' alignItems='center' direction='row'>
+            <Grid item xs={10}>
+              <Typography>Scale: {scale}</Typography>
+              <Slider
+                defaultValue={1}
+                min={1}
+                max={5}
+                aria-label="Default"
+                valueLabelDisplay="auto"
+                value={scale}
+                step={0.1}
+                disabled={!imgSrc}
+                onChange={e => setScale(Number(e.target.value))}
+              />
+            </Grid>
+            <Grid item xs={10}>
+              <Typography>Rotate: {rotate + '°'}</Typography>
+              <Slider
+                id="rotate-input"
+                max={360}
+                min={0}
+                defaultValue={0}
+                value={rotate}
+                disabled={!imgSrc}
+                onChange={e => setRotate(Number(e.target.value))}
+              />
+            </Grid>
+          </Grid>
           <Grid
             item
             container
@@ -123,21 +181,16 @@ const UpdatePhotoModal = () => {
                   type="file"
                   accept="image/*"
                   onChange={onSelectFile}
+                  style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
                 />
               </Button>
             </Grid>
             <Grid item>
-              {previewCanvasRef.current && (
+              {completedCrop && (
                 <Button
                   variant="contained"
                   component="label"
-                  onClick={() =>
-                    dispatch(
-                      updateUserPhoto({
-                        userPhoto: `${previewCanvasRef.current.toDataURL()}`,
-                      }),
-                    )
-                  }
+                  onClick={saveUserPhoto}
                 >
                   Save
                 </Button>
