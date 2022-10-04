@@ -3,7 +3,10 @@ import axios from 'axios';
 
 export const get_owner_baskets = createAsyncThunk(
   'basket/get_owner_baskets',
-   async() => {
+   async(  
+    { finished },
+    { rejectWithValue }
+    ) => {
     console.log('axios');
 
     const config = {
@@ -17,17 +20,17 @@ export const get_owner_baskets = createAsyncThunk(
         '/api/basket/get_owner_baskets',
         config,
       );
-
-      if(!Array.isArray(baskets)){
-        throw new Error("There is an error with getting baskets");
+      
+      if(!baskets.data){
+        return rejectWithValue({ message: "There is an error with getting baskets" });
       }
 
-      return baskets;
+      return baskets.data;
     } catch (error) {
       if (error.response && error.response.data.message) {
-        throw new Error(error.response.data.message);
+        return rejectWithValue(error.response.data.message);
       } else {
-        throw new Error(error.message);
+        return rejectWithValue(error.message);
       }
     }
   },
@@ -36,7 +39,10 @@ export const get_owner_baskets = createAsyncThunk(
 
 export const get_coowner_baskets = createAsyncThunk(
     'basket/get_coowner_baskets',
-    async() => {
+    async(  
+      { finished },
+      { rejectWithValue }
+      ) => {
     console.log('axios');
 
     const config = {
@@ -51,16 +57,16 @@ export const get_coowner_baskets = createAsyncThunk(
           config,
         );
 
-        if(!Array.isArray(baskets)){
-        throw new Error("There is an error with getting baskets");
+        if(!baskets.data){
+          return rejectWithValue({ message: "There is an error with getting baskets" });
         }
 
-        return baskets;
+        return baskets.data;
     } catch (error) {
         if (error.response && error.response.data.message) {
-        throw new Error(error.response.data.message);
+          return rejectWithValue(error.response.data.message);
         } else {
-        throw new Error(error.message);
+          return rejectWithValue(error.message);
         }
     }
     },
@@ -68,7 +74,10 @@ export const get_coowner_baskets = createAsyncThunk(
 
 export const get_hot_baskets = createAsyncThunk(
     'basket/get_hot_baskets',
-    async() => {
+    async(  
+      { finished },
+      { rejectWithValue }
+      ) => {
     console.log('axios');
 
     const config = {
@@ -83,16 +92,16 @@ export const get_hot_baskets = createAsyncThunk(
         config,
         );
 
-        if(!Array.isArray(baskets)){
-        throw new Error("There is an error with getting baskets");
+        if(!baskets.data){
+          return rejectWithValue({ message: "There is an error with getting baskets" });
         }
 
-        return baskets;
+        return baskets.data;
     } catch (error) {
         if (error.response && error.response.data.message) {
-        throw new Error(error.response.data.message);
+          return rejectWithValue(error.response.data.message);
         } else {
-        throw new Error(error.message);
+          return rejectWithValue(error.message);
         }
     }
     },
@@ -100,7 +109,10 @@ export const get_hot_baskets = createAsyncThunk(
 
 export const get_public_baskets = createAsyncThunk(
     'basket/get_public_baskets',
-    async() => {
+    async(  
+      { finished },
+      { rejectWithValue }
+      ) => {
     console.log('axios');
 
     const config = {
@@ -115,16 +127,16 @@ export const get_public_baskets = createAsyncThunk(
         config,
         );
 
-        if(!Array.isArray(baskets)){
-        throw new Error("There is an error with getting baskets");
+        if(!baskets.data){
+          return rejectWithValue({ message: "There is an error with getting baskets" });
         }
 
-        return baskets;
+        return baskets.data;
     } catch (error) {
         if (error.response && error.response.data.message) {
-        throw new Error(error.response.data.message);
+          return rejectWithValue(error.response.data.message);
         } else {
-        throw new Error(error.message);
+          return rejectWithValue(error.message);
         }
     }
     },
@@ -132,7 +144,10 @@ export const get_public_baskets = createAsyncThunk(
 
 export const get_private_baskets = createAsyncThunk(
     'basket/get_private_baskets',
-    async() => {
+    async(  
+      { finished },
+      { rejectWithValue }
+      ) => {
     console.log('axios');
 
     const config = {
@@ -147,16 +162,16 @@ export const get_private_baskets = createAsyncThunk(
         config,
         );
 
-        if(!Array.isArray(baskets)){
-        throw new Error("There is an error with getting baskets");
+        if(!baskets.data){
+          return rejectWithValue({ message: "There is an error with getting baskets" });
         }
 
-        return baskets;
+        return baskets.data;
     } catch (error) {
         if (error.response && error.response.data.message) {
-        throw new Error(error.response.data.message);
+          return rejectWithValue(error.response.data.message);
         } else {
-        throw new Error(error.message);
+          return rejectWithValue(error.message);
         }
     }
     },

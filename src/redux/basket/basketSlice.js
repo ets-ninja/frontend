@@ -31,6 +31,7 @@ const basketSlice = createSlice({
     },
     [get_owner_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
+      state.baskets = [];
       state.error = payload;
     },
     //get_coowner_baskets
@@ -45,6 +46,7 @@ const basketSlice = createSlice({
     },
     [get_coowner_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
+      state.baskets = [];
       state.error = payload;
     },
     //get_hot_baskets
@@ -60,6 +62,7 @@ const basketSlice = createSlice({
     [get_hot_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
+      state.baskets = [];
     },
     //get_public_baskets
     [get_public_baskets.pending]: state => {
@@ -73,6 +76,7 @@ const basketSlice = createSlice({
     },
     [get_public_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
+      state.baskets = [];
       state.error = payload;
     },
     //get_private_baskets
@@ -87,6 +91,7 @@ const basketSlice = createSlice({
     },
     [get_private_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
+      state.baskets = [];
       state.error = payload;
     },
   },

@@ -89,19 +89,19 @@ const Dashboard = () => {
     setButtonAnchorEL(option);
 
     if(option === buttonOptions[0]){
-      dispatch(get_owner_baskets());
+      dispatch(get_owner_baskets({ finished: finishedBasketsState }));
     }
     if(option === buttonOptions[1]){
-      dispatch(get_coowner_baskets());
+      dispatch(get_coowner_baskets({ finished: finishedBasketsState }));
     }
     if(option === buttonOptions[2]){
-      dispatch(get_hot_baskets());
+      dispatch(get_hot_baskets({ finished: finishedBasketsState }));
     }
     if(option === buttonOptions[3]){
-      dispatch(get_public_baskets());
+      dispatch(get_public_baskets({ finished: finishedBasketsState }));
     }
     if(option === buttonOptions[4]){
-      dispatch(get_private_baskets());
+      dispatch(get_private_baskets({ finished: finishedBasketsState }));
     }
   }
 
@@ -185,9 +185,10 @@ const Dashboard = () => {
     </Box>
 
     <Box sx={{ display: 'flex', flexWrap: 'wrap', bgcolor: 'white', boxShadow: 1, borderRadius: 3, p: 2, minWidth: 300, color: 'black', marginLeft: 5, marginRight: 5, borderColor: "black" }}>
-        { loading && <p>Loading</p> }
-        { !loading && baskets.map((basket) => { return(<BasketBox data={basket} />) }) }
-        { !loading && baskets.length === 0 && <Typography variant='h2' sx={{ fontFamily: 'Ubuntu', fontWeight: 500, fontSize: 30, flexGrow: 1 }}> No baskets available! </Typography> }
+        { error && <Typography variant='h2' sx={{ fontFamily: 'Ubuntu', fontWeight: 500, fontSize: 30, flexGrow: 1 }}>{error}</Typography> }
+        { error && loading && <Typography variant='h2' sx={{ fontFamily: 'Ubuntu', fontWeight: 500, fontSize: 30, flexGrow: 1 }}>Loading</Typography> }
+        { error && !loading && baskets.map((basket) => { return(<BasketBox data={basket} />) }) }
+        { error && !loading && baskets.length === 0 && <Typography variant='h2' sx={{ fontFamily: 'Ubuntu', fontWeight: 500, fontSize: 30, flexGrow: 1 }}> No baskets available! </Typography> }
     </Box>
     </>
 )
