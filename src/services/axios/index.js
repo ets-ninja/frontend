@@ -5,13 +5,14 @@ import { store } from '../../redux/store';
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 instance.interceptors.request.use(async config => {
   const state = store.getState();
-  if (state.user.userToken) {
+  if (state.auth.isLoggedIn && state.auth.token) {
     config.headers = {
-      Authorization: state.user.userToken,
+      Authorization: state.auth.token,
     };
   }
   return config;

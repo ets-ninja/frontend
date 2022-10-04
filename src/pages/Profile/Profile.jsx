@@ -69,7 +69,7 @@ const Profile = memo(() => {
               <Avatar
                 className={style.userImg}
                 sx={{ width: '150px', height: '150px', m: '0 auto' }}
-                src={userInfo.userPhoto}
+                src={userInfo?.userPhoto}
               />
 
               <Button sx={{ m: '10px' }} variant="contained">
