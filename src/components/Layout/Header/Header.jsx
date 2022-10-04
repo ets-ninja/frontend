@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getUserDetails } from '../../../redux/user/userActions';
+import { logout } from '../../../redux/user/userSlice';
+
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -37,6 +42,15 @@ const pages = [
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const { userToken, userInfo } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userToken) {
+      dispatch(getUserDetails());
+    }
+  }, [dispatch, userToken]);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -150,7 +164,7 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src={userInfo?.userPhoto} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -190,7 +204,7 @@ const Header = () => {
             >
               <MenuLink to="/profile">
                 <MenuItem>
-                  <Avatar />
+                  <Avatar src={userInfo?.userPhoto} />
                   Profile
                 </MenuItem>
               </MenuLink>
@@ -203,7 +217,7 @@ const Header = () => {
                 </MenuItem>
               </MenuLink>
               <Divider />
-              <MenuLink to="/logout">
+              <MenuLink onClick={() => dispatch(logout())}>
                 <MenuItem>
                   <ListItemIcon>
                     <Logout fontSize="small" />
