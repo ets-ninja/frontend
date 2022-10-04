@@ -27,13 +27,11 @@ listenerMiddleware.startListening({
   type: 'persist/REHYDRATE',
   effect: async (action, listenerApi) => {
     if (!action.payload && action.key === 'persistedAuth') {
-      console.log('DO STUFF');
       listenerApi.dispatch(refresh());
     } else if (
       action.payload.token === null &&
       action.key === 'persistedAuth'
     ) {
-      console.log('DO STUFF');
       listenerApi.dispatch(refresh());
     } else {
       listenerApi.cancelActiveListeners();
