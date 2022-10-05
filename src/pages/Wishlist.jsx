@@ -15,6 +15,7 @@ import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 import WishlistCard from '../components/WishlistCard';
 
 import { getWishlistItems } from '../redux/wishlist/wishlistActions';
+import { setSortedWishlistItems } from '../redux/wishlist/wishlistSlice';
 
 const sortOptions = ['Date created', 'Final Goal'];
 const sortOrderValues = ['ascending', 'descending'];
@@ -23,11 +24,13 @@ const Wishlist = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [sortOption, setSortOption] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
+  const [sorted, setSorted] = useState(null);
 
   const {
     loading,
     error,
     items: wishlistItems,
+    sorting,
   } = useSelector(state => state.wishlist);
 
   const dispatch = useDispatch();
@@ -36,6 +39,11 @@ const Wishlist = () => {
     dispatch(getWishlistItems());
   }, [dispatch]);
 
+  useEffect(() => {
+    setSortOption(sorting.option);
+    setSortOrder(sorting.order);
+  }, []);
+
   const handleOpenSortMenu = e => {
     setAnchorElNav(e.currentTarget);
   };
@@ -43,6 +51,52 @@ const Wishlist = () => {
   const handleCloseSortMenu = () => {
     setAnchorElNav(null);
   };
+
+  const sortItemsByDate = () => {
+    let items = [...wishlistItems];
+
+    if (sortOrder === 'ascending') {
+      items.sort((a, b) => {
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      });
+    } else if (sortOrder === 'descending') {
+      items.sort((a, b) => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+    }
+
+    setSorted(items);
+  };
+
+  const sortItemsByFinalGoal = () => {
+    let items = [...wishlistItems];
+
+    if (sortOrder === 'ascending') {
+      items.sort((a, b) => {
+        return a.finalGoal - b.finalGoal;
+      });
+    } else if (sortOrder === 'descending') {
+      items.sort((a, b) => {
+        return b.finalGoal - a.finalGoal;
+      });
+    }
+
+    setSorted(items);
+  };
+
+  const sortItemsBy = () => {
+    if (sortOption === 'Date created') sortItemsByDate();
+    else if (sortOption === 'Final Goal') sortItemsByFinalGoal();
+  };
+
+  useEffect(() => {
+    sortItemsBy();
+    dispatch(setSortedWishlistItems({ option: sortOption, order: sortOrder }));
+  }, [sortOption, sortOrder]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -104,6 +158,7 @@ const Wishlist = () => {
                           key={option}
                           onClick={() => {
                             handleCloseSortMenu();
+                            if (!sortOrder) setSortOrder('ascending');
                             setSortOption(option);
                           }}
                           variant="text"
@@ -173,10 +228,10 @@ const Wishlist = () => {
             borderColor: 'black',
           }}
         >
-          {Object.values(wishlistItems).map(item => {
+          {(sorted || wishlistItems).map(item => {
             return <WishlistCard key={item._id} itemInfo={item} />;
           })}
-          {Object.values(wishlistItems).length === 0 && (
+          {wishlistItems.length === 0 && (
             <Typography
               variant="h2"
               sx={{
