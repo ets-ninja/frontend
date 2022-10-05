@@ -8,9 +8,9 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CheckIcon from '@mui/icons-material/Check';
-import CircularProgress from '@mui/material/CircularProgress';
 import ResponsiveContainer from '../components/styled/ResponsiveContainer';
 import StyledDropDownMenu from '../components/styled/StyledDropDownMenu';
+import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 
 import WishlistCard from '../components/WishlistCard';
 
@@ -45,13 +45,12 @@ const Wishlist = () => {
   };
 
   if (loading) {
-    return <CircularProgress />;
+    return <LoadingSpinner />;
   }
 
   return (
     <>
       <ResponsiveContainer>
-        {error && <h1>Error</h1>}
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static" sx={{ bgcolor: 'white', boxShadow: 0 }}>
             <Toolbar
@@ -151,6 +150,7 @@ const Wishlist = () => {
                     color: 'black',
                     '&:hover': { backgroundColor: '#358255', color: 'white' },
                   }}
+                  onClick={() => console.log('create')}
                 >
                   Create new
                 </Button>
