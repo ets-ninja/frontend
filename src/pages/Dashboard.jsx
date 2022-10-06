@@ -221,7 +221,7 @@ const Dashboard = () => {
         }}
       >
         {getBaskets().map(basket => {
-          return <BasketBox data={basket} />;
+          return <BasketBox key={basket.id} data={basket} />;
         })}
         {getBaskets().length === 0 && (
           <Typography
