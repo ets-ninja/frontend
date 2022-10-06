@@ -16,7 +16,6 @@ function MyCustomNumberFormat(props) {
 }
 
 export default function NumField({label, value, setValue}) {
-//   debugger
   return (
       <>
         <MyCustomNumberFormat

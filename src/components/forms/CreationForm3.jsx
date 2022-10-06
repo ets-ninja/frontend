@@ -1,8 +1,6 @@
-import { Card, CardMedia, Switch, TextareaAutosize, TextField, Typography } from '@mui/material';
+import { Card, CardMedia, Switch, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBasket} from '../../redux/basket/createBasketSlice'
 
@@ -73,6 +71,7 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
             image="https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7812792/pig-clipart-sm.png"
             alt="Live from space album cover"
           />
+          
         </Box>
       </Stack>
     </Box>

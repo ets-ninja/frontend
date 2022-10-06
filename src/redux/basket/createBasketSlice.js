@@ -7,6 +7,7 @@ const initialState = {
     moneyGoal: '',
     mlsCount: null,  
     isPublic: false,
+    photoTag: null,
 }
 
 
@@ -29,6 +30,9 @@ const basketSlice = createSlice({
         setIsPublic: (state) => {
             state.isPublic = !state.isPublic
         },
+        setPhotoTag: (state, action) => {
+            state.photoTag = action.payload
+        },
         // TODO axios.post(maybe) and try catch from (sentry)
         pushBasketToSomewhere: (state) => {
 
@@ -40,11 +44,14 @@ const basketSlice = createSlice({
               isPublic: state.isPublic,
             };
 
+            // axios.post('/', () => {Post Basket})
+
             state.basketName = ''
             state.description = ''
             state.moneyGoal = ''
-            state.mlsCount = ''
+            state.mlsCount = null
             state.isPublic = false
+            state.photoTag = null
         }
     }
 })

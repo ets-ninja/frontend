@@ -1,8 +1,6 @@
-import { Card, CardMedia, Switch, TextareaAutosize, TextField, Typography } from '@mui/material';
+import { Card, CardMedia, Switch, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBasket, setMlsCount, setIsPublic} from '../../redux/basket/createBasketSlice'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,8 +10,6 @@ import dayjs from 'dayjs';
 
 
 const CreationForm2 = ({setIsChecked1, isChecked1}) => {
-  // todo redux problem (with hook all right) 
-  const [test, setTest] = useState()
 
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()
@@ -63,27 +59,12 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
         </Box>
 
         {isChecked1 ? (
-          // <Box sx = {{pl: '50px'}}>
-          //   <TextField
-          //     sx={{ maxWidth: '100px'}}
-          //     type="number"
-          //     value={basket.daysCount}
-          //     onChange={(e)=> dispatch(setMlsCount(e.target.value)) }
-          //     label="Days count"
-          //     // id="outlined-number"
-          //     InputLabelProps={{
-          //       shrink: true,
-          //     }}
-          //   />
-          // </Box>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               minDate={dayjs(new Date()).add(1, 'day')}
               label="Expired Date"
               value={basket.daysCount}
               onChange={(e)=> dispatch(setMlsCount(+new Date(e))) }
-              // value={test}
-              // onChange={e => setTest(e) }
               renderInput={params => <TextField {...params} />}
             />
           </LocalizationProvider>

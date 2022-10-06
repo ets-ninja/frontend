@@ -1,8 +1,6 @@
 import { Card, CardMedia, TextareaAutosize, TextField } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBasket, setBasketName, setDescription, setMoneyGoal } from '../../redux/basket/createBasketSlice'
 import NumField from '../NumField';
