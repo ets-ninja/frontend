@@ -19,41 +19,21 @@ import {
 } from '@mui/material';
 
 import style from './Profile.module.css';
+import useModal from '../../hooks/useModal';
 import StripeIndex from '../../components/Stripe/StripeIndex';
 
 const Profile = memo(() => {
-  const [open, setOpen] = useState(true);
-  const { userInfo, info, error } = useSelector(state => state.user);
+  const { userInfo, successInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUserDetails());
-  }, [navigate, info, dispatch]);
+  }, [navigate, successInfo, dispatch]);
+  const modal = useModal();
 
   return (
     <div className={style.profile}>
-      {error && (
-        <Collapse in={open}>
-          <Alert
-            severity="error"
-            action={
-              <Button
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setOpen(false);
-                }}
-              >
-                UNDO
-              </Button>
-            }
-            sx={{ mb: 2 }}
-          >
-            {error}
-          </Alert>
-        </Collapse>
-      )}
       <div>
         <Card>
           <Grid container alignItems="center">
@@ -73,7 +53,18 @@ const Profile = memo(() => {
                 src={userInfo.userPhoto}
               />
 
-              <Button sx={{ m: '10px' }} variant="contained">
+              <Button
+                sx={{ m: '10px' }}
+                variant="contained"
+                onClick={() =>
+                  modal.open('update-photo', {
+                    width: 250,
+                    height: 250,
+                    aspect: 1,
+                    canvasBorderRadius: 50,
+                  })
+                }
+              >
                 Change photo
               </Button>
             </Grid>
@@ -110,8 +101,8 @@ const Profile = memo(() => {
 
       <div>
         <Card sx={{ p: '1rem' }}>
-          <ProfileFormUpdateInfo setOpen={setOpen} />
-          <ProfileFormUpdatePassword setOpen={setOpen} />
+          <ProfileFormUpdateInfo />
+          <ProfileFormUpdatePassword />
           <StripeIndex />
         </Card>
       </div>

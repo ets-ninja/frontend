@@ -16,6 +16,8 @@ import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
 import StripeStatusContainer from './pages/StripeStatusContainer';
+import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+
 
 const App = () => {
   const location = useLocation();
@@ -63,6 +65,7 @@ const App = () => {
       <Routes>
         <Route path="modal" element={<ModalWindow />}>
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+          <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
         </Route>
       </Routes>
     </div>
