@@ -10,11 +10,10 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
 import { registerUser } from '../../redux/user/userActions';
+import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const RegistrationForm = () => {
-  const { loading, error, success, userInfo } = useSelector(
-    (state) => state.user
-  );
+  const { loading, success, userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -26,13 +25,11 @@ const RegistrationForm = () => {
   } = useForm();
 
   useEffect(() => {
-    // redirect user to login page if registration was successful
     if (success) navigate('/login');
-    // redirect authenticated user to profile screen
     if (userInfo) navigate('/profile');
   }, [navigate, userInfo, success]);
 
-  const submitForm = (data) => {
+  const submitForm = data => {
     if (data.password !== data.confirmPassword) {
       alert('Password mismatch');
       return;
@@ -42,12 +39,14 @@ const RegistrationForm = () => {
     dispatch(registerUser(data));
   };
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit(submitForm)}>
-        <Stack container m={2} spacing={2}>
-          {error && <h1>Error</h1>}
-          {loading && <h1>Loading...</h1>}
+        <Stack m={2} spacing={2}>
           <TextField
             type="text"
             {...register('publicName', {
@@ -116,6 +115,7 @@ const RegistrationForm = () => {
           </Button>
         </Stack>
       </form>
+
       <Typography variant="caption">
         <Link
           href="#"

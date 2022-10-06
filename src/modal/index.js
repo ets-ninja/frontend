@@ -16,7 +16,6 @@ export default function ModalWindow() {
           left: '50%',
           overflowY: 'auto',
           transform: 'translate(-50%, -50%)',
-          // display: 'flex',
           bgcolor: '#ffffff',
           border: '1px solid transparent',
           outline: '1px solid transparent',
