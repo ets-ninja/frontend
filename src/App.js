@@ -15,6 +15,7 @@ import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
+import PublicPage from './pages/PublicPage';
 
 const App = () => {
   const location = useLocation();
@@ -53,12 +54,15 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
+        <Route exect element={<PublicPage />} path="/public" />
       </Routes>
-      <Routes>
-        <Route path="modal" element={<ModalWindow />}>
-          <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
-        </Route>
-      </Routes>
+      {location.state?.backgroundLocation && (
+        <Routes>
+          <Route path="modal" element={<ModalWindow />}>
+            <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+          </Route>
+        </Routes>
+      )}
     </div>
   );
 };
