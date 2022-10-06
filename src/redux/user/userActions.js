@@ -94,7 +94,6 @@ export const updateUserPassword = createAsyncThunk(
         password,
         newPassword,
       });
-
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -126,11 +125,12 @@ export const updateUserPhoto = createAsyncThunk(
         },
         config,
       );
-
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
