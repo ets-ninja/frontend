@@ -1,32 +1,45 @@
 import * as Sentry from '@sentry/react';
-import { Routes, Route } from 'react-router-dom';
-import './App.css';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import './App.scss';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
-import Profile from './pages/Profile';
+import Profile from './pages/Profile/Profile';
 import Register from './pages/Register';
-import RestorePassword from './pages/RestorePassword';
+import LostPassword from './pages/LostPassword';
 import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
 import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
-import Dashboard from "./pages/Dashboard";
-import Basket from "./pages/Basket";
 import CreationPage from './pages/CreationPage';
+import Dashboard from './pages/Dashboard';
+import Basket from './pages/Basket';
+import ModalWindow from './modal';
+import PublicJarModal from './modal/PublicJarModal';
+import RestorePassword from './pages/RestorePassword';
+import StripeStatusContainer from './pages/StripeStatusContainer';
+import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 
 const App = () => {
+  const location = useLocation();
+
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Dashboard/>} />
-        <Route path="/basket/:basket" element={<Basket/>}/>
+      <Routes location={location.state?.backgroundLocation || location}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/basket/:basket" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
+        <Route exect element={<LostPassword />} path="/lost-password" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
         <Route
           exect
           element={<CreationPage />}
           path="/creation"
+          />
+        <Route
+          exect
+          element={<StripeStatusContainer />}
+          path="/payment-status"
         />
         <Route
           exect
@@ -53,6 +66,12 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
+      </Routes>
+      <Routes>
+        <Route path="modal" element={<ModalWindow />}>
+          <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+          <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
+        </Route>
       </Routes>
     </div>
   );

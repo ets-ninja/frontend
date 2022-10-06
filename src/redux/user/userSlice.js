@@ -1,12 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser, loginUser, getUserDetails } from './userActions';
+import {
+  registerUser,
+  loginUser,
+  getUserDetails,
+  updateUserInfo,
+  updateUserPassword,
+  updateUserPhoto,
+} from './userActions';
 
 const initialState = {
   loading: false,
-  userInfo: null,
+  userInfo: [],
   userToken: null,
   error: null,
   success: false,
+  successInfo: {},
 };
 
 const userSlice = createSlice({
@@ -59,9 +67,48 @@ const userSlice = createSlice({
     },
     [getUserDetails.rejected]: (state, { payload }) => {
       state.loading = false;
+    },
+    // updateUserInfo
+    [updateUserInfo.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserInfo.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.successInfo = payload;
+    },
+    [updateUserInfo.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    // updateUserPassword
+    [updateUserPassword.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserPassword.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+    },
+    [updateUserPassword.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    [updateUserPhoto.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserPhoto.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.successInfo = payload;
+    },
+    [updateUserPhoto.rejected]: (state, { payload }) => {
+      state.loading = false;
       state.error = payload;
     },
   },
 });
 
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;
