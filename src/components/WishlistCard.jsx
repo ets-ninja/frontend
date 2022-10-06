@@ -22,8 +22,8 @@ const WishlistCard = ({
   };
 
   const sliceName = name => {
-    if (name.length > 35) {
-      return `${name.slice(0, 33)}...`;
+    if (name.length > 55) {
+      return `${name.slice(0, 53)}...`;
     } else {
       return name;
     }
@@ -33,47 +33,24 @@ const WishlistCard = ({
     <>
       <Card
         sx={{
-          width: { lg: '23%', md: '30%', sm: '45%', xs: '100%' },
+          width: {
+            lg: '25%',
+            md: '33.3333%',
+            sm: '50%',
+            xs: '100%',
+          },
+          maxWidth: { xs: 350, sm: '100%' },
           minHeight: 240,
-          borderRadius: 4,
-          boxShadow: 4,
+          borderRadius: 0,
+          boxShadow: 0,
+          boxSizing: 'border-box',
+          border: 1,
+          borderColor: 'rgba(0, 0, 0, 0.08)',
+          mt: '-1px',
+          ml: '-1px',
+          p: { md: 3, xs: 2 },
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            my: 1,
-          }}
-        >
-          <Typography
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              fontWeight: 700,
-              ml: 2,
-              pr: 1,
-              height: 40,
-              flexGrow: 1,
-              lineHeight: 1.2,
-              color: theme => theme.colors.dark,
-            }}
-          >
-            {sliceName(name)}
-          </Typography>
-          <Typography
-            sx={{
-              userSelect: 'none',
-              fontWeight: 700,
-              marginRight: 2,
-              color: theme => theme.colors.dark,
-            }}
-          >
-            {formatteDate(new Date(createdAt))}
-          </Typography>
-        </Box>
         <CardMedia
           component="img"
           sx={{
@@ -85,43 +62,54 @@ const WishlistCard = ({
           }
           alt={`${name} photo`}
         />
-        <Box
+        <Typography
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            background: theme => theme.palette.primary.main,
-            color: theme => theme.colors.dark,
             alignItems: 'center',
+            fontWeight: 700,
+            height: 40,
+            flexGrow: 1,
+            lineHeight: 1.2,
+            my: 1.5,
+            color: theme => theme.colors.dark,
           }}
         >
-          <Typography
-            sx={{
-              fontWeight: 700,
-              marginLeft: 2,
-              flexGrow: 1,
-              marginBottom: 1,
-              marginTop: 1,
-              fontSize: { xs: '1rem', sm: '0.8rem', lg: '1rem' },
-            }}
-          >
-            {'Goal: ' + finalGoal + '₴'}
-          </Typography>
-          <Button
-            component={Link}
-            to={'/wishlist/' + id}
-            sx={{
-              fontWeight: 700,
-              marginRight: 2,
-              marginBottom: 1,
-              marginTop: 1,
-              fontWeight: 400,
-              '&:hover': { boxShadow: 2 },
-              color: theme => theme.colors.white,
-            }}
-          >
-            More detail
-          </Button>
-        </Box>
+          {sliceName(name)}
+        </Typography>
+        <Typography
+          sx={{
+            my: 1.5,
+            fontSize: '0.8rem',
+            textAlign: 'right',
+            color: theme => theme.colors.dark,
+          }}
+        >
+          Created: {formatteDate(new Date(createdAt))}
+        </Typography>
+        <Typography
+          sx={{
+            flexGrow: 1,
+            fontSize: '1rem',
+          }}
+        >
+          {'Goal: ' + finalGoal + '₴'}
+        </Typography>
+        <Button
+          component={Link}
+          variant="contained"
+          fullWidth={true}
+          to={'/wishlist/' + id}
+          sx={{
+            backgroundColor: theme => theme.palette.primary,
+            color: theme => theme.colors.white,
+            letterSpacing: 2,
+            py: 1.5,
+            mt: 1,
+            '&:hover': { boxShadow: 5 },
+          }}
+        >
+          More detail
+        </Button>
       </Card>
     </>
   );

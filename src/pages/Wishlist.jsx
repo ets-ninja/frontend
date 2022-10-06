@@ -204,21 +204,31 @@ const Wishlist = () => {
                 </Button>
               </Box>
             </Toolbar>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: 20,
+                color: theme => theme.colors.dark,
+              }}
+            >
+              Total:
+            </Typography>
           </AppBar>
         </Box>
         <Box
           sx={{
             display: 'flex',
             flexWrap: 'wrap',
-            rowGap: { xs: 2, md: 3 },
-            columnGap: { lg: '2.66%', md: '5%', sm: '10%' },
-            justifyContent: 'flex-start',
+            columnGap: { xs: '0' },
+            justifyContent: { xs: 'center', sm: 'flex-start' },
             bgcolor: 'white',
-            boxShadow: 1,
             borderRadius: 3,
             py: 3,
-            px: 3,
             borderColor: 'black',
+            boxShadow: 0,
+            borderWidthTop: '1px',
+            borderWidthLeft: '1px',
+            borderColor: 'rgba(0, 0, 0, 0.08)',
           }}
         >
           {wishlistItems.map(item => {
