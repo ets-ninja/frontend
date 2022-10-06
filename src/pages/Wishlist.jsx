@@ -13,35 +13,46 @@ import StyledDropDownMenu from '../components/styled/StyledDropDownMenu';
 import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 
 import WishlistCard from '../components/WishlistCard';
+import BasicPagination from '../components/BasicPagination';
 
-import { getWishlistItems } from '../redux/wishlist/wishlistActions';
-import { setSortedWishlistItems } from '../redux/wishlist/wishlistSlice';
+import { getSortedWishlistItems } from '../redux/wishlist/wishlistActions';
+import {
+  setSortedWishlistItems,
+  setWishlistPage,
+} from '../redux/wishlist/wishlistSlice';
 
-const sortOptions = ['Date created', 'Final Goal'];
-const sortOrderValues = ['ascending', 'descending'];
+const sortFields = [
+  { name: 'Date created', dbName: 'createdAt' },
+  { name: 'Final Goal', dbName: 'finalGoal' },
+];
+const sortOrderValues = [
+  { name: 'ascending', dbName: '1' },
+  { name: 'descending', dbName: '-1' },
+];
 
 const Wishlist = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [sortOption, setSortOption] = useState(null);
+  const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
-  const [sorted, setSorted] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
 
   const {
     loading,
     error,
     items: wishlistItems,
     sorting,
+    pageCount: pages,
+    activePage,
   } = useSelector(state => state.wishlist);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getWishlistItems());
-  }, [dispatch]);
-
-  useEffect(() => {
-    setSortOption(sorting.option);
+    setSortField(sorting.field);
     setSortOrder(sorting.order);
+    setPage(activePage);
+    setPageCount(pages);
   }, []);
 
   const handleOpenSortMenu = e => {
@@ -52,51 +63,30 @@ const Wishlist = () => {
     setAnchorElNav(null);
   };
 
-  const sortItemsByDate = () => {
-    let items = [...wishlistItems];
-
-    if (sortOrder === 'ascending') {
-      items.sort((a, b) => {
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      });
-    } else if (sortOrder === 'descending') {
-      items.sort((a, b) => {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      });
-    }
-
-    setSorted(items);
-  };
-
-  const sortItemsByFinalGoal = () => {
-    let items = [...wishlistItems];
-
-    if (sortOrder === 'ascending') {
-      items.sort((a, b) => {
-        return a.finalGoal - b.finalGoal;
-      });
-    } else if (sortOrder === 'descending') {
-      items.sort((a, b) => {
-        return b.finalGoal - a.finalGoal;
-      });
-    }
-
-    setSorted(items);
-  };
-
-  const sortItemsBy = () => {
-    if (sortOption === 'Date created') sortItemsByDate();
-    else if (sortOption === 'Final Goal') sortItemsByFinalGoal();
+  const sortItems = () => {
+    dispatch(
+      getSortedWishlistItems({
+        options: { page, field: sortField, order: sortOrder },
+      }),
+    );
   };
 
   useEffect(() => {
-    sortItemsBy();
-    dispatch(setSortedWishlistItems({ option: sortOption, order: sortOrder }));
-  }, [sortOption, sortOrder]);
+    if (sortField) {
+      sortItems();
+      dispatch(
+        setSortedWishlistItems({
+          field: sortField,
+          order: sortOrder,
+        }),
+      );
+    }
+  }, [sortField, sortOrder, page]);
+
+  const handleChangePage = page => {
+    setPage(page);
+    dispatch(setWishlistPage(page));
+  };
 
   if (loading) {
     return <LoadingSpinner />;
@@ -152,14 +142,13 @@ const Wishlist = () => {
                       flexDirection: 'column',
                     }}
                   >
-                    {sortOptions.map(option => {
+                    {sortFields.map(field => {
                       return (
                         <Button
-                          key={option}
+                          key={field.name}
                           onClick={() => {
                             handleCloseSortMenu();
-                            if (!sortOrder) setSortOrder('ascending');
-                            setSortOption(option);
+                            setSortField(field.dbName);
                           }}
                           variant="text"
                           fullWidth={true}
@@ -168,9 +157,11 @@ const Wishlist = () => {
                             textTransform: 'none',
                             color: 'rgb(55, 65, 81)',
                           }}
-                          endIcon={sortOption === option ? <CheckIcon /> : ''}
+                          endIcon={
+                            sortField === field.dbName ? <CheckIcon /> : ''
+                          }
                         >
-                          {option}
+                          {field.name}
                         </Button>
                       );
                     })}
@@ -178,10 +169,10 @@ const Wishlist = () => {
                     {sortOrderValues.map(order => {
                       return (
                         <Button
-                          key={order}
+                          key={order.name}
                           onClick={() => {
                             handleCloseSortMenu();
-                            setSortOrder(order);
+                            setSortOrder(order.dbName);
                           }}
                           variant="text"
                           fullWidth={true}
@@ -190,9 +181,11 @@ const Wishlist = () => {
                             textTransform: 'none',
                             color: 'rgb(55, 65, 81)',
                           }}
-                          endIcon={sortOrder === order ? <CheckIcon /> : ''}
+                          endIcon={
+                            sortOrder === order.dbName ? <CheckIcon /> : ''
+                          }
                         >
-                          In {order} order
+                          In {order.name} order
                         </Button>
                       );
                     })}
@@ -228,7 +221,7 @@ const Wishlist = () => {
             borderColor: 'black',
           }}
         >
-          {(sorted || wishlistItems).map(item => {
+          {wishlistItems.map(item => {
             return <WishlistCard key={item._id} itemInfo={item} />;
           })}
           {wishlistItems.length === 0 && (
@@ -244,6 +237,11 @@ const Wishlist = () => {
             </Typography>
           )}
         </Box>
+        <BasicPagination
+          pageCount={pageCount}
+          activePage={page}
+          handleChangePage={handleChangePage}
+        />
       </ResponsiveContainer>
     </>
   );
