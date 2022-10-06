@@ -113,6 +113,7 @@ const Wishlist = () => {
                   fontSize: 46,
                   flexGrow: 1,
                   mb: { xs: 2, sm: 0 },
+                  color: theme => theme.colors.dark,
                 }}
               >
                 Wishlist
@@ -121,7 +122,7 @@ const Wishlist = () => {
                 <Button
                   variant="contained"
                   color="inherit"
-                  sx={{ mr: 1 }}
+                  sx={{ mr: 1, color: theme => theme.colors.dark }}
                   endIcon={<KeyboardArrowDownIcon />}
                   onClick={handleOpenSortMenu}
                 >
@@ -193,10 +194,9 @@ const Wishlist = () => {
                 </StyledDropDownMenu>
                 <Button
                   variant="contained"
+                  color="secondary"
                   sx={{
-                    backgroundColor: '#58D68D',
-                    color: 'black',
-                    '&:hover': { backgroundColor: '#358255', color: 'white' },
+                    color: theme => theme.colors.dark,
                   }}
                   onClick={() => console.log('create')}
                 >

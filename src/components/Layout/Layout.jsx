@@ -13,6 +13,7 @@ const theme = createTheme({
     },
     secondary: {
       main: '#FBB13C',
+      dark: '#ffa617',
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,

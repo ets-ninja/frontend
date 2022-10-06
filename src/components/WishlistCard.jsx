@@ -34,7 +34,7 @@ const WishlistCard = ({
       <Card
         sx={{
           width: { lg: '23%', md: '30%', sm: '45%', xs: '100%' },
-          minHeight: 300,
+          minHeight: 240,
           borderRadius: 4,
           boxShadow: 4,
         }}
@@ -45,8 +45,7 @@ const WishlistCard = ({
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            mt: 1,
-            mb: 2,
+            my: 1,
           }}
         >
           <Typography
@@ -59,12 +58,18 @@ const WishlistCard = ({
               height: 40,
               flexGrow: 1,
               lineHeight: 1.2,
+              color: theme => theme.colors.dark,
             }}
           >
             {sliceName(name)}
           </Typography>
           <Typography
-            sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}
+            sx={{
+              userSelect: 'none',
+              fontWeight: 700,
+              marginRight: 2,
+              color: theme => theme.colors.dark,
+            }}
           >
             {formatteDate(new Date(createdAt))}
           </Typography>
@@ -72,7 +77,7 @@ const WishlistCard = ({
         <CardMedia
           component="img"
           sx={{
-            height: 200,
+            height: 133,
           }}
           image={
             image ||
@@ -84,7 +89,8 @@ const WishlistCard = ({
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            backgroundColor: 'lightGreen',
+            background: theme => theme.palette.primary.main,
+            color: theme => theme.colors.dark,
             alignItems: 'center',
           }}
         >
@@ -108,7 +114,9 @@ const WishlistCard = ({
               marginRight: 2,
               marginBottom: 1,
               marginTop: 1,
-              color: '#197BCA',
+              fontWeight: 400,
+              '&:hover': { boxShadow: 2 },
+              color: theme => theme.colors.white,
             }}
           >
             More detail
