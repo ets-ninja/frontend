@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Snackbar from '@mui/material/Snackbar';
 import Fade from '@mui/material/Fade';
 import MuiAlert from '@mui/material/Alert';
+import { clearError } from '../../redux/request/requestSlice';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -12,6 +13,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const ErrorMessage = () => {
   const user = useSelector(state => state.user);
   const request = useSelector(state => state.request);
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     open: false,
     Transition: Fade,
@@ -29,6 +32,9 @@ const ErrorMessage = () => {
 
   const handleClose = () => {
     setState({ ...state, open: false });
+    if (request.error) {
+      dispatch(clearError());
+    }
   };
 
   return (

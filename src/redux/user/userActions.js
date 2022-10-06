@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../services/axios/';
+import axios from '../../services/axios/user';
 
 export const registerUser = createAsyncThunk(
   'user/register',
@@ -18,6 +18,8 @@ export const registerUser = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -34,6 +36,8 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -50,6 +54,8 @@ export const getUserDetails = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -71,6 +77,8 @@ export const updateUserInfo = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }
@@ -86,6 +94,39 @@ export const updateUserPassword = createAsyncThunk(
         password,
         newPassword,
       });
+
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const updateUserPhoto = createAsyncThunk(
+  'user/updateUserPhoto',
+  async ({ userPhoto }, { getState, rejectWithValue }) => {
+    const { user } = getState();
+    const config = {
+      headers: {
+        Authorization: `${user.userToken}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.put(
+        '/api/user/update_photo',
+        {
+          userPhoto,
+        },
+        config,
+      );
+
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

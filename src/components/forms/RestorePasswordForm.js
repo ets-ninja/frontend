@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+
+import request from '../../hooks/useRequest';
 
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
-import { request } from '../../redux/request/requestAction';
-import { Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import FormSuccessful from '../UIElements/FormSuccessful';
 import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const RestorePasswordForm = ({ token, id }) => {
   const [isSuccessful, setIsSuccessful] = useState(false);
-  const { success, loading } = useSelector(state => state.request);
-  const dispatch = useDispatch();
+  const { loading, sendRequest } = request();
 
   const {
     register,
@@ -22,24 +20,17 @@ const RestorePasswordForm = ({ token, id }) => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    if (success) {
-      setIsSuccessful(true);
-    }
-  }, [success]);
-
-  const submitForm = data => {
+  const submitForm = async data => {
     if (data.password !== data.confirmPassword) {
       alert('Password mismatch');
       return;
     }
-    dispatch(
-      request({
-        method: 'POST',
-        url: `api/auth/restore/${token}/${id}`,
-        body: data,
-      }),
-    );
+    try {
+      await sendRequest(`api/auth/restore/${token}/${id}`, 'POST', data);
+    } catch (err) {
+      return;
+    }
+    setIsSuccessful(true);
   };
 
   if (loading) {
