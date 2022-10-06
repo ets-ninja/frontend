@@ -46,7 +46,7 @@ const RegistrationForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit(submitForm)}>
-        <Stack container m={2} spacing={2}>
+        <Stack m={2} spacing={2}>
           <TextField
             type="text"
             {...register('publicName', {

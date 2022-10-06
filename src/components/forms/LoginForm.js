@@ -15,7 +15,6 @@ import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const LoginForm = () => {
   const { loading, isLoggedIn } = useSelector(state => state.auth);
-  const state = useSelector(state => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,7 +31,6 @@ const LoginForm = () => {
   }, [navigate, isLoggedIn]);
 
   const submitForm = data => {
-    console.log(state);
     dispatch(login(data));
   };
 

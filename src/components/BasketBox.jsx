@@ -104,10 +104,10 @@ const BasketBox = ({
 };
 
 BasketBox.propTypes = {
-  data: {
+  data: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
-  },
+  }),
 };
 
 export default BasketBox;
