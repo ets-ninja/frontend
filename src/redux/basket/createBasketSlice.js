@@ -5,9 +5,8 @@ const initialState = {
     basketName: '',
     description: '',
     moneyGoal: '',
-    daysCount: undefined,  //! only when undefined comp works as expected  
+    mlsCount: null,  
     isPublic: false,
-
 }
 
 
@@ -24,8 +23,8 @@ const basketSlice = createSlice({
         setMoneyGoal: (state, action) => {
             state.moneyGoal = action.payload
         },
-        setDaysCount: (state, action) => {
-            state.daysCount = action.payload
+        setMlsCount: (state, action) => {
+            state.mlsCount = action.payload
         },
         setIsPublic: (state) => {
             state.isPublic = !state.isPublic
@@ -37,14 +36,14 @@ const basketSlice = createSlice({
               basketName: state.basketName,
               description: state.description,
               moneyGoal: state.moneyGoal,
-              daysCount: state.daysCount,
+              mlsCount: state.mlsCount,
               isPublic: state.isPublic,
             };
 
             state.basketName = ''
             state.description = ''
             state.moneyGoal = ''
-            state.daysCount = ''
+            state.mlsCount = ''
             state.isPublic = false
         }
     }
@@ -52,7 +51,7 @@ const basketSlice = createSlice({
 
 export default basketSlice.reducer;
 
-export const {setBasketName, setDescription, setMoneyGoal, setDaysCount, setIsPublic, pushBasketToSomewhere} = basketSlice.actions
+export const {setBasketName, setDescription, setMoneyGoal, setMlsCount, setIsPublic, pushBasketToSomewhere} = basketSlice.actions
 
 export const selectBasket = (state) => state.basket;
 

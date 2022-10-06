@@ -4,10 +4,11 @@ import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBasket, setDaysCount, setIsPublic} from '../../redux/basket/createBasketSlice'
+import { selectBasket, setMlsCount, setIsPublic} from '../../redux/basket/createBasketSlice'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 
 const CreationForm2 = ({setIsChecked1, isChecked1}) => {
@@ -20,7 +21,7 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
   const switchHandler = (e) => {
     setIsChecked1(e)
     if(basket.daysCount) {
-      dispatch(setDaysCount(''))
+      dispatch(setMlsCount(''))
     }
   }
 
@@ -67,7 +68,7 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
           //     sx={{ maxWidth: '100px'}}
           //     type="number"
           //     value={basket.daysCount}
-          //     onChange={(e)=> dispatch(setDaysCount(e.target.value)) }
+          //     onChange={(e)=> dispatch(setMlsCount(e.target.value)) }
           //     label="Days count"
           //     // id="outlined-number"
           //     InputLabelProps={{
@@ -77,9 +78,10 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
           // </Box>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              minDate={dayjs(new Date()).add(1, 'day')}
               label="Expired Date"
               value={basket.daysCount}
-              onChange={(e)=> dispatch(setDaysCount(e)) }
+              onChange={(e)=> dispatch(setMlsCount(+new Date(e))) }
               // value={test}
               // onChange={e => setTest(e) }
               renderInput={params => <TextField {...params} />}
