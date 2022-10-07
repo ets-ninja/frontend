@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import * as Sentry from '@sentry/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import './App.scss';
@@ -15,9 +16,26 @@ import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
+import { fetchToken, onMessageListener } from './firebase';
 
 const App = () => {
   const location = useLocation();
+
+  const [show, setShow] = useState(false);
+  const [notification, setNotification] = useState({ title: '', body: '' });
+  const [isTokenFound, setTokenFound] = useState(false);
+  fetchToken(setTokenFound);
+
+  onMessageListener()
+    .then(payload => {
+      setNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+      });
+      setShow(true);
+      console.log(payload);
+    })
+    .catch(err => console.log('failed: ', err));
 
   return (
     <div className="App">
