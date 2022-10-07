@@ -12,28 +12,14 @@ import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
 import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
-import IntroPage from './pages/IntoPage/IntroPage';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
-import useModal from './hooks/useModal';
-import { useEffect, useState } from 'react';
 import RestorePassword from './pages/RestorePassword';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 
 const App = () => {
-
-  const modal = useModal();
-  // debugger
-  const [isFirstTime, setIsFirstTime] = useState(!localStorage.getItem('notFirstTime?'))
-  
-  useEffect(()=>{
-    if (isFirstTime){
-      modal.open('intro-page')
-      localStorage.setItem('notFirstTime?', true)
-    }
-  }, [isFirstTime])
   
   const location = useLocation();
 
@@ -76,13 +62,10 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
-        <Route path="modal" element={<ModalWindow />}>
-          <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
-          <Route path="/modal/intro-page" element={<IntroSwiper />} />
-        </Route>
       </Routes>
       <Routes>
         <Route path="modal" element={<ModalWindow />}>
+          <Route path="/modal/intro-page" element={<IntroSwiper />} />
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
           <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
         </Route>
