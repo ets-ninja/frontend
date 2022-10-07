@@ -150,20 +150,45 @@ const Basket = () => {
           display: 'flex',
           flexDirection: 'column',
           flexGrow: 1,
-          ml: 2,
+          ml: 4,
           mr: 10,
           mt: 0.5,
           maxWidth: 1350,
           flexWrap: 'wrap',
         }}
       >
-        <Box sx={{ flexGrow: 1, maxHeight: 'min-content', pb: 1 }}>
+        <Box sx={{ width: '95%', position: 'relative' }}>
           <BorderLinearProgress
-            sx={{ maxWidth: 1250 }}
             variant="determinate"
-            value={50}
+            value={200 * 100 / 800}
+            sx={{
+              height: '45px',
+              mt: 2,
+              mb: 2,
+            }}
           />
-          <Typography variant="h3">800$</Typography>
+          <Typography
+            variant="h5"
+            component="p"
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}>
+            200$
+          </Typography>
+          <Typography
+            variant="h5"
+            component="p"
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '103%',
+              transform: 'translate(-50%, -50%)',
+            }}>
+            800$
+          </Typography>
         </Box>
         <BasketChart />
       </Box>

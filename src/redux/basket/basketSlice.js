@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { get_owner_baskets, get_coowner_baskets, get_hot_baskets, get_public_baskets, get_private_baskets } from './basketActions';
+import { get_owner_baskets, get_coowner_baskets, get_public_baskets, get_private_baskets } from './basketActions';
 
 const initialState = {
   loading: true,
   baskets: [],
+  paginationData: { page: 1, maxPageAmount: 1, currentType: "Created by me", currentOrder: "Newest to oldest" },
   error: null,
   success: false,
 };
@@ -16,6 +17,15 @@ const basketSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    changePage: (state, { payload }) => {
+      state.paginationData.page = payload.value;
+    },
+    changeType: (state, { payload }) => {
+      state.paginationData.currentType = payload.value;
+    },
+    changeOrder: (state, { payload }) => {
+      state.paginationData.currentOrder = payload.value;
+    }
   },
   extraReducers: {
     //get_owner_baskets
@@ -26,12 +36,13 @@ const basketSlice = createSlice({
     [get_owner_baskets.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
-      state.baskets = payload;
-
+      state.baskets = payload.basketData;
+      state.paginationData.maxPageAmount = payload.paginationData.maxPageAmount;
     },
     [get_owner_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
       state.baskets = [];
+      state.paginationData.maxPageAmount = 1;
       state.error = payload;
     },
     //get_coowner_baskets
@@ -42,27 +53,14 @@ const basketSlice = createSlice({
     [get_coowner_baskets.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
-      state.baskets = payload;
+      state.baskets = payload.basketData;
+      state.paginationData.maxPageAmount = payload.paginationData.maxPageAmount;
     },
     [get_coowner_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
       state.baskets = [];
+      state.paginationData.maxPageAmount = 1;
       state.error = payload;
-    },
-    //get_hot_baskets
-    [get_hot_baskets.pending]: state => {
-      state.loading = true;
-      state.error = null;
-    },
-    [get_hot_baskets.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.success = true;
-      state.baskets = payload;
-    },
-    [get_hot_baskets.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-      state.baskets = [];
     },
     //get_public_baskets
     [get_public_baskets.pending]: state => {
@@ -72,11 +70,13 @@ const basketSlice = createSlice({
     [get_public_baskets.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
-      state.baskets = payload;
+      state.baskets = payload.basketData;
+      state.paginationData.maxPageAmount = payload.paginationData.maxPageAmount;
     },
     [get_public_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
       state.baskets = [];
+      state.paginationData.maxPageAmount = 1;
       state.error = payload;
     },
     //get_private_baskets
@@ -87,14 +87,17 @@ const basketSlice = createSlice({
     [get_private_baskets.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
-      state.baskets = payload;
+      state.baskets = payload.basketData;
+      state.paginationData.maxPageAmount = payload.paginationData.maxPageAmount;
     },
     [get_private_baskets.rejected]: (state, { payload }) => {
       state.loading = false;
       state.baskets = [];
+      state.paginationData.maxPageAmount = 1;
       state.error = payload;
     },
   },
 });
 
+export const { changePage, changeType, changeOrder } = basketSlice.actions;
 export default basketSlice.reducer;
