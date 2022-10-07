@@ -1,3 +1,4 @@
+import MediaQuery from 'react-responsive';
 import {
   Avatar,
   Badge,
@@ -39,6 +40,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
     expirationDate = new Date('25 Oct 2022 00:12:00'),
     value = 53334,
     finalGoal = 60000,
+    description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ",
   } = bank;
   return (
     <Box
@@ -49,23 +51,25 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
         border: '1px solid #868686',
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
         borderRadius: '5px',
+        cursor: 'pointer',
         display: { md: 'flex' },
         flexDirection: { md: 'column' },
         justifyContent: { md: 'space-between' },
         flexBasis: {
           xs: '100%',
+          smd: 'calc((100% - 15px) / 2)',
           md: 'calc((100% - 20px) / 2)',
           lg: 'calc((100% - 40px) / 3)',
           xl: 'calc((100% - 60px) / 3)',
         },
         '&:not(:last-of-type)': {
-          mb: { xs: '15px', md: '0' },
+          mb: { xs: '15px', smd: '0' },
         },
         '&:nth-last-of-type(even)': {
-          mr: { md: '20px', lg: '0' },
+          mr: { md: '20px', smd: '15px', lg: '0' },
         },
         '&:not(:nth-last-of-type(-n+2))': {
-          mb: { md: '20px', lg: '0' },
+          mb: { md: '20px', smd: '15px', lg: '0' },
         },
         '&:not(:nth-of-type(3n))': {
           mr: { lg: '20px', xl: '30px' },
@@ -81,7 +85,8 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           borderBottom: '1px solid #ececec',
-          p: { xs: 1, sm: 2 },
+          px: { xs: 1, sm: 2 },
+          py: 1,
         }}
       >
         <Box
@@ -91,7 +96,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
           <Avatar
             alt={`${publicName} avatar`}
             src={userPhoto}
-            sx={{ width: 64, height: 64 }}
+            sx={{ width: 56, height: 56 }}
             data-clickable={true}
           />
           <Typography
@@ -120,7 +125,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
           alignItems: 'center',
           fontWeight: '500',
           letterSpacing: '0.05em',
-          my: { xs: 1, sm: 2 },
+          mt: 1,
         }}
       >
         {name}
@@ -136,7 +141,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
         <img
           src={jarStepHandler(value, finalGoal)}
           alt={`${name}`}
-          style={{ height: '320px' }}
+          style={{ height: '300px' }}
         />
         <Box
           sx={{
@@ -170,7 +175,38 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
             }}
           ></Box>
         </Box>
+        <Box
+          sx={{
+            opacity: 0,
+            '&:hover': { opacity: 0.9 },
+            mx: 3,
+            height: '95%',
+            zIndex: 1,
+            transition: '500ms cubic-bezier(0.4, 0, 0.2, 1)',
+            backgroundColor: theme => theme.palette.secondary.main,
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '5px',
+          }}
+        >
+          <Typography align="center" sx={{ px: 2, py: 1 }}>
+            {description.length > 450
+              ? `${description.substring(0, 380)}. . .`
+              : description}
+          </Typography>
+        </Box>
       </Box>
+      {description && (
+        <MediaQuery maxWidth={767}>
+          <Typography component="p" sx={{ px: { xs: 1, sm: 2 } }}>
+            {description.length > 120
+              ? `${description.substring(0, 120)}. . .`
+              : description}
+          </Typography>
+        </MediaQuery>
+      )}
       <Box sx={{ px: { xs: 1, sm: 2 }, mt: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1 }}>
           <Typography component="p" sx={{ fontWeight: '500' }}>
@@ -196,7 +232,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
           Last donation 5 min. ago
         </Typography>
         <Box
-          sx={{ display: 'flex', alignItems: 'center', pb: 2, mt: 2 }}
+          sx={{ display: 'flex', alignItems: 'center', pb: 2, mt: 1 }}
           data-clickable={true}
         >
           <Button
@@ -206,10 +242,13 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
               p: 1,
               fontWeight: '500',
               borderRadius: '5px',
-              backgroundColor: '#FBB13C',
+              backgroundColor: theme => theme.palette.secondary.main,
               boxShadow: 5,
               color: 'black',
-              '&:hover': { backgroundColor: '#FBB13CE0', color: 'white' },
+              '&:hover': {
+                backgroundColor: theme => theme.palette.secondary.main,
+                color: 'white',
+              },
             }}
           >
             Donate
