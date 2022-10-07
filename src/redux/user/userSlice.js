@@ -5,14 +5,16 @@ import {
   getUserDetails,
   updateUserInfo,
   updateUserPassword,
+  updateUserPhoto,
 } from './userActions';
 
 const initialState = {
   loading: false,
-  userInfo: null,
+  userInfo: [],
   userToken: null,
   error: null,
   success: false,
+  successInfo: {},
 };
 
 const userSlice = createSlice({
@@ -65,7 +67,6 @@ const userSlice = createSlice({
     },
     [getUserDetails.rejected]: (state, { payload }) => {
       state.loading = false;
-      state.error = payload;
     },
     // updateUserInfo
     [updateUserInfo.pending]: state => {
@@ -74,8 +75,7 @@ const userSlice = createSlice({
     },
     [updateUserInfo.fulfilled]: (state, { payload }) => {
       state.loading = false;
-      state.info = payload;
-      console.log(payload);
+      state.successInfo = payload;
     },
     [updateUserInfo.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -91,6 +91,19 @@ const userSlice = createSlice({
       state.success = true;
     },
     [updateUserPassword.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    [updateUserPhoto.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [updateUserPhoto.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.successInfo = payload;
+    },
+    [updateUserPhoto.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },

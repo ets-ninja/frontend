@@ -6,7 +6,7 @@ import { Button, Divider, TextField, Typography } from '@mui/material';
 
 import style from '../../../pages/Profile/Profile.module.css';
 
-const ProfileFormUpdatePassword = ({ setOpen }) => {
+const ProfileFormUpdatePassword = () => {
   const dispatch = useDispatch();
 
   const defaultValue = {
@@ -73,12 +73,7 @@ const ProfileFormUpdatePassword = ({ setOpen }) => {
                   />
                 )}
               />
-            <Button
-            sx={{maxHeight: '57px'}}
-              onClick={() => setOpen(true)}
-              type="submit"
-              variant="contained"
-            >
+            <Button sx={{maxHeight: '57px'}} type="submit" variant="contained">
               Save
             </Button>
           </div>

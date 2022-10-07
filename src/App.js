@@ -16,6 +16,9 @@ import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
+import StripeStatusContainer from './pages/StripeStatusContainer';
+import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+
 import { fetchToken, onMessageListener } from './firebase';
 
 const App = () => {
@@ -48,6 +51,11 @@ const App = () => {
         <Route exect element={<RestorePassword />} path="/restorepassword" />
         <Route
           exect
+          element={<StripeStatusContainer />}
+          path="/payment-status"
+        />
+        <Route
+          exect
           element={<ProtectedRoute component={Profile} />}
           path="/profile"
         />
@@ -75,6 +83,7 @@ const App = () => {
       <Routes>
         <Route path="modal" element={<ModalWindow />}>
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+          <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
         </Route>
       </Routes>
     </div>
