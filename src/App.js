@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import LostPassword from './pages/LostPassword';
 import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
+import WishlistItem from './pages/WishlistItem';
 import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
 import Dashboard from './pages/Dashboard';
@@ -17,7 +18,6 @@ import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
-
 
 const App = () => {
   const location = useLocation();
@@ -51,6 +51,7 @@ const App = () => {
           element={<ProtectedRoute component={Wishlist} />}
           path="/wishlist"
         />
+        <Route exect element={WishlistItem} path="/wishlist/:id" />
         <Route
           exect
           element={<ProtectedRoute component={SavingsSchemes} />}

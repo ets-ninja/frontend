@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { Typography, Box } from '@mui/material';
+import { Typography } from '@mui/material';
 
 const WishlistCard = ({
-  itemInfo: { id, name, image, finalGoal, createdAt },
+  itemInfo: { _id, name, image, finalGoal, createdAt },
 }) => {
   const formatteDate = date => {
     const formatte = date => {
@@ -98,7 +98,7 @@ const WishlistCard = ({
           component={Link}
           variant="contained"
           fullWidth={true}
-          to={'/wishlist/' + id}
+          to={'/wishlist/' + _id}
           sx={{
             backgroundColor: theme => theme.palette.primary,
             color: theme => theme.colors.white,

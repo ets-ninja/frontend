@@ -224,7 +224,6 @@ const Wishlist = () => {
             bgcolor: 'white',
             borderRadius: 3,
             py: 3,
-            borderColor: 'black',
             boxShadow: 0,
             borderWidthTop: '1px',
             borderWidthLeft: '1px',
