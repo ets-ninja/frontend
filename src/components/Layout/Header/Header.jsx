@@ -23,6 +23,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import Notification from './Notification';
 
 const pages = [
   {
@@ -62,7 +63,6 @@ const Header = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -160,7 +160,7 @@ const Header = () => {
               </MenuLink>
             ))}
           </Box>
-
+          <Notification />
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

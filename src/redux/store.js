@@ -17,11 +17,14 @@ import userConfig from './user/userConfig';
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
 
+import notificationsSlice from './notifications/notificationsSlice';
+
 export const store = configureStore({
   reducer: {
     user: persistReducer(userConfig, userReducer),
     modal: persistReducer(modalConfig, modalSlice.reducer),
     request: requestReducer,
+    notifications: notificationsSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

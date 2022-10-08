@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Sentry from '@sentry/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { fetchToken, onMessageListener } from './firebase';
+
 import './App.scss';
+
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Profile from './pages/Profile/Profile';
@@ -19,26 +23,20 @@ import RestorePassword from './pages/RestorePassword';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 
-import { fetchToken, onMessageListener } from './firebase';
-
 const App = () => {
   const location = useLocation();
 
-  const [show, setShow] = useState(false);
-  const [notification, setNotification] = useState({ title: '', body: '' });
   const [isTokenFound, setTokenFound] = useState(false);
-  fetchToken(setTokenFound);
 
-  onMessageListener()
-    .then(payload => {
-      setNotification({
-        title: payload.notification.title,
-        body: payload.notification.body,
-      });
-      setShow(true);
-      console.log(payload);
-    })
-    .catch(err => console.log('failed: ', err));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchToken(setTokenFound);
+  }, [dispatch]);
+
+  if (isTokenFound) {
+    onMessageListener();
+  }
 
   return (
     <div className="App">

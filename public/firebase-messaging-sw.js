@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Scripts for firebase and firebase messaging
 importScripts(
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
@@ -16,18 +17,6 @@ const firebaseConfig = {
   appId: '1:706857741672:web:b22cb85d9e97fa89c1fadd',
 };
 
-firebase.initializeApp(firebaseConfig);
-
 // Retrieve firebase messaging
+firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
-
-messaging.onBackgroundMessage(function (payload) {
-  console.log('Received background message ', payload);
-
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
