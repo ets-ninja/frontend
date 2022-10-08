@@ -2,7 +2,7 @@ import { Card, CardMedia, Switch, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBasket, setMlsCount, setIsPublic} from '../../redux/basket/createBasketSlice'
+import { selectBasket, setExpirationDate, setIsPublic} from '../../redux/basket/createBasketSlice'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -16,8 +16,8 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
 
   const switchHandler = (e) => {
     setIsChecked1(e)
-    if(basket.daysCount) {
-      dispatch(setMlsCount(''))
+    if(basket.expirationDate) {
+      dispatch(setExpirationDate(null))
     }
   }
 
@@ -63,8 +63,8 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
             <DatePicker
               minDate={dayjs(new Date()).add(1, 'day')}
               label="Expired Date"
-              value={basket.daysCount}
-              onChange={(e)=> dispatch(setMlsCount(+new Date(e))) }
+              value={basket.expirationDate}
+              onChange={(e)=> dispatch(setExpirationDate(+new Date(e))) }
               renderInput={params => <TextField {...params} />}
             />
           </LocalizationProvider>

@@ -6,7 +6,7 @@ import { selectBasket, setBasketName, setDescription, setMoneyGoal } from '../..
 import NumField from '../NumField';
 
 
-const CreationForm = ({setTestAmount, testAmount}) => {
+const CreationForm = () => {
 
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()

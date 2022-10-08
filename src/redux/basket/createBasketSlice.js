@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 
 const initialState = {
     basketName: '',
     description: '',
     moneyGoal: '',
-    mlsCount: null,  
+    expirationDate: null,  
     isPublic: false,
     photoTag: null,
 }
@@ -24,8 +25,8 @@ const basketSlice = createSlice({
         setMoneyGoal: (state, action) => {
             state.moneyGoal = action.payload
         },
-        setMlsCount: (state, action) => {
-            state.mlsCount = action.payload
+        setExpirationDate: (state, action) => {
+            state.expirationDate = action.payload
         },
         setIsPublic: (state) => {
             state.isPublic = !state.isPublic
@@ -33,23 +34,33 @@ const basketSlice = createSlice({
         setPhotoTag: (state, action) => {
             state.photoTag = action.payload
         },
-        // TODO axios.post(maybe) and try catch from (sentry)
+
         pushBasketToSomewhere: (state) => {
 
             const Basket = {
               basketName: state.basketName,
               description: state.description,
               moneyGoal: state.moneyGoal,
-              mlsCount: state.mlsCount,
+              expirationDate: state.expirationDate,
               isPublic: state.isPublic,
+              createdAt: +new Date()
             };
 
-            // axios.post('/', () => {Post Basket})
+            axios.post('http://localhost:5050/api/basket', Basket)
 
             state.basketName = ''
             state.description = ''
             state.moneyGoal = ''
-            state.mlsCount = null
+            state.expirationDate = null
+            state.isPublic = false
+            state.photoTag = null
+        },
+
+        cancelCreation: (state) => {
+            state.basketName = ''
+            state.description = ''
+            state.moneyGoal = ''
+            state.expirationDate = null
             state.isPublic = false
             state.photoTag = null
         }
@@ -58,7 +69,7 @@ const basketSlice = createSlice({
 
 export default basketSlice.reducer;
 
-export const {setBasketName, setDescription, setMoneyGoal, setMlsCount, setIsPublic, pushBasketToSomewhere} = basketSlice.actions
+export const {setBasketName, setDescription, setMoneyGoal, setExpirationDate, setIsPublic, pushBasketToSomewhere, cancelCreation} = basketSlice.actions
 
 export const selectBasket = (state) => state.basket;
 

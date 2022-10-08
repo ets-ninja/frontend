@@ -5,15 +5,17 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-
-import CreationForm from '../components/forms/CreationForm';
+import { useNavigate } from "react-router-dom";import CreationForm from '../components/forms/CreationForm';
 import CreationForm2 from '../components/forms/CreationForm2';
 import CreationForm3 from '../components/forms/CreationForm3';
 import { useState } from 'react';
 // import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { pushBasketToSomewhere, selectBasket} from '../redux/basket/createBasketSlice'
+import { pushBasketToSomewhere, selectBasket, cancelCreation} from '../redux/basket/createBasketSlice'
 import { CardMedia } from '@mui/material';
+import ErrorMessage from '../components/UIElements/ErrorMessage';
+import { setProjectAnnotations } from '@storybook/react';
+import { setError } from '../redux/request/requestSlice';
 
 
 
@@ -28,6 +30,7 @@ const CreationPage = () => {
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked3, setIsChecked3] = useState(false);
 
+  const navigate = useNavigate()
 
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()
@@ -43,15 +46,15 @@ const CreationPage = () => {
   const handleNext = () => {
 
     if (!basket.basketName || !basket.moneyGoal){
-      alert('Basket name and money goal are required')
+      dispatch(setError('Basket name and money goal are required'))
       return
     } 
-    if (isChecked1 && !basket.daysCount){
-      alert('If you set time limited you need to set amount of limits')
+    if (isChecked1 && !basket.expirationDate){
+      dispatch(setError('If you set time limited you need to set ex of limits'))
       return
     }
-    if (basket.daysCount <= 0  && basket.moneyGoal <= 0){
-      alert('Less then zero? -_- ')
+    if (basket.moneyGoal <= 0){
+      alert('zero? -_-')
       return
     }
 
@@ -66,12 +69,25 @@ const CreationPage = () => {
 
     if (activeStep === steps.length - 1) {
       dispatch(pushBasketToSomewhere())
+      setIsChecked1(false)
+      setIsChecked3(false)
      }
   };
 
 
 
   const handleBack = () => {
+    if (isChecked1 && !basket.expirationDate){
+      setIsChecked1(false)
+
+    }
+    if (activeStep === 0) {
+      dispatch(cancelCreation())
+      setIsChecked1(false)
+      setIsChecked3(false)
+      navigate('/')
+      return
+    }
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
@@ -138,12 +154,12 @@ const CreationPage = () => {
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
             {/* could be icon */}
+            <ErrorMessage />
             <Button onClick={handleReset}>Go back</Button>
           </Box>
         </Box>
       ) : (
         <React.Fragment>
-
           {/* TODO this !  */}
           {activeStep === 0 ? (
             <CreationForm/>
@@ -165,12 +181,12 @@ const CreationPage = () => {
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2,mx: '10px', mb: '25px'}}>
             <Button
               color="inherit"
-              disabled={activeStep === 0}
+              // disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
               size={'large'}
             >
-              Back
+            {activeStep === 0 ? "Cancel" : "Back"}
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />
             {/* {isStepOptional(activeStep) && (
@@ -194,10 +210,5 @@ const CreationPage = () => {
   );
 };
 
-// const CreationPage = () => {
-//   return (
-//     <div>CreationPage</div>
-//   )
-// }
 
 export default CreationPage;
