@@ -8,13 +8,35 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      await axios.post('/api/user/signup', {
+      const { data } = await axios.post('/api/user/signup', {
         firstName,
         lastName,
         publicName,
         email,
         password,
       });
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const confirmEmail = createAsyncThunk(
+  'user/confirm_email',
+  async ({ code, userId }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('/api/user/signup/confirm', {
+        code,
+        userId,
+      });
+      return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -93,12 +115,9 @@ export const updateUserPhoto = createAsyncThunk(
   'user/updateUserPhoto',
   async ({ userPhoto }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.put(
-        '/api/user/update_photo',
-        {
-          userPhoto,
-        },
-      );
+      const { data } = await axios.put('/api/user/update_photo', {
+        userPhoto,
+      });
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

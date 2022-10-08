@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,32 +9,31 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
-import { registerUser } from '../../redux/user/userActions';
-import LoadingSpinner from '../UIElements/LoadingSpinner';
+import { registerUser } from '@redux/user/userActions';
+import LoadingSpinner from '@components/UIElements/LoadingSpinner';
 
 const RegistrationForm = () => {
   const { loading, success, userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm();
 
   useEffect(() => {
-    if (success) navigate('/login');
-    if (userInfo) navigate('/profile');
+    return () => {
+      dispatch('resetSucces')
+    };
+  }, []);
+
+  useEffect(() => {
+    success && userInfo?.id && navigate('/confirm-email');
   }, [navigate, userInfo, success]);
 
   const submitForm = data => {
-    if (data.password !== data.confirmPassword) {
-      alert('Password mismatch');
-      return;
-    }
-
     data.email = data.email.toLowerCase();
     dispatch(registerUser(data));
   };
@@ -45,12 +44,11 @@ const RegistrationForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitForm)}>
+      <form onSubmit={handleSubmit(submitForm)} noValidate>
         <Stack m={2} spacing={2}>
           <TextField
             type="text"
             {...register('publicName', {
-              required: true,
               maxLength: 70,
             })}
             label="Nickname"
@@ -59,28 +57,33 @@ const RegistrationForm = () => {
           />
           <TextField
             type="text"
+            required
             {...register('firstName', {
-              required: true,
+              required: 'This field is required',
               maxLength: 70,
             })}
             label="First Name"
             autoComplete="given-name"
             error={!!errors.firstName}
+            helperText={errors.firstName?.message}
           />
           <TextField
             type="text"
+            required
             {...register('lastName', {
-              required: true,
+              required: 'This field is required',
               maxLength: 70,
             })}
             label="Last Name"
             autoComplete="family-name"
             error={!!errors.lastName}
+            helperText={errors.lastName?.message}
           />
           <TextField
             type="email"
+            required
             {...register('email', {
-              required: true,
+              required: 'Email is required',
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: 'Entered value does not match email format',
@@ -89,26 +92,37 @@ const RegistrationForm = () => {
             label="Email"
             autoComplete="email"
             error={!!errors.email}
+            helperText={errors.email?.message}
           />
           <TextField
             type="password"
+            required
             {...register('password', {
-              required: true,
-              minLength: 6,
+              required: 'Password is required',
+              minLength: {
+                value: 6,
+                message: 'Password should be at least 6 symbols',
+              },
             })}
             label="Password"
             autoComplete="new-password"
             error={!!errors.password}
+            helperText={errors.password?.message}
           />
           <TextField
             type="password"
+            required
             {...register('confirmPassword', {
-              required: true,
-              minLength: 6,
+              validate: value => {
+                return (
+                  value === getValues('password') || 'Paswords do not match'
+                );
+              },
             })}
             label="Confirm Password"
             autoComplete="new-password"
             error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
           />
           <Button type="submit" variant="contained">
             Signup
@@ -118,8 +132,8 @@ const RegistrationForm = () => {
 
       <Typography variant="caption">
         <Link
-          href="#"
-          onClick={() => navigate('/login')}
+          component={RouterLink}
+          to="/login"
           underline="hover"
           color="black"
           paddingX="20px"

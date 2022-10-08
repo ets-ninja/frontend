@@ -29,7 +29,7 @@ listenerMiddleware.startListening({
     if (!action.payload && action.key === 'persistedAuth') {
       listenerApi.dispatch(refresh());
     } else if (
-      action.payload.token === null &&
+      action.payload?.token === null &&
       action.key === 'persistedAuth'
     ) {
       listenerApi.dispatch(refresh());

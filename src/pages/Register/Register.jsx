@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import RegistrationForm from '../components/forms/RegistrationForm';
+import RegistrationForm from '@components/forms/RegistrationForm';
 
 const Register = () => {
   return (

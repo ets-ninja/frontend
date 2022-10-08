@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   registerUser,
+  confirmEmail,
   getUserDetails,
   updateUserInfo,
   updateUserPassword,
@@ -9,7 +10,7 @@ import {
 
 const initialState = {
   loading: false,
-  userInfo: [],
+  userInfo: null,
   error: null,
   success: false,
   successInfo: {},
@@ -19,14 +20,19 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    resetSucces(state) {
+      state.success = false;
+    }
   },
   extraReducers: {
     //register
     [registerUser.pending]: state => {
+      state.success = false;
       state.loading = true;
       state.error = null;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
+      state.userInfo = payload.user;
       state.loading = false;
       state.success = true;
     },
@@ -34,8 +40,24 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
+    // confirm email
+    [confirmEmail.pending]: state => {
+      state.success = false;
+      state.loading = true;
+      state.error = null;
+    },
+    [confirmEmail.fulfilled]: (state, { payload }) => {
+      state.userInfo = payload.user;
+      state.loading = false;
+      state.success = true;
+    },
+    [confirmEmail.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
     //getUser
     [getUserDetails.pending]: state => {
+      state.success = false;
       state.loading = true;
       state.error = null;
     },
@@ -48,6 +70,7 @@ const userSlice = createSlice({
     },
     // updateUserInfo
     [updateUserInfo.pending]: state => {
+      state.success = false;
       state.loading = true;
       state.error = null;
     },
@@ -61,6 +84,7 @@ const userSlice = createSlice({
     },
     // updateUserPassword
     [updateUserPassword.pending]: state => {
+      state.success = false;
       state.loading = true;
       state.error = null;
     },
@@ -73,6 +97,7 @@ const userSlice = createSlice({
       state.error = payload;
     },
     [updateUserPhoto.pending]: state => {
+      state.success = false;
       state.loading = true;
       state.error = null;
     },
@@ -87,5 +112,5 @@ const userSlice = createSlice({
     },
   },
 });
-
+export const { resetSucces } = userSlice.actions
 export default userSlice.reducer;
