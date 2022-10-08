@@ -102,8 +102,8 @@ const BasketDashboardHeader = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static' sx={{ bgcolor: 'white', boxShadow: 0,}}>
-        <Toolbar sx={{ bgcolor: 'white', p: 2, minWidth: 300, color: 'black' }}>
-          <Typography variant='h1' sx={{ fontFamily: 'Ubuntu', fontWeight: 700, fontSize: 46, flexGrow: 1 }}>Dashboard</Typography>
+        <Toolbar sx={{ bgcolor: 'white', p: 2, minWidth: 300, color: 'black', flexDirection: { xxs: 'column',xs: 'column', sm: 'column', md: 'row' }, }}>
+          <Typography variant='h1' sx={{ fontFamily: 'Ubuntu', fontWeight: 700, fontSize: 46, flexGrow: 1, mb: { sm: 2, md: 0 } }}>Dashboard</Typography>
           <FormControl sx={{ m: 1, width: 200 }}>
             <InputLabel id="basket-type-label">Basket Type</InputLabel>
             <Select
@@ -151,7 +151,7 @@ const BasketDashboardHeader = () => {
           <Button 
             variant="contained" 
             color="inherit" 
-            sx={{ mr: 1 }} 
+            sx={{ mr: 1, mb: { xxs: 2, xs: 2, sm: 2, md: 0 } }} 
             endIcon={<KeyboardArrowDownIcon />}
             onClick={handleFilterClick}>
             Filter
@@ -169,7 +169,7 @@ const BasketDashboardHeader = () => {
               <FormControlLabel control={<Switch checked={archivedBasketsState} onChange={() => { setarchivedBasketsState(!archivedBasketsState) }}/>} label="Archived" />
             </FormGroup>
           </StyledMenu>
-          <Button variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white" } }} >Create new</Button>
+          <Button variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white", mb: { sm: 2, md: 0 } } }} >Create new</Button>
         </Toolbar>
       </AppBar>
     </Box>

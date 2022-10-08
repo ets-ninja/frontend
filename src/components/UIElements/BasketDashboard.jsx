@@ -17,7 +17,7 @@ const BasketDashboard = () => {
 
   return (
     <Box sx={{ bgcolor: 'white', boxShadow: 1, borderRadius: 3, p: 2, color: 'black', borderColor: "black", position: 'relative' }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, minWidth: 300, minHeight: 500, justifyContent: 'center', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', rowGap: { xs: 2, md: 3 }, columnGap: { lg: '2.66%', md: '5%', sm: '10%' }, minWidth: 300, minHeight: 500, justifyContent: 'center', alignItems: 'center' }}>
         { error && <Typography variant='h2' sx={{ fontFamily: 'Ubuntu', fontWeight: 500, fontSize: 20, flexGrow: 1 }}>There is an error with loading: {error}</Typography> }
         { !error && loading && <LoadingSpinner /> }
         { !error && !loading && baskets.map((basket) => { return(<BasketBox data={basket} key={basket.id} />) }) }
