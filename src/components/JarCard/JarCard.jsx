@@ -36,7 +36,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
   const {
     createdAt = new Date(Date.now()),
     name = 'Toyota Supra',
-    image = 'https://images.unsplash.com/photo-1603811478698-0b1d6256f79a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
+    image = 'https://cdn.arstechnica.net/wp-content/uploads/2022/04/razer-book-800x450.jpg',
     expirationDate = new Date('25 Oct 2022 00:12:00'),
     value = 53334,
     finalGoal = 60000,
@@ -46,7 +46,8 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
     <Box
       onClick={handleOpenModal}
       sx={{
-        background: '#FCFCFC',
+        color: theme => theme.colors.darkBlue,
+        background: theme => theme.colors.white,
         boxSizing: 'border-box',
         border: '1px solid #868686',
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
@@ -146,7 +147,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
         <Box
           sx={{
             position: 'absolute',
-            height: '95px',
+            height: '85px',
             top: '60%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -171,32 +172,34 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
               left: '50%',
               transform: 'translate(-50%, -50%)',
               background:
-                'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.0419) 13.19%, rgba(255, 255, 255, 0.1) 15.21%, rgba(255, 255, 255, 0.1) 30.97%, rgba(0, 0, 0, 0) 39.19%, rgba(0, 0, 0, 0.02) 74.98%, rgba(255, 255, 255, 0.1) 78.81%, rgba(255, 255, 255, 0.105) 87.56%, rgba(0, 0, 0, 0.0108) 92.18%, rgba(0, 0, 0, 0) 99.19%)',
+                'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.0419) 8.19%, rgba(255, 255, 255, 0.1) 10.51%, rgba(255, 255, 255, 0.1) 28.5%, rgba(0, 0, 0, 0) 32.19%, rgba(0, 0, 0, 0.02) 78.98%, rgba(255, 255, 255, 0.1) 82.81%, rgba(255, 255, 255, 0.105) 90.66%, rgba(0, 0, 0, 0.0108) 94.08%, rgba(0, 0, 0, 0) 99.19%);',
             }}
           ></Box>
         </Box>
-        <Box
-          sx={{
-            opacity: 0,
-            '&:hover': { opacity: 0.9 },
-            mx: 3,
-            height: '95%',
-            zIndex: 1,
-            transition: '500ms cubic-bezier(0.4, 0, 0.2, 1)',
-            backgroundColor: theme => theme.palette.secondary.main,
-            position: 'absolute',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '5px',
-          }}
-        >
-          <Typography align="center" sx={{ px: 2, py: 1 }}>
-            {description.length > 450
-              ? `${description.substring(0, 380)}. . .`
-              : description}
-          </Typography>
-        </Box>
+        <MediaQuery minWidth={768}>
+          <Box
+            sx={{
+              opacity: 0,
+              '&:hover': { opacity: 0.9 },
+              mx: 3,
+              height: '95%',
+              zIndex: 1,
+              transition: '500ms cubic-bezier(0.4, 0, 0.2, 1)',
+              backgroundColor: theme => theme.palette.secondary.main,
+              position: 'absolute',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '5px',
+            }}
+          >
+            <Typography align="center" sx={{ px: 2, py: 1 }}>
+              {description.length > 450
+                ? `${description.substring(0, 380)}. . .`
+                : description}
+            </Typography>
+          </Box>
+        </MediaQuery>
       </Box>
       {description && (
         <MediaQuery maxWidth={767}>
@@ -262,14 +265,27 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
               horizontal: 'right',
             }}
             data-clickable={true}
+            sx={{
+              ml: 1,
+              '&:hover svg': theme => theme.hover.icon,
+            }}
           >
             <TextsmsOutlinedIcon
-              sx={{ width: '40px', height: '40px', ml: 1 }}
+              sx={{
+                width: '40px',
+                height: '40px',
+                fill: theme => theme.colors.darkBlue,
+              }}
             />
           </Badge>
           <ShareOutlinedIcon
             data-clickable={true}
-            sx={{ width: '40px', height: '40px' }}
+            sx={{
+              width: '40px',
+              height: '40px',
+              fill: theme => theme.colors.darkBlue,
+              '&:hover': theme => theme.hover.icon,
+            }}
           />
         </Box>
       </Box>

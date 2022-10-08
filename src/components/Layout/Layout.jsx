@@ -69,6 +69,13 @@ const theme = createTheme({
       xl: 1536,
     },
   },
+  hover: {
+    icon: {
+      fill: theme => theme.colors.yellow,
+      scale: '1.2',
+      transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+  },
 });
 
 const Layout = props => {
