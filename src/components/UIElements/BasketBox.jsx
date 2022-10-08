@@ -36,8 +36,6 @@ const BasketBox = ({
         sx={{
           width: 300,
           minHeight: 450,
-          marginLeft: 3,
-          marginRight: 3,
           borderRadius: 4,
           marginBottom: 10,
           boxShadow: 4,
