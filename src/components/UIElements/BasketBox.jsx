@@ -61,21 +61,15 @@ const BasketBox = ({
           >
             {name}
           </Typography>
-          {() => 
-            {
-              if(getDaysBetweenDates(Date.parse(expirationDate), Date.now()) <= 0 ){
-                return(<Typography  sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}>Expired</Typography>);
-              }
-              return(<Typography  sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}>{getDaysBetweenDates(Date.parse(expirationDate), Date.now()) + 'days left'}</Typography>);
-            }
-          }
+          {(getDaysBetweenDates(Date.parse(expirationDate), Date.now()) <= 0) && <Typography  sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}>Expired</Typography>}
+          {(getDaysBetweenDates(Date.parse(expirationDate), Date.now()) > 0) && <Typography  sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}>{getDaysBetweenDates(Date.parse(expirationDate), Date.now()) + ' days left'}</Typography>}
         </Box>
         <Box sx={{ width: 300, height: 350, position: 'relative' }}>
                     <CardMedia
                         component="img"
                         sx={{ width: 300, height: 350, position: 'absolute', zIndex: 0  }}
-                        src={image ? image : "https://img.freepik.com/free-photo/wicker-basket-isolated_2829-18051.jpg?w=360"} 
-                        alt="Live from space album cover"
+                        src={image || "https://img.freepik.com/free-photo/wicker-basket-isolated_2829-18051.jpg?w=360"} 
+                        alt={`${name} photo`}
                     />
                     <Box sx={{ opacity: 0, '&:hover': { opacity: 1 }, zIndex: 1, transition: '0.5s', backgroundColor: theme.colors.yellow, width: 300, height: 350, position: 'absolute', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center'  }}>
                         <Typography align="center">
