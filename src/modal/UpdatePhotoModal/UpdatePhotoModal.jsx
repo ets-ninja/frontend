@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
-import getModalData from '../../redux/modal/modalSelectors';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -81,13 +80,14 @@ const UpdatePhotoModal = () => {
     [completedCrop, scale, rotate],
   );
 
+  console.log(data);
+
   const saveUserPhoto = () => {
-    dispatch(
-      updateUserPhoto({
-        userPhoto: `${previewCanvasRef.current.toDataURL()}`,
-      }),
-    );
-    modal.close();
+    dispatch(updateUserPhoto({
+      userPhoto: `${previewCanvasRef.current.toDataURL()}`,
+      path: data.path
+    }),)
+      modal.close();
   };
 
   return (
@@ -114,6 +114,7 @@ const UpdatePhotoModal = () => {
               aspect={aspect}
             >
               <img
+                alt=''
                 ref={imgRef}
                 src={imgSrc}
                 style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}

@@ -109,7 +109,7 @@ export const updateUserPassword = createAsyncThunk(
 
 export const updateUserPhoto = createAsyncThunk(
   'user/updateUserPhoto',
-  async ({ userPhoto }, { getState, rejectWithValue }) => {
+  async ({ userPhoto, path }, { getState, rejectWithValue }) => {
     const { user } = getState();
     const config = {
       headers: {
@@ -119,7 +119,7 @@ export const updateUserPhoto = createAsyncThunk(
 
     try {
       const { data } = await axios.put(
-        '/api/user/update_photo',
+        `/api/${path}`,
         {
           userPhoto,
         },
