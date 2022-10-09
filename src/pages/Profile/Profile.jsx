@@ -30,6 +30,8 @@ const Profile = memo(() => {
   }, [navigate, successInfo, dispatch]);
   const modal = useModal();
 
+console.log(userInfo)
+
   return (
     <div className={style.profile}>
       <div>
@@ -60,7 +62,7 @@ const Profile = memo(() => {
                     height: 250,
                     aspect: 1,
                     canvasBorderRadius: 50,
-                    path: 'user/update_photo'
+                    path: 'updateUserPhoto'
                   })
                 }
               >

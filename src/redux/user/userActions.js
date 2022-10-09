@@ -109,22 +109,11 @@ export const updateUserPassword = createAsyncThunk(
 
 export const updateUserPhoto = createAsyncThunk(
   'user/updateUserPhoto',
-  async ({ userPhoto, path }, { getState, rejectWithValue }) => {
-    const { user } = getState();
-    const config = {
-      headers: {
-        Authorization: `${user.userToken}`,
-      },
-    };
-
+  async ({ userPhoto }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.put(
-        `/api/${path}`,
-        {
-          userPhoto,
-        },
-        config,
-      );
+      const { data } = await axios.put(`/api/user/update_photo`, {
+        userPhoto,
+      });
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

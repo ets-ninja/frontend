@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react';
 import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
 import { useDebounceEffect } from '../../hooks/useDebounceEffect';
 import { canvasPreview } from './canvasPreview';
-import 'react-image-crop/src/ReactCrop.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
+import 'react-image-crop/src/ReactCrop.scss';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -80,13 +80,16 @@ const UpdatePhotoModal = () => {
     [completedCrop, scale, rotate],
   );
 
-  console.log(data);
-
   const saveUserPhoto = () => {
-    dispatch(updateUserPhoto({
-      userPhoto: `${previewCanvasRef.current.toDataURL()}`,
-      path: data.path
-    }),)
+    switch (data.path) {
+      case 'updateUserPhoto':
+        dispatch(updateUserPhoto({
+          userPhoto: `${previewCanvasRef.current.toDataURL()}`,
+        }),)
+        break;
+      default:
+        break;
+    }
       modal.close();
   };
 
