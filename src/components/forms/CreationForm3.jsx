@@ -3,11 +3,20 @@ import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBasket} from '../../redux/basket/createBasketSlice'
+import defaultImage from '../../assets/swinka.png'
+import useModal from '../../hooks/useModal';
+
 
 const CreationForm3 = ({isChecked3, setIsChecked3}) => {
 
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()
+
+  const modal = useModal()
+
+  const handleModalPhoto = () => {
+    // modal.open('update-photo')
+  }
 
   return (
     <Box
@@ -64,11 +73,12 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
             Banka tag:
           </Typography>
           <img style={{position: 'absolute', width: '20px', height: '20px', right: '-10px', top: '45px', cursor: 'pointer', backgroundColor: "white" }}
+          onClick={handleModalPhoto}
           src="https://www.freeiconspng.com/thumbs/edit-icon-png/edit-new-icon-22.png" alt="" srcSet="" />
           <CardMedia 
             component="img"
             sx={{ width: 200, height: 180, ml:'30px', border: 'solid 1px black'  }}
-            image="https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7812792/pig-clipart-sm.png"
+            image={basket.photoTag ? basket.photoTag : defaultImage}
             alt="Live from space album cover"
           />
           

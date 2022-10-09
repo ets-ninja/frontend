@@ -11,11 +11,12 @@ import CreationForm3 from '../components/forms/CreationForm3';
 import { useState } from 'react';
 // import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { pushBasketToSomewhere, selectBasket, cancelCreation} from '../redux/basket/createBasketSlice'
+import { pushBasketToSomewhere, selectBasket, cancelCreation, createBasket} from '../redux/basket/createBasketSlice'
 import { CardMedia } from '@mui/material';
 import ErrorMessage from '../components/UIElements/ErrorMessage';
 import { setProjectAnnotations } from '@storybook/react';
 import { setError } from '../redux/request/requestSlice';
+import CreationResult from '../components/CreationResult';
 
 
 
@@ -50,11 +51,11 @@ const CreationPage = () => {
       return
     } 
     if (isChecked1 && !basket.expirationDate){
-      dispatch(setError('If you set time limited you need to set ex of limits'))
+      dispatch(setError('If you set time limited you need to set expire date'))
       return
     }
     if (basket.moneyGoal <= 0){
-      alert('zero? -_-')
+      dispatch(setError('zero? -_-'))
       return
     }
 
@@ -68,13 +69,11 @@ const CreationPage = () => {
     setSkipped(newSkipped);
 
     if (activeStep === steps.length - 1) {
-      dispatch(pushBasketToSomewhere())
+      dispatch(createBasket())
       setIsChecked1(false)
       setIsChecked3(false)
      }
   };
-
-
 
   const handleBack = () => {
     if (isChecked1 && !basket.expirationDate){
@@ -108,6 +107,7 @@ const CreationPage = () => {
 
   const handleReset = () => {
     setActiveStep(0);
+    navigate('/')
   };
 
  
@@ -140,45 +140,41 @@ const CreationPage = () => {
 
       {/* main content */}
       {activeStep === steps.length ? (
-        <Box sx={{height: '100%'}}>
-          <Typography sx={{ mt: 2, mb: 3, display: 'flex', justifyContent: 'center', textAlign: 'center', px: '10px'  }}>
-            All steps completed - you&apos;re finished, basket is created!
-          </Typography>
-          <Box>
-            <CardMedia 
-            sx={{maxWidth: '300px', maxHeight: '400px', margin: '0 auto', p: '10px'}}
-            component='img'
-            src='https://papik.pro/en/uploads/posts/2022-06/1654763453_11-papik-pro-p-cute-piggy-drawing-11.png'
-            />
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            {/* could be icon */}
-            <ErrorMessage />
-            <Button onClick={handleReset}>Go back</Button>
-          </Box>
-        </Box>
+        <CreationResult
+          sucLabel="All steps completed - basket created!"
+          errLabel="Uhh, something went wrong..."
+          loadLabel="Loading..."
+          handleReset={handleReset}
+          errorState={basket.error}
+          loadingState={basket.loading}
+          successState={basket.success}
+        />
       ) : (
         <React.Fragment>
-          {/* TODO this !  */}
           {activeStep === 0 ? (
-            <CreationForm/>
+            <CreationForm />
           ) : activeStep === 1 ? (
-            <CreationForm2               
+            <CreationForm2
               setIsChecked1={setIsChecked1}
               isChecked1={isChecked1}
             />
           ) : (
-            <CreationForm3 
+            <CreationForm3
               setIsChecked3={setIsChecked3}
               isChecked3={isChecked3}
             />
           )}
 
-          {/* <Typography sx={{ mt: 2, mb: 1 }}><Testing /> {activeStep + 1}</Typography> */}
-
-          {/* KNOPKI:) */}
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2,mx: '10px', mb: '25px'}}>
+          {/* KNOPKI */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              pt: 2,
+              mx: '10px',
+              mb: '25px',
+            }}
+          >
             <Button
               color="inherit"
               // disabled={activeStep === 0}
@@ -186,7 +182,7 @@ const CreationPage = () => {
               sx={{ mr: 1 }}
               size={'large'}
             >
-            {activeStep === 0 ? "Cancel" : "Back"}
+              {activeStep === 0 ? 'Cancel' : 'Back'}
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />
             {/* {isStepOptional(activeStep) && (
@@ -200,7 +196,7 @@ const CreationPage = () => {
               variant="outlined"
               onClick={handleNext}
               color={activeStep === steps.length - 1 ? 'success' : 'primary'}
-              >
+            >
               {activeStep === steps.length - 1 ? 'Create' : 'Next'}
             </Button>
           </Box>
