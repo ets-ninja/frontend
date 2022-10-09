@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails, updateUserPhoto } from '../../redux/user/userActions';
+import { getUserDetails } from '../../redux/user/userActions';
 import { useNavigate } from 'react-router-dom';
 import ProfileFormUpdateInfo from '../../components/forms/ProfileForm/ProfileFormUpdateInfo';
 import ProfileFormUpdatePassword from '../../components/forms/ProfileForm/ProfileFormUpdatePassword';
@@ -29,8 +29,6 @@ const Profile = memo(() => {
     dispatch(getUserDetails());
   }, [navigate, successInfo, dispatch]);
   const modal = useModal();
-
-console.log(userInfo)
 
   return (
     <div className={style.profile}>
