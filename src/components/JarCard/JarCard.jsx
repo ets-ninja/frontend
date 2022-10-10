@@ -28,12 +28,13 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-export default function JarCard({ user, bank, handleOpenModal = null }) {
+export default function JarCard({ bank, handleOpenModal = null }) {
   const {
     userPhoto = 'https://americansongwriter.com/wp-content/uploads/2022/03/RickAstley.jpeg?fit=2000%2C800',
     publicName = 'Rick Astley',
-  } = user;
+  } = bank.user;
   const {
+    _id,
     createdAt = new Date(Date.now()),
     name = 'Toyota Supra',
     image = 'https://cdn.arstechnica.net/wp-content/uploads/2022/04/razer-book-800x450.jpg',
@@ -44,6 +45,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
   } = bank;
   return (
     <Box
+      key={_id}
       onClick={handleOpenModal}
       sx={{
         color: theme => theme.colors.darkBlue,
@@ -110,7 +112,7 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
           </Typography>
         </Box>
         <Typography component="p" sx={{ fontWeight: '500' }}>
-          {createdAt.toLocaleDateString('en-US', {
+          {new Date(createdAt).toLocaleDateString('en-US', {
             month: 'short',
             day: 'numeric',
           })}
@@ -219,7 +221,8 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
             <TimerOutlinedIcon />
             <Typography component="p" sx={{ fontWeight: '500' }}>
               {`${Math.floor(
-                new Date(expirationDate - Date.now()) / (24 * 60 * 60 * 1000),
+                new Date(new Date(expirationDate) - Date.now()) /
+                  (24 * 60 * 60 * 1000),
               )} d.`}
             </Typography>
           </Box>
@@ -274,6 +277,8 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
               sx={{
                 width: '40px',
                 height: '40px',
+                scale: '1',
+                transition: theme => theme.hover.icon.transition,
                 fill: theme => theme.colors.darkBlue,
               }}
             />
@@ -283,6 +288,8 @@ export default function JarCard({ user, bank, handleOpenModal = null }) {
             sx={{
               width: '40px',
               height: '40px',
+              scale: '1',
+              transition: theme => theme.hover.icon.transition,
               fill: theme => theme.colors.darkBlue,
               '&:hover': theme => theme.hover.icon,
             }}
