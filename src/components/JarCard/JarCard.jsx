@@ -66,20 +66,15 @@ export default function JarCard({ bank, handleOpenModal = null }) {
           xl: 'calc((100% - 60px) / 3)',
         },
         '&:not(:last-of-type)': {
-          mb: { xs: '15px', smd: '0' },
+          mb: { xs: '15px', smd: '15px', md: '20px', xl: '30px' },
         },
-        '&:nth-last-of-type(even)': {
+        '&:nth-of-type(odd)': {
           mr: { md: '20px', smd: '15px', lg: '0' },
-        },
-        '&:not(:nth-last-of-type(-n+2))': {
-          mb: { md: '20px', smd: '15px', lg: '0' },
         },
         '&:not(:nth-of-type(3n))': {
           mr: { lg: '20px', xl: '30px' },
         },
-        '&:not(:nth-last-of-type(-n+3))': {
-          mb: { lg: '20px', xl: '30px' },
-        },
+        mb: { smd: '15px', md: '20px', xl: '30px' },
       }}
     >
       <Box
@@ -118,125 +113,129 @@ export default function JarCard({ bank, handleOpenModal = null }) {
           })}
         </Typography>
       </Box>
-      <Typography
-        variant="h3"
-        component="p"
-        sx={{
-          textAlign: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontWeight: '500',
-          letterSpacing: '0.05em',
-          mt: 1,
-        }}
-      >
-        {name}
-      </Typography>
       <Box
         sx={{
           position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          overflow: 'hidden',
+          '&:hover > .MuiBox-root': {
+            opacity: 0.9,
+            transform: 'translateY(0%)',
+          },
         }}
       >
         <img
-          src={jarStepHandler(value, finalGoal)}
+          src={image}
           alt={`${name}`}
-          style={{ height: '300px' }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            height: '85px',
-            top: '60%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            background: '#EBEBEB',
-            padding: '8px',
+          style={{
+            display: 'block',
+            maxWidth: '100%',
           }}
-        >
-          <img
-            src={image}
-            alt={`${name}`}
-            style={{
-              display: 'block',
-              height: '100%',
-            }}
-          />
-          <Box
-            sx={{
-              height: '100%',
-              width: '100%',
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              background:
-                'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.0419) 8.19%, rgba(255, 255, 255, 0.1) 10.51%, rgba(255, 255, 255, 0.1) 28.5%, rgba(0, 0, 0, 0) 32.19%, rgba(0, 0, 0, 0.02) 78.98%, rgba(255, 255, 255, 0.1) 82.81%, rgba(255, 255, 255, 0.105) 90.66%, rgba(0, 0, 0, 0.0108) 94.08%, rgba(0, 0, 0, 0) 99.19%);',
-            }}
-          ></Box>
-        </Box>
-        <MediaQuery minWidth={768}>
+        />
+        <MediaQuery minWidth={769}>
           <Box
             sx={{
               opacity: 0,
-              '&:hover': { opacity: 0.9 },
-              mx: 3,
-              height: '95%',
+              height: '100%',
+              width: '100%',
               zIndex: 1,
-              transition: '500ms cubic-bezier(0.4, 0, 0.2, 1)',
+              transition:
+                'transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 250ms cubic-bezier(0.4, 0, 0.2, 1)',
               backgroundColor: theme => theme.palette.secondary.main,
               position: 'absolute',
+              top: 0,
+              left: 0,
+              transform: 'translateY(100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: '5px',
             }}
           >
             <Typography align="center" sx={{ px: 2, py: 1 }}>
               {description.length > 450
-                ? `${description.substring(0, 380)}. . .`
+                ? `${description.substring(0, 365)}. . .`
                 : description}
             </Typography>
           </Box>
         </MediaQuery>
       </Box>
-      {description && (
-        <MediaQuery maxWidth={767}>
-          <Typography component="p" sx={{ px: { xs: 1, sm: 2 } }}>
-            {description.length > 120
-              ? `${description.substring(0, 120)}. . .`
-              : description}
-          </Typography>
-        </MediaQuery>
-      )}
-      <Box sx={{ px: { xs: 1, sm: 2 }, mt: 1 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1 }}>
-          <Typography component="p" sx={{ fontWeight: '500' }}>
-            {`${value} of ${finalGoal}`}
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <TimerOutlinedIcon />
-            <Typography component="p" sx={{ fontWeight: '500' }}>
-              {`${Math.floor(
-                new Date(new Date(expirationDate) - Date.now()) /
-                  (24 * 60 * 60 * 1000),
-              )} d.`}
+      <Box sx={{ background: '#EBEBEB', pt: 1 }}>
+        <Typography
+          variant="h3"
+          component="p"
+          sx={{
+            pl: 2,
+            fontWeight: '500',
+            letterSpacing: '0.05em',
+          }}
+        >
+          {name}
+        </Typography>
+      </Box>
+      <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ pl: 1, mt: 1, flexGrow: '2' }}>
+            {description && (
+              <MediaQuery maxWidth={767}>
+                <Typography component="p" sx={{ pl: { xs: 1, sm: 2 }, mb: 1 }}>
+                  {description.length > 120
+                    ? `${description.substring(0, 90)}. . .`
+                    : description}
+                </Typography>
+              </MediaQuery>
+            )}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column-reverse', xxs: 'row' },
+                justifyContent: 'space-between',
+                px: 1,
+              }}
+            >
+              <Typography component="p" sx={{ fontWeight: '500' }}>
+                {`${value} of ${finalGoal}`}
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <TimerOutlinedIcon />
+                <Typography component="p" sx={{ fontWeight: '500' }}>
+                  {`${Math.floor(
+                    new Date(new Date(expirationDate) - Date.now()) /
+                      (24 * 60 * 60 * 1000),
+                  )} d.`}
+                </Typography>
+              </Box>
+            </Box>
+            <BorderLinearProgress
+              variant="determinate"
+              value={(value * 100) / finalGoal}
+              sx={{
+                height: '5px',
+              }}
+            />
+            <Typography component="p" sx={{ fontSize: '13px', pl: 1 }}>
+              Last donation 5 min. ago
             </Typography>
           </Box>
+          <Box
+            sx={{
+              height: '0px',
+              width: '110px',
+              flexShrink: 0,
+              alignSelf: 'flex-end',
+            }}
+          >
+            <img
+              src={jarStepHandler(value, finalGoal)}
+              alt={`${name}`}
+              style={{
+                width: '100%',
+                height: 'auto',
+                zIndex: '2',
+                position: 'relative',
+                bottom: '146px',
+              }}
+            />
+          </Box>
         </Box>
-        <BorderLinearProgress
-          variant="determinate"
-          value={(value * 100) / finalGoal}
-          sx={{
-            height: '5px',
-          }}
-        />
-        <Typography component="p" sx={{ fontSize: '13px', pl: 1 }}>
-          Last donation 5 min. ago
-        </Typography>
         <Box
           sx={{ display: 'flex', alignItems: 'center', pb: 2, mt: 1 }}
           data-clickable={true}
@@ -245,6 +244,7 @@ export default function JarCard({ bank, handleOpenModal = null }) {
             sx={{
               width: '100%',
               fontSize: '20px',
+              ml: 1,
               p: 1,
               fontWeight: '500',
               borderRadius: '5px',
@@ -277,6 +277,7 @@ export default function JarCard({ bank, handleOpenModal = null }) {
               sx={{
                 width: '40px',
                 height: '40px',
+                px: '5px',
                 scale: '1',
                 transition: theme => theme.hover.icon.transition,
                 fill: theme => theme.colors.darkBlue,
@@ -288,6 +289,7 @@ export default function JarCard({ bank, handleOpenModal = null }) {
             sx={{
               width: '40px',
               height: '40px',
+              px: '5px',
               scale: '1',
               transition: theme => theme.hover.icon.transition,
               fill: theme => theme.colors.darkBlue,
