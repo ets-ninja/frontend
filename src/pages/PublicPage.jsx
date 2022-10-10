@@ -62,13 +62,12 @@ export default function PublicPage() {
       ></div>
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
         <JarCard
-          user={{}}
-          bank={{ value: val, finalGoal: 1000 }}
+          bank={{ user: {}, value: val, finalGoal: 1000 }}
           handleOpenModal={handleOpenModal}
         />
         <JarCard
-          user={{}}
           bank={{
+            user: {},
             value: 143,
             finalGoal: 500,
             image: 'https://wallpaperaccess.com/full/5163201.jpg',
@@ -76,37 +75,23 @@ export default function PublicPage() {
           handleOpenModal={handleOpenModal}
         />
         <JarCard
-          user={{}}
           bank={{
+            user: {},
             value: 15220,
             finalGoal: 100000,
-            image:
-              'https://upload.wikimedia.org/wikipedia/commons/b/b5/Baby.tux.sit-black-800x800.png',
           }}
           handleOpenModal={handleOpenModal}
         />
+        <JarCard bank={{ user: {}, value: 1964, finalGoal: 2000 }} />
         <JarCard
-          user={{}}
           bank={{
-            value: 1964,
-            finalGoal: 2000,
-          }}
-        />
-        <JarCard
-          user={{}}
-          bank={{
-            name: 'very very very very very very very very very very very long naaaaaaameeee',
+            user: {},
+            name: 'very very very very long nameeeeeee',
             value: 32,
             finalGoal: 1000,
           }}
         />
-        <JarCard
-          user={{}}
-          bank={{
-            value: 115000,
-            finalGoal: 200000,
-          }}
-        />
+        <JarCard bank={{ user: {}, value: 115000, finalGoal: 200000 }} />
       </Box>
     </ResponsiveContainer>
   );
