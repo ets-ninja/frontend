@@ -77,99 +77,102 @@ export default function JarCard({ bank, handleOpenModal = null }) {
         mb: { smd: '15px', md: '20px', xl: '30px' },
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: '1px solid #ececec',
-          px: { xs: 1, sm: 2 },
-          py: 1,
-        }}
-      >
+      <Box>
         <Box
-          sx={{ display: 'flex', alignItems: 'center' }}
-          data-clickable={true}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: '1px solid #ececec',
+            px: { xs: 1, sm: 2 },
+            py: 1,
+          }}
         >
-          <Avatar
-            alt={`${publicName} avatar`}
-            src={userPhoto}
-            sx={{ width: 56, height: 56 }}
+          <Box
+            sx={{ display: 'flex', alignItems: 'center' }}
             data-clickable={true}
+          >
+            <Avatar
+              alt={`${publicName} avatar`}
+              src={userPhoto}
+              sx={{ width: 56, height: 56 }}
+              data-clickable={true}
+            />
+            <Typography
+              variant="h3"
+              component="p"
+              sx={{ ml: 1 }}
+              data-clickable={true}
+            >
+              {publicName}
+            </Typography>
+          </Box>
+          <Typography component="p" sx={{ fontWeight: '500' }}>
+            {new Date(createdAt).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+            })}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            position: 'relative',
+            overflow: 'hidden',
+            '&:hover > .MuiBox-root': {
+              opacity: 0.9,
+              transform: 'translateY(0%)',
+            },
+          }}
+        >
+          <img
+            src={image}
+            alt={`${name}`}
+            style={{
+              display: 'block',
+              maxWidth: '100%',
+            }}
           />
+          <MediaQuery minWidth={769}>
+            <Box
+              sx={{
+                opacity: 0,
+                height: '100%',
+                width: '100%',
+                zIndex: 1,
+                transition:
+                  'transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 250ms cubic-bezier(0.4, 0, 0.2, 1)',
+                backgroundColor: theme => theme.palette.secondary.main,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                transform: 'translateY(100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography align="center" sx={{ px: 2, py: 1 }}>
+                {description.length > 450
+                  ? `${description.substring(0, 365)}. . .`
+                  : description}
+              </Typography>
+            </Box>
+          </MediaQuery>
+        </Box>
+        <Box sx={{ background: '#EBEBEB', pt: 1 }}>
           <Typography
             variant="h3"
             component="p"
-            sx={{ ml: 1 }}
-            data-clickable={true}
-          >
-            {publicName}
-          </Typography>
-        </Box>
-        <Typography component="p" sx={{ fontWeight: '500' }}>
-          {new Date(createdAt).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-          })}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          position: 'relative',
-          overflow: 'hidden',
-          '&:hover > .MuiBox-root': {
-            opacity: 0.9,
-            transform: 'translateY(0%)',
-          },
-        }}
-      >
-        <img
-          src={image}
-          alt={`${name}`}
-          style={{
-            display: 'block',
-            maxWidth: '100%',
-          }}
-        />
-        <MediaQuery minWidth={769}>
-          <Box
             sx={{
-              opacity: 0,
-              height: '100%',
-              width: '100%',
-              zIndex: 1,
-              transition:
-                'transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 250ms cubic-bezier(0.4, 0, 0.2, 1)',
-              backgroundColor: theme => theme.palette.secondary.main,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              transform: 'translateY(100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              pl: 2,
+              maxWidth: '75%',
+              fontWeight: '500',
+              letterSpacing: '0.05em',
             }}
           >
-            <Typography align="center" sx={{ px: 2, py: 1 }}>
-              {description.length > 450
-                ? `${description.substring(0, 365)}. . .`
-                : description}
-            </Typography>
-          </Box>
-        </MediaQuery>
-      </Box>
-      <Box sx={{ background: '#EBEBEB', pt: 1 }}>
-        <Typography
-          variant="h3"
-          component="p"
-          sx={{
-            pl: 2,
-            fontWeight: '500',
-            letterSpacing: '0.05em',
-          }}
-        >
-          {name}
-        </Typography>
+            {name}
+          </Typography>
+        </Box>
       </Box>
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
