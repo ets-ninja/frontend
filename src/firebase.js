@@ -43,7 +43,7 @@ export const fetchToken = async setTokenFound => {
     });
     if (currentToken) {
       console.log('current token for client: ', currentToken);
-      setTokenFound(true);
+      setTokenFound(currentToken);
     }
   } catch (err) {
     //console.log('An error occurred while retrieving token. ', err);

@@ -109,28 +109,7 @@ const Notification = () => {
           ) : (
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemAvatar>
-                  <Avatar
-                    alt="Remy Sharp"
-                    src="https://static.vecteezy.com/system/resources/previews/002/521/570/original/cartoon-cute-bee-holding-a-honey-comb-signboard-showing-victory-hand-vector.jpg"
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="You have new donation!"
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        Anton Podolian
-                      </Typography>
-                      {' 100$ -- On bayraktar jar'}
-                    </React.Fragment>
-                  }
-                />
+                <ListItemText primary="You have 0 nofitications" />
               </ListItemButton>
             </ListItem>
           )}

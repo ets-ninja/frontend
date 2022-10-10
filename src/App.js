@@ -22,6 +22,7 @@ import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+import { addNotificationToken } from './redux/user/userActions';
 
 const App = () => {
   const location = useLocation();
@@ -35,6 +36,7 @@ const App = () => {
   }, [dispatch]);
 
   if (isTokenFound) {
+    //dispatch(addNotificationToken(isTokenFound));
     onMessageListener();
   }
 
