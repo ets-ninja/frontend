@@ -8,7 +8,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import FormSuccessful from '../UIElements/FormSuccessful';
 import LoadingSpinner from '../UIElements/LoadingSpinner';
-import { confirmEmail } from '../../redux/user/userActions';
+import { confirmEmail, requestNewCorfirmEmail } from '../../redux/user/userActions';
+import { resetSucces } from '../../redux/user/userSlice';
 
 const ConfirmEmailForm = () => {
   const {loading, success, userInfo, error } = useSelector(state => state.user);
@@ -20,11 +21,10 @@ const ConfirmEmailForm = () => {
   } = useForm();
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   success &&
-  //     userInfo?.id &&
-  //     navigate('/confirm-email');
-  // }, [navigate, userInfo, success]);
+  useEffect(() => {
+    dispatch(resetSucces())
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const submitForm = data => {
     dispatch(confirmEmail({code: data.code, userId: userInfo.id}));
@@ -45,14 +45,16 @@ const ConfirmEmailForm = () => {
   }   
   
   return (
-    <form onSubmit={handleSubmit(submitForm)} novalidate>
-          <Typography variant="h4" align="center">
+    <form onSubmit={handleSubmit(submitForm)} noValidate>
+          <Typography align="center">
             To finish your registration please check your email.
-            Enter a code, that we have sent you to {userInfo.email}
+            Enter a code, that we have sent you to <b>{userInfo.email}</b>
+            <br />
+            This code will expire in <b>1 hour.</b>
           </Typography>
-          <Stack container m={2} spacing={2}>
+          <Stack m={2} spacing={2}>
             <TextField
-              type="test"
+              type="text"
               {...register('code', {
                 required: 'Code is required',
                 minLength: {

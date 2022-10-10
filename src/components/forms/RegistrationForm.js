@@ -24,12 +24,6 @@ const RegistrationForm = () => {
   } = useForm();
 
   useEffect(() => {
-    return () => {
-      dispatch('resetSucces')
-    };
-  }, []);
-
-  useEffect(() => {
     success && userInfo?.id && navigate('/confirm-email');
   }, [navigate, userInfo, success]);
 

@@ -30,9 +30,28 @@ export const registerUser = createAsyncThunk(
 
 export const confirmEmail = createAsyncThunk(
   'user/confirm_email',
+  async (userId, { rejectWithValue }) => {
+    try {
+      await axios.post('/api/user/signup/confirm', {
+        userId,
+      });
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const requestNewCorfirmEmail = createAsyncThunk(
+  'user/resend_confirm',
   async ({ code, userId }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post('/api/user/signup/confirm', {
+      const { data } = await axios.patch('/api/user/signup/resend_confirm', {
         code,
         userId,
       });

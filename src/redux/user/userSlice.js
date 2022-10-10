@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   registerUser,
   confirmEmail,
+  requestNewCorfirmEmail,
   getUserDetails,
   updateUserInfo,
   updateUserPassword,
@@ -52,6 +53,20 @@ const userSlice = createSlice({
       state.success = true;
     },
     [confirmEmail.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    // resend confirm email
+    [requestNewCorfirmEmail.pending]: state => {
+      state.success = false;
+      state.loading = true;
+      state.error = null;
+    },
+    [requestNewCorfirmEmail.fulfilled]: (state) => {
+      state.loading = false;
+      state.success = true;
+    },
+    [requestNewCorfirmEmail.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
