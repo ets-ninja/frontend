@@ -27,24 +27,6 @@ export const registerUser = createAsyncThunk(
   },
 );
 
-export const loginUser = createAsyncThunk(
-  'user/login',
-  async ({ email, password }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post('api/auth/login', { email, password });
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  },
-);
-
 export const getUserDetails = createAsyncThunk(
   'user/getUserDetails',
   async (arg, { rejectWithValue }) => {
@@ -109,21 +91,13 @@ export const updateUserPassword = createAsyncThunk(
 
 export const updateUserPhoto = createAsyncThunk(
   'user/updateUserPhoto',
-  async ({ userPhoto }, { getState, rejectWithValue }) => {
-    const { user } = getState();
-    const config = {
-      headers: {
-        Authorization: `${user.userToken}`,
-      },
-    };
-
+  async ({ userPhoto }, { rejectWithValue }) => {
     try {
       const { data } = await axios.put(
         '/api/user/update_photo',
         {
           userPhoto,
         },
-        config,
       );
       return data;
     } catch (error) {
