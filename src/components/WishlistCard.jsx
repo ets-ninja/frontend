@@ -110,7 +110,6 @@ const WishlistCard = ({
             component={Link}
             to={'/wishlist/' + id}
             sx={{
-              fontWeight: 700,
               marginRight: 2,
               marginBottom: 1,
               marginTop: 1,
