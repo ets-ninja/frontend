@@ -111,8 +111,8 @@ export const updateUserPhoto = createAsyncThunk(
 
 export const addNotificationToken = createAsyncThunk(
   'user/addNotificationToken',
-  async (notificationToken, { rejectWithValue }) => {
-    console.log(notificationToken);
+  async (arg, { getState, rejectWithValue }) => {
+    const { notificationToken } = getState().notification;
     try {
       const { data } = await axios.post('/api/user/add_notification', {
         notificationToken,

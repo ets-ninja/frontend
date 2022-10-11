@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getUserDetails } from '../../../redux/user/userActions';
+import {
+  addNotificationToken,
+  getUserDetails,
+} from '../../../redux/user/userActions';
 import { logout } from '../../../redux/auth/authActions';
 
 import { styled } from '@mui/system';
@@ -46,6 +49,7 @@ const Header = () => {
 
   const { userInfo } = useSelector(state => state.user);
   const { isLoggedIn } = useSelector(state => state.auth);
+  const { notificationToken } = useSelector(state => state.notification);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -53,6 +57,16 @@ const Header = () => {
       dispatch(getUserDetails());
     }
   }, [dispatch, isLoggedIn]);
+
+  useEffect(() => {
+    if (
+      userInfo.notificationTokens &&
+      notificationToken &&
+      !userInfo.notificationTokens.includes(notificationToken)
+    ) {
+      dispatch(addNotificationToken());
+    }
+  }, [dispatch, notificationToken, isLoggedIn, userInfo]);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);

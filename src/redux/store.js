@@ -17,7 +17,7 @@ import userReducer from './user/userSlice';
 import requestReducer from './request/requestSlice';
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
-import notificationsSlice from './notifications/notificationsSlice';
+import notificationSlice from './notifications/notificationSlice';
 
 // Actions
 import { refresh } from './auth/authActions';
@@ -46,7 +46,7 @@ export const store = configureStore({
     user: userReducer,
     modal: persistReducer(modalConfig, modalSlice.reducer),
     request: requestReducer,
-    notifications: notificationsSlice,
+    notification: notificationSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

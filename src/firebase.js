@@ -8,7 +8,8 @@ import {
 } from 'firebase/messaging';
 
 import { store } from './redux/store';
-import { addNotification } from './redux/notifications/notificationsSlice';
+import { addToken } from './redux/notifications/notificationSlice';
+import { addNotification } from './redux/notifications/notificationSlice';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -35,27 +36,25 @@ const messaging = (async () => {
   }
 })();
 
-export const fetchToken = async setTokenFound => {
+export const fetchToken = async () => {
   try {
     const messagingResolve = await messaging;
     const currentToken = await getToken(messagingResolve, {
       vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY,
     });
     if (currentToken) {
-      console.log('current token for client: ', currentToken);
-      setTokenFound(currentToken);
+      store.dispatch(addToken(currentToken));
     }
   } catch (err) {
-    //console.log('An error occurred while retrieving token. ', err);
-    setTokenFound(false);
+    console.log('An error occurred while retrieving token. ', err);
   }
 };
 
 export const onMessageListener = async () => {
   const messagingResolve = await messaging;
   const message = onMessage(messagingResolve, payload => {
-    console.log('On message: ', payload);
     store.dispatch(addNotification(payload));
+
     return payload;
   });
   return message;

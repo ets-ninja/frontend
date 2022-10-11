@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { removeNotification } from '../../../redux/notifications/notificationsSlice';
+import { removeNotification } from '../../../redux/notifications/notificationSlice';
 
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
@@ -17,13 +18,13 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 
 const Notification = () => {
-  const { notificationsList } = useSelector(state => state.notifications);
+  const { notificationList } = useSelector(state => state.notification);
 
   const [anchorElNotif, setAnchorElNotif] = useState(null);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {}, [notificationsList]);
+  useEffect(() => {}, [notificationList]);
 
   const handleOpenNotifMenu = e => {
     setAnchorElNotif(e.currentTarget);
@@ -40,24 +41,35 @@ const Notification = () => {
   return (
     <Box sx={{ flexGrow: 0, mr: '10px' }}>
       <Tooltip title="Open notifications">
-        <IconButton onClick={handleOpenNotifMenu} sx={{ p: 0 }}>
-          <NotificationsNoneIcon
-            sx={{
-              color: 'white',
-              fontSize: '40px',
-              position: 'relative',
-            }}
-          />
-          <Typography
-            sx={{
-              color: 'white',
-              fontSize: '12px',
-              position: 'absolute',
-            }}
-          >
-            {notificationsList.length}
-          </Typography>
-        </IconButton>
+        {notificationList.length > 0 ? (
+          <IconButton onClick={handleOpenNotifMenu} sx={{ p: 0 }}>
+            <NotificationsNoneIcon
+              sx={{
+                color: 'white',
+                fontSize: '40px',
+                position: 'relative',
+              }}
+            />
+            <Typography
+              sx={{
+                color: 'white',
+                fontSize: '12px',
+                position: 'absolute',
+              }}
+            >
+              {notificationList.length}
+            </Typography>
+          </IconButton>
+        ) : (
+          <IconButton onClick={handleOpenNotifMenu} sx={{ p: 0 }}>
+            <NotificationsIcon
+              sx={{
+                color: 'white',
+                fontSize: '40px',
+              }}
+            />
+          </IconButton>
+        )}
       </Tooltip>
       <Menu
         anchorEl={anchorElNotif}
@@ -73,8 +85,8 @@ const Notification = () => {
             p: 0,
           }}
         >
-          {notificationsList.length > 0 ? (
-            notificationsList.map(notification => (
+          {notificationList.length > 0 ? (
+            notificationList.map(notification => (
               <ListItem key={notification.messageId} disablePadding>
                 <ListItemButton
                   onClick={() => {
@@ -92,14 +104,21 @@ const Notification = () => {
                     secondary={
                       <React.Fragment>
                         <Typography
-                          sx={{ display: 'inline' }}
                           component="span"
-                          variant="body2"
+                          variant="body1"
                           color="text.primary"
+                          display="block"
                         >
                           {notification.notification?.title}
                         </Typography>
-                        {notification.notification?.body}
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                          display="block"
+                        >
+                          {notification.notification?.body}
+                        </Typography>
                       </React.Fragment>
                     }
                   />
