@@ -4,11 +4,15 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
+
+import useModal from '../hooks/useModal';
 
 const WishlistCard = ({
   itemInfo: { _id, name, image, finalGoal, createdAt },
 }) => {
+  const modal = useModal();
+
   const formatteDate = date => {
     const formatte = date => {
       return date < 10 ? '0' + date : date;
@@ -29,6 +33,12 @@ const WishlistCard = ({
     }
   };
 
+  const handleRemove = () => {
+    modal.open('confirm-delete-wishlist-item', {
+      deleteWishlistItemId: _id,
+    });
+  };
+
   return (
     <>
       <Card
@@ -45,7 +55,7 @@ const WishlistCard = ({
           boxShadow: 0,
           boxSizing: 'border-box',
           border: 1,
-          borderColor: 'rgba(0, 0, 0, 0.08)',
+          borderColor: 'rgba(0, 0, 0, 0.3)',
           mt: '-1px',
           ml: '-1px',
           p: { md: 3, xs: 2 },
@@ -66,7 +76,8 @@ const WishlistCard = ({
           sx={{
             display: 'flex',
             alignItems: 'center',
-            fontWeight: 700,
+            justifyContent: 'center',
+            textAlign: 'center',
             height: 40,
             flexGrow: 1,
             lineHeight: 1.2,
@@ -75,16 +86,6 @@ const WishlistCard = ({
           }}
         >
           {sliceName(name)}
-        </Typography>
-        <Typography
-          sx={{
-            my: 1.5,
-            fontSize: '0.8rem',
-            textAlign: 'right',
-            color: theme => theme.colors.dark,
-          }}
-        >
-          Created: {formatteDate(new Date(createdAt))}
         </Typography>
         <Typography
           sx={{
@@ -102,7 +103,7 @@ const WishlistCard = ({
           sx={{
             backgroundColor: theme => theme.palette.primary,
             color: theme => theme.colors.white,
-            letterSpacing: 2,
+            letterSpacing: 1,
             py: 1.5,
             mt: 1,
             '&:hover': { boxShadow: 5 },
@@ -110,6 +111,40 @@ const WishlistCard = ({
         >
           More detail
         </Button>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Button
+            onClick={handleRemove}
+            sx={{
+              color: theme => theme.colors.dark,
+              textDecoration: 'underline',
+              textTransform: 'none',
+              py: 1.5,
+              '&:hover': {
+                color: theme => theme.palette.danger.main,
+                textDecoration: 'underline',
+                background: 'transparent',
+              },
+            }}
+          >
+            Remove
+          </Button>
+          <Typography
+            sx={{
+              fontSize: '0.8rem',
+              textAlign: 'right',
+              fontStyle: 'italic',
+              color: theme => theme.colors.dark,
+            }}
+          >
+            Created: {formatteDate(new Date(createdAt))}
+          </Typography>
+        </Box>
       </Card>
     </>
   );
