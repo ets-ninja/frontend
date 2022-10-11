@@ -19,7 +19,10 @@ import { getSortedWishlistItems } from '../redux/wishlist/wishlistActions';
 import {
   setSortedWishlistItems,
   setWishlistPage,
+  setItemToRemove,
 } from '../redux/wishlist/wishlistSlice';
+
+import request from '../hooks/useRequest';
 
 const sortFields = [
   { name: 'Date created', dbName: 'createdAt' },
@@ -37,13 +40,16 @@ const Wishlist = () => {
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
 
+  const { load, sendRequest } = request();
+
   const {
     loading,
-    error,
     items: wishlistItems,
+    totalItems,
     sorting,
     pageCount: pages,
     activePage,
+    itemToRemove,
   } = useSelector(state => state.wishlist);
 
   const dispatch = useDispatch();
@@ -53,7 +59,9 @@ const Wishlist = () => {
     setSortOrder(sorting.order);
     setPage(activePage);
     setPageCount(pages);
-  }, []);
+
+    dispatch(setItemToRemove(null));
+  }, [activePage, pages]);
 
   const handleOpenSortMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -81,12 +89,36 @@ const Wishlist = () => {
         }),
       );
     }
-  }, [sortField, sortOrder, page]);
+  }, [dispatch, sortField, sortOrder, page]);
 
   const handleChangePage = page => {
     setPage(page);
     dispatch(setWishlistPage(page));
   };
+
+  const removeItem = async () => {
+    try {
+      const data = await sendRequest(
+        `api/wishlist/delete/${itemToRemove}`,
+        'DELETE',
+      );
+      if (data) {
+        if (wishlistItems.length === 1 && pageCount !== 1) {
+          handleChangePage(page - 1);
+          setPageCount(pageCount - 1);
+        }
+        sortItems();
+      }
+    } catch (err) {
+      return err;
+    }
+  };
+
+  useEffect(() => {
+    if (itemToRemove) {
+      removeItem();
+    }
+  }, [itemToRemove]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -211,7 +243,7 @@ const Wishlist = () => {
                 color: theme => theme.colors.dark,
               }}
             >
-              Total:
+              Total: {totalItems} items
             </Typography>
           </AppBar>
         </Box>
@@ -227,11 +259,17 @@ const Wishlist = () => {
             boxShadow: 0,
             borderWidthTop: '1px',
             borderWidthLeft: '1px',
-            borderColor: 'rgba(0, 0, 0, 0.08)',
+            borderColor: 'rgba(0, 0, 0, 0.3)',
           }}
         >
           {wishlistItems.map(item => {
-            return <WishlistCard key={item._id} itemInfo={item} />;
+            return (
+              <WishlistCard
+                key={item._id}
+                itemInfo={item}
+                removeItem={removeItem}
+              />
+            );
           })}
           {wishlistItems.length === 0 && (
             <Typography

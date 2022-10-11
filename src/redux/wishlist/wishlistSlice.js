@@ -5,8 +5,10 @@ const initialState = {
   loading: false,
   items: [],
   sorting: { filed: 'createdAt', order: '1' },
+  totalItems: null,
   pageCount: null,
   activePage: 0,
+  itemToRemove: null,
   error: null,
   success: false,
 };
@@ -20,6 +22,9 @@ const wishlistSlice = createSlice({
     },
     setWishlistPage: (state, { payload }) => {
       state.activePage = payload;
+    },
+    setItemToRemove: (state, { payload }) => {
+      state.itemToRemove = payload;
     },
   },
   extraReducers: {
@@ -45,6 +50,7 @@ const wishlistSlice = createSlice({
       state.loading = false;
       state.items = payload.sortedItems;
       state.pageCount = payload.pagination.pageCount;
+      state.totalItems = payload.pagination.countItems;
     },
     [getSortedWishlistItems.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -53,6 +59,6 @@ const wishlistSlice = createSlice({
   },
 });
 
-export const { setSortedWishlistItems, setWishlistPage } =
+export const { setSortedWishlistItems, setWishlistPage, setItemToRemove } =
   wishlistSlice.actions;
 export default wishlistSlice.reducer;

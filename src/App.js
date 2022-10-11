@@ -18,6 +18,7 @@ import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+import DeleteWishlistItemModal from './modal/DeleteWishlistItemModal';
 
 const App = () => {
   const location = useLocation();
@@ -67,6 +68,10 @@ const App = () => {
         <Route path="modal" element={<ModalWindow />}>
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
           <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
+          <Route
+            path="/modal/confirm-delete-wishlist-item"
+            element={<DeleteWishlistItemModal />}
+          />
         </Route>
       </Routes>
     </div>
