@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../services/axios/user';
 
+import { setLoginState } from '../auth/authSlice';
+
 export const registerUser = createAsyncThunk(
   'user/register',
   async (
@@ -30,11 +32,14 @@ export const registerUser = createAsyncThunk(
 
 export const confirmEmail = createAsyncThunk(
   'user/confirm_email',
-  async (userId, { rejectWithValue }) => {
+  async (requestData, { rejectWithValue, dispatch }) => {
     try {
-      await axios.post('/api/user/signup/confirm', {
-        userId,
-      });
+      const { data } = await axios.patch(
+        '/api/user/signup/confirm',
+        requestData,
+      );
+      dispatch(setLoginState(data.token));
+      return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -49,13 +54,11 @@ export const confirmEmail = createAsyncThunk(
 
 export const requestNewCorfirmEmail = createAsyncThunk(
   'user/resend_confirm',
-  async ({ code, userId }, { rejectWithValue }) => {
+  async (userId, { rejectWithValue }) => {
     try {
-      const { data } = await axios.patch('/api/user/signup/resend_confirm', {
-        code,
+      await axios.post('/api/user/signup/resend_confirm', {
         userId,
       });
-      return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);

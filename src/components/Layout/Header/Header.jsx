@@ -69,7 +69,7 @@ const Header = () => {
   };
 
   const logoutUser = () => {
-    dispatch(logout());
+    dispatch(logout()); 
   }
 
   return (

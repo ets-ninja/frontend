@@ -23,7 +23,10 @@ const userSlice = createSlice({
   reducers: {
     resetSucces(state) {
       state.success = false;
-    }
+    },
+    setUser(state, { payload }) {
+      state.userInfo = payload;
+    },
   },
   extraReducers: {
     //register
@@ -62,11 +65,12 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    [requestNewCorfirmEmail.fulfilled]: (state) => {
+    [requestNewCorfirmEmail.fulfilled]: state => {
       state.loading = false;
-      state.success = true;
+      state.error = null;
     },
     [requestNewCorfirmEmail.rejected]: (state, { payload }) => {
+      state.success = false;
       state.loading = false;
       state.error = payload;
     },
@@ -127,5 +131,6 @@ const userSlice = createSlice({
     },
   },
 });
-export const { resetSucces } = userSlice.actions
+
+export const { resetSucces, setUser } = userSlice.actions;
 export default userSlice.reducer;
