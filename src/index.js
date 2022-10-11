@@ -7,7 +7,7 @@ import App from './App';
 import Layout from './components/Layout/Layout';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'reduxjs-toolkit-persist/lib/integration/react';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
 Sentry.init({
   dsn: 'https://143ff39180f24089a0af4edc21604c89@o1414509.ingest.sentry.io/6754806',
@@ -29,6 +29,7 @@ root.render(
     </PersistGate>
   </Provider>,
 );
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

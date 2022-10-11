@@ -1,4 +1,4 @@
-import storage from 'reduxjs-toolkit-persist/lib/storage';
+import storage from 'redux-persist/lib/storage';
 
 const modalConfig = {
   key: 'modal',

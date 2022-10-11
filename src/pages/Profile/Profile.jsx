@@ -50,7 +50,7 @@ const Profile = memo(() => {
               <Avatar
                 className={style.userImg}
                 sx={{ width: '150px', height: '150px', m: '0 auto' }}
-                src={userInfo?.userPhoto}
+                src={userInfo.userPhoto}
               />
 
               <Button
@@ -76,21 +76,21 @@ const Profile = memo(() => {
             <Grid container item xs={12} md={6} sx={{ p: '2rem' }}>
               <List sx={{ width: '100%' }}>
                 <ListItem>
-                  <Typography variant="h6">Email: {userInfo?.email}</Typography>
+                  <Typography variant="h6">Email: {userInfo.email}</Typography>
                 </ListItem>
                 <ListItem>
                   <Typography variant="h6">
-                    First name: {userInfo?.firstName}
+                    First name: {userInfo.firstName}
                   </Typography>
                 </ListItem>
                 <ListItem>
                   <Typography variant="h6">
-                    Last name: {userInfo?.lastName}
+                    Last name: {userInfo.lastName}
                   </Typography>
                 </ListItem>
                 <ListItem>
                   <Typography variant="h6">
-                    Public {userInfo?.publicName}
+                    Public {userInfo.publicName}
                   </Typography>
                 </ListItem>
               </List>

@@ -10,11 +10,11 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 
-import { login } from '../../redux/auth/authActions';
+import { loginUser } from '../../redux/user/userActions';
 import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const LoginForm = () => {
-  const { loading, isLoggedIn } = useSelector(state => state.auth);
+  const { loading, userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,13 +25,13 @@ const LoginForm = () => {
   } = useForm();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/wishlist');
+    if (userInfo) {
+      navigate('/profile');
     }
-  }, [navigate, isLoggedIn]);
+  }, [navigate, userInfo]);
 
   const submitForm = data => {
-    dispatch(login(data));
+    dispatch(loginUser(data));
   };
 
   if (loading) {
@@ -67,15 +67,6 @@ const LoginForm = () => {
           />
           <Button type="submit" variant="contained">
             Login
-          </Button>
-          <Typography align="center" paragraph={true}>
-            or
-          </Typography>
-          <Button
-            variant="contained"
-            href={`${process.env.REACT_APP_API_URL}/api/auth/google`}
-          >
-            Login with Google
           </Button>
         </Stack>
       </form>
