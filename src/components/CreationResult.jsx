@@ -1,14 +1,9 @@
 import React from 'react'
 import { Box, Typography, Button, CardMedia } from '@mui/material';
-import ErrorMessage from './UIElements/ErrorMessage';
 import LoadingSpinner from './UIElements/LoadingSpinner';
-import { setError } from '../redux/request/requestSlice';
-import { useDispatch } from 'react-redux';
 
 
 const CreationResult = ({handleReset, sucLabel, errLabel, loadLabel, errorState, loadingState, successState}) => {
-
-  const dispatch = useDispatch();
 
   return (
     <Box sx={{height: '100%'}}>

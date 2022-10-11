@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import axios from '../../services/axios/index';
+import axios from '../../services/axios/user';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -103,10 +103,12 @@ const basketSlice = createSlice({
         [createBasket.pending]: state => {
           state.loading = true;
           state.error = null;
+          state.success = false;
         },
         [createBasket.fulfilled]: (state, { payload }) => {
           state.loading = false;
           state.success = true;
+          state.error = null;
           state.basketName = ''
           state.description = ''
           state.moneyGoal = ''
@@ -116,6 +118,7 @@ const basketSlice = createSlice({
         },
         [createBasket.rejected]: (state, { payload }) => {
           state.loading = false;
+          state.success = false;
           state.error = payload;
           state.basketName = ''
           state.description = ''
