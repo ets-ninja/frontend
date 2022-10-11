@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getUserDetails } from '../../../redux/user/userActions';
-import { logout } from '../../../redux/user/userSlice';
+import { logout } from '../../../redux/auth/authActions';
 
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
@@ -43,14 +43,15 @@ const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const { userToken, userInfo } = useSelector(state => state.user);
+  const { userInfo } = useSelector(state => state.user);
+  const { isLoggedIn } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userToken) {
+    if (isLoggedIn) {
       dispatch(getUserDetails());
     }
-  }, [dispatch, userToken]);
+  }, [dispatch, isLoggedIn]);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -66,6 +67,10 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const logoutUser = () => {
+    dispatch(logout());
+  }
 
   return (
     <AppBar position="static">
@@ -90,7 +95,7 @@ const Header = () => {
             HoneyMoney
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          {isLoggedIn && <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -127,7 +132,7 @@ const Header = () => {
                 </MenuLink>
               ))}
             </Menu>
-          </Box>
+          </Box>}
           <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -148,7 +153,7 @@ const Header = () => {
           >
             HoneyMoney
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {isLoggedIn && <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map(page => (
               <MenuLink to={page.link} key={page.name}>
                 <Button
@@ -159,9 +164,9 @@ const Header = () => {
                 </Button>
               </MenuLink>
             ))}
-          </Box>
+          </Box>}
 
-          <Box sx={{ flexGrow: 0 }}>
+          {isLoggedIn && <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src={userInfo?.userPhoto} />
@@ -217,7 +222,7 @@ const Header = () => {
                 </MenuItem>
               </MenuLink>
               <Divider />
-              <MenuLink onClick={() => dispatch(logout())}>
+              <MenuLink onClick={logoutUser}>
                 <MenuItem>
                   <ListItemIcon>
                     <Logout fontSize="small" />
@@ -226,7 +231,7 @@ const Header = () => {
                 </MenuItem>
               </MenuLink>
             </Menu>
-          </Box>
+          </Box>}
         </Toolbar>
       </ResponsiveContainer>
     </AppBar>
