@@ -15,7 +15,8 @@ import authPersistConfig from './auth/authPersistConfig';
 import authReducer from './auth/authSlice';
 import userReducer from './user/userSlice';
 import requestReducer from './request/requestSlice';
-// import userConfig from './user/userConfig';
+import userConfig from './user/userConfig';
+
 import creationBasketReducer from './basket/createBasketSlice'
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
