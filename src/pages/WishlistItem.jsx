@@ -13,6 +13,7 @@ import {
   Input,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 import { Controller, useForm } from 'react-hook-form';
 
 import request from '../hooks/useRequest';
@@ -41,7 +42,6 @@ const WishlistItem = () => {
     let data;
     try {
       data = await sendRequest(`api/wishlist/${id}`, 'GET');
-      console.log(data);
     } catch (err) {
       return err;
     }
@@ -62,18 +62,20 @@ const WishlistItem = () => {
   };
 
   const submitForm = async data => {
-    let result = {};
-    result.name = data.name;
-    result.finalGoal = data.finalGoal;
-    result.description = data.description;
-    result.image = data.image;
+    console.log(data);
     try {
-      await sendRequest(`api/wishlist/update/:id`, 'PATCH', data);
+      await sendRequest(`api/wishlist/update/${id}`, 'PATCH', data);
     } catch (err) {
       return;
     }
+    setEditMode(false);
+    getItemInfo();
     setIsSuccessful(true);
   };
+
+  if (loading || !isSuccessful) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -116,24 +118,24 @@ const WishlistItem = () => {
                     }}
                   >
                     <Controller
-                      name="name"
                       control={control}
-                      defaultValue=""
-                      rules={{ required: 'Min length 1', minLength: 1 }}
-                      render={({ field }) => (
+                      name="name"
+                      render={field => (
                         <TextField
-                          {...field}
-                          type="text"
-                          value={itemInfo.name}
                           variant="standard"
-                          multiline
-                          maxRows={4}
-                          fullWidth={true}
-                          {...register('name')}
+                          type="text"
                           label="Name"
-                          autoComplete="name"
+                          value={field.value}
+                          multiline
+                          maxRows={3}
+                          fullWidth={true}
+                          onChange={field.onChange}
                           error={!!errors.name}
-                          onChange={e => field.onChange(e.target.value)}
+                          {...register('name', {
+                            required: true,
+                            minLength: 1,
+                          })}
+                          defaultValue={itemInfo.name}
                         />
                       )}
                     />
@@ -144,45 +146,47 @@ const WishlistItem = () => {
                     }}
                   >
                     <Controller
-                      name="finalGoal"
                       control={control}
-                      rules={{
-                        required: 'Value is requested',
-                        pattern: '[0-9]+',
-                      }}
-                      render={({ field }) => (
+                      name="finalGoal"
+                      render={field => (
                         <Input
                           variant="standard"
                           type="number"
-                          value={itemInfo.finalGoal}
-                          multiline
-                          maxRows={1}
+                          value={field.value}
                           fullWidth={true}
-                          {...register('finalGoal')}
-                          autoComplete="finalGoal"
+                          onChange={field.onChange}
                           error={!!errors.finalGoal}
-                          onChange={e => field.onChange(e.target.value)}
+                          {...register('finalGoal', { required: true })}
+                          inputProps={{ min: 1 }}
                           startAdornment={
                             <InputAdornment position="start">
                               Final goal:{' '}
                             </InputAdornment>
                           }
+                          defaultValue={itemInfo.finalGoal}
                         />
                       )}
                     />
                   </Box>
                   <Box sx={{ mb: 3 }}>
-                    <TextField
-                      type="text"
-                      value={itemInfo.description}
-                      variant="standard"
-                      multiline
-                      rows={7}
-                      fullWidth={true}
-                      {...register('description', {})}
-                      label="Description"
-                      autoComplete="description"
-                      error={!!errors.description}
+                    <Controller
+                      control={control}
+                      name="description"
+                      render={field => (
+                        <TextField
+                          variant="standard"
+                          type="text"
+                          label="Description"
+                          value={field.value}
+                          multiline
+                          rows={6}
+                          fullWidth={true}
+                          onChange={field.onChange}
+                          error={!!errors.description}
+                          {...register('description')}
+                          defaultValue={itemInfo.description}
+                        />
+                      )}
                     />
                   </Box>
                   <Box sx={{}}>
@@ -197,7 +201,13 @@ const WishlistItem = () => {
                     <Button
                       color="primary"
                       variant="contained"
-                      sx={{ backgroundColor: '#f84d33', mt: 2 }}
+                      sx={{
+                        background: theme => theme.palette.danger.main,
+                        mt: 2,
+                        '&:hover': {
+                          background: theme => theme.palette.danger.dark,
+                        },
+                      }}
                       onClick={() => console.log('delete')}
                     >
                       Delete
@@ -287,7 +297,7 @@ const WishlistItem = () => {
                     color: theme => theme.colors.darkBlue,
                   }}
                 >
-                  Final goal: {itemInfo.finalGoal}
+                  Final goal: {itemInfo.finalGoal} ₴
                 </Typography>
               </Box>
               <Box sx={{ mb: 3 }}>
