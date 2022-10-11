@@ -51,7 +51,7 @@ const App = () => {
           element={<ProtectedRoute component={Wishlist} />}
           path="/wishlist"
         />
-        <Route exect element={WishlistItem} path="/wishlist/:id" />
+        <Route exect element={<WishlistItem />} path="/wishlist/:id" />
         <Route
           exect
           element={<ProtectedRoute component={SavingsSchemes} />}
