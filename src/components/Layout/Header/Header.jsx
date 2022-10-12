@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { get, del } from 'idb-keyval';
 
 import {
   addNotificationToken,
@@ -27,7 +28,10 @@ import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Notification from './Notification';
-import { clearNotificationsList } from '../../../redux/notifications/notificationSlice';
+import {
+  addNotification,
+  clearNotificationsList,
+} from '../../../redux/notifications/notificationSlice';
 
 const pages = [
   {
@@ -70,6 +74,31 @@ const Header = () => {
       dispatch(addNotificationToken());
     }
   }, [dispatch, notificationToken, isLoggedIn, userInfo]);
+
+  useEffect(() => {
+    const channel = new BroadcastChannel('sw-messages');
+    if (isLoggedIn && notificationToken) {
+      channel.addEventListener('message', event => {
+        //console.log('Received message ', event.data);
+
+        dispatch(addNotification(event.data));
+
+        const removeSeenMessage = async () => {
+          let notificationArr;
+          try {
+            notificationArr = await get('notificationList');
+            if (notificationArr) {
+              del('notificationList');
+            }
+          } catch (error) {}
+        };
+        removeSeenMessage();
+      });
+    }
+    return () => {
+      channel.removeEventListener('message');
+    };
+  }, [dispatch, isLoggedIn, notificationToken]);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);

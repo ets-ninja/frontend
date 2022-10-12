@@ -6,6 +6,7 @@ importScripts(
 importScripts(
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js',
 );
+importScripts('https://cdn.jsdelivr.net/npm/idb-keyval@6/dist/umd.js');
 
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
@@ -20,3 +21,33 @@ const firebaseConfig = {
 // Retrieve firebase messaging
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage(payload => {
+  //console.log('Received background message ', payload);
+
+  payload.messageId = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
+    /[018]/g,
+    c =>
+      (
+        c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      ).toString(16),
+  );
+
+  const updateDB = async () => {
+    try {
+      const notificationList = await idbKeyval.get('notificationList');
+      if (notificationList) {
+        notificationList.unshift(payload);
+        idbKeyval.set('notificationList', notificationList);
+      } else {
+        idbKeyval.set('notificationList', [payload]);
+      }
+    } catch (error) {}
+  };
+
+  updateDB();
+
+  const channel = new BroadcastChannel('sw-messages');
+  channel.postMessage(payload);
+});
