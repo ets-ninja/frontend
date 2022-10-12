@@ -21,7 +21,7 @@ import modalConfig from './modal/modalConfig';
 export const store = configureStore({
   reducer: {
     user: persistReducer(userConfig, userReducer),
-    basket: creationBasketReducer,
+    creationBasket: creationBasketReducer,
     modal: persistReducer(modalConfig, modalSlice.reducer),
     request: requestReducer,
   },

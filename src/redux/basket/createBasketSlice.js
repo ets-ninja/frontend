@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 export const createBasket = createAsyncThunk(
-  'basket/createBasket',
+  'creationBasket/createBasket',
   async (arg, { rejectWithValue, getState }) => {
 
-    const basketState = getState().basket
+    const basketState = getState().creationBasket
     // console.log(basketState);
     const newBasket = {
         basketName: basketState.basketName,
@@ -46,7 +46,7 @@ const initialState = {
 
 
 const basketSlice = createSlice({
-    name: 'basket',
+    name: 'creationBasket',
     initialState,
     reducers: {
         setBasketName: (state, action) => {
@@ -134,7 +134,7 @@ export default basketSlice.reducer;
 
 export const {setBasketName, setDescription, setMoneyGoal, setExpirationDate, setIsPublic, pushBasketToSomewhere, cancelCreation} = basketSlice.actions
 
-export const selectBasket = (state) => state.basket;
+export const selectBasket = (state) => state.creationBasket;
 
 
 // todo: basket slice rename + calendar (expire time) + num comp(reusable)
