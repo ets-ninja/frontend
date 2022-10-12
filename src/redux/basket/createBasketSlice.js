@@ -9,7 +9,6 @@ export const createBasket = createAsyncThunk(
   async (arg, { rejectWithValue, getState }) => {
 
     const basketState = getState().creationBasket
-    // console.log(basketState);
     const newBasket = {
         basketName: basketState.basketName,
         description: basketState.description,
@@ -136,6 +135,3 @@ export const {setBasketName, setDescription, setMoneyGoal, setExpirationDate, se
 
 export const selectBasket = (state) => state.creationBasket;
 
-
-// todo: basket slice rename + calendar (expire time) + num comp(reusable)
-// todo: + backend creation + check modal + vsplivashka + crop :) (BOGD1Y) 
