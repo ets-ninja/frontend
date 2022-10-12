@@ -22,11 +22,7 @@ const IntroSwiper = () => {
     const swiperRef = useRef();
 
     const onSignUpClick = () => {
-        // TODO ВСПЛИВАШКА
         modal.close('intro-page')
-        // localStorage.setItem('notFirstTime?', true)
-        // window.location.reload();
-        // //TODO redirect
     }
 
     return (
