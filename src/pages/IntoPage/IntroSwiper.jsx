@@ -74,7 +74,7 @@ const IntroSwiper = () => {
               }}
             >
               <img
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '310px' }}
                 src={kartinka1}
                 alt="kartinka1"
               />
@@ -154,6 +154,7 @@ const IntroSwiper = () => {
               sx={{
                 maxWidth: '200px',
                 maxHeight: '800px',
+                minHeight: '300px',
                 margin: '0 auto',
                 flex: '0 1 50%',
               }}
