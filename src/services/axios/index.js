@@ -2,19 +2,21 @@ import axios from 'axios';
 
 import { store } from '../../redux/store';
 import { setError } from '../../redux/request/requestSlice';
-import { logout } from '../../redux/user/userSlice';
+
+const errorsBlacklist = ['/api/auth/refresh'];
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 instance.interceptors.request.use(
   async config => {
     const state = store.getState();
-    if (state.user.userToken) {
+    if (state.auth.isLoggedIn && state.auth.token) {
       config.headers = {
-        Authorization: state.user.userToken,
+        Authorization: state.auth.token,
       };
     }
     return config;
@@ -23,7 +25,7 @@ instance.interceptors.request.use(
     if (error.response && error.response.data.message) {
       store.dispatch(setError(error.response.data.message));
     } else if (error.response && error.response.data) {
-      return store.dispatch(setError(error.response.data));
+      store.dispatch(setError(error.response.data));
     } else {
       store.dispatch(setError(error.message));
     }
@@ -36,13 +38,13 @@ instance.interceptors.response.use(
     return response;
   },
   error => {
-    if (error.response.status === 401) {
-      store.dispatch(logout());
+    if (errorsBlacklist.some(endpoint => endpoint === error.config?.url)) {
+      return Promise.reject(error);
     }
     if (error.response && error.response.data.message) {
       store.dispatch(setError(error.response.data.message));
     } else if (error.response && error.response.data) {
-      return store.dispatch(setError(error.response.data));
+      store.dispatch(setError(error.response.data));
     } else {
       store.dispatch(setError(error.message));
     }

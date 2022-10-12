@@ -13,6 +13,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const ErrorMessage = () => {
   const user = useSelector(state => state.user);
   const request = useSelector(state => state.request);
+  const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const [state, setState] = useState({
@@ -23,12 +24,12 @@ const ErrorMessage = () => {
   });
 
   useEffect(() => {
-    if (user.error || request.error) {
+    if (user.error || request.error || auth.error) {
       setState(prevValue => ({ ...prevValue, open: true }));
     } else {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
-  }, [user.error, request.error]);
+  }, [user.error, request.error, auth.error]);
 
   const handleClose = () => {
     setState({ ...state, open: false });
@@ -51,7 +52,7 @@ const ErrorMessage = () => {
         onClose={handleClose}
       >
         <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
-          {user.error ? user.error : request.error}
+          {user.error || auth.error || request.error}
         </Alert>
       </Snackbar>
     </>
