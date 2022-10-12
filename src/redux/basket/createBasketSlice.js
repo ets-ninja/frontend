@@ -15,6 +15,7 @@ export const createBasket = createAsyncThunk(
         moneyGoal: basketState.moneyGoal,
         expirationDate: basketState.expirationDate,
         isPublic: basketState.isPublic,
+        photoTag: basketState.photoTag
       };
     try {
       await axios.post('http://localhost:5050/api/basket/create_basket', newBasket);
@@ -131,7 +132,7 @@ const basketSlice = createSlice({
 
 export default basketSlice.reducer;
 
-export const {setBasketName, setDescription, setMoneyGoal, setExpirationDate, setIsPublic, pushBasketToSomewhere, cancelCreation} = basketSlice.actions
+export const {setBasketName, setDescription, setMoneyGoal, setExpirationDate, setIsPublic, pushBasketToSomewhere, cancelCreation, setPhotoTag} = basketSlice.actions
 
 export const selectBasket = (state) => state.creationBasket;
 

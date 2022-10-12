@@ -118,13 +118,9 @@ export const updateUserPhoto = createAsyncThunk(
     };
 
     try {
-      const { data } = await axios.put(
-        '/api/user/update_photo',
-        {
-          userPhoto,
-        },
-        config,
-      );
+      const { data } = await axios.put(`/api/user/update_photo`, {
+        userPhoto,
+      });
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

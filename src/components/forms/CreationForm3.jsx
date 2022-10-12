@@ -15,7 +15,12 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
   const modal = useModal()
 
   const handleModalPhoto = () => {
-    // modal.open('update-photo')
+    modal.open('update-photo', {
+      width: 250,
+      height: 250,
+      aspect: 1,
+      canvasBorderRadius: 50,
+      path: 'changeBasketTag'})
   }
 
   return (
