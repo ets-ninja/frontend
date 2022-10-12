@@ -60,7 +60,7 @@ const Profile = memo(() => {
                   modal.open('update-photo', {
                     width: 250,
                     height: 250,
-                    aspect: 1,
+                    aspect: 16 / 9,
                     canvasBorderRadius: 50,
                   })
                 }

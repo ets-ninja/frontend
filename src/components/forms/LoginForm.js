@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,6 +18,14 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [searchParams] = useSearchParams();
+
+  const basketId = searchParams.get('basketId');
+
+  if (basketId) {
+    localStorage.setItem('redirectToBank', basketId);
+  }
+
   const {
     register,
     handleSubmit,
@@ -25,7 +33,11 @@ const LoginForm = () => {
   } = useForm();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    const redirectToBank = localStorage.getItem('redirectToBank');
+    if (redirectToBank && isLoggedIn) {
+      navigate(`/basket/:${redirectToBank}`);
+      localStorage.removeItem('redirectToBank')
+    } else if (isLoggedIn) {
       navigate('/wishlist');
     }
   }, [navigate, isLoggedIn]);
