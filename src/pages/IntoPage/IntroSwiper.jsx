@@ -152,8 +152,8 @@ const IntroSwiper = () => {
 
             <Box
               sx={{
-                maxWidth: '200px',
-                maxHeight: '800px',
+                maxWidth: '300px',
+                maxHeight: '300px',
                 minHeight: '300px',
                 margin: '0 auto',
                 flex: '0 1 50%',
