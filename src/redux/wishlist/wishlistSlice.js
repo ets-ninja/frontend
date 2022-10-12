@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getWishlistItems, getSortedWishlistItems } from './wishlistActions';
+import { getSortedWishlistItems } from './wishlistActions';
 
 const initialState = {
   loading: false,
@@ -23,19 +23,6 @@ const wishlistSlice = createSlice({
     },
   },
   extraReducers: {
-    //getWishlistItems
-    [getWishlistItems.pending]: state => {
-      state.loading = true;
-      state.error = null;
-    },
-    [getWishlistItems.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.items = Object.values({ ...payload });
-    },
-    [getWishlistItems.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
     //getSortedWishlistItems
     [getSortedWishlistItems.pending]: state => {
       state.loading = true;
