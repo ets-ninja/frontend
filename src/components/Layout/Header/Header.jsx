@@ -27,6 +27,7 @@ import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Notification from './Notification';
+import { clearNotificationsList } from '../../../redux/notifications/notificationSlice';
 
 const pages = [
   {
@@ -55,6 +56,8 @@ const Header = () => {
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(getUserDetails());
+    } else {
+      dispatch(clearNotificationsList());
     }
   }, [dispatch, isLoggedIn]);
 

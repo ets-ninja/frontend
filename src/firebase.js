@@ -52,10 +52,12 @@ export const fetchToken = async () => {
 
 export const onMessageListener = async () => {
   const messagingResolve = await messaging;
-  const message = onMessage(messagingResolve, payload => {
-    store.dispatch(addNotification(payload));
+  try {
+    const message = onMessage(messagingResolve, payload => {
+      store.dispatch(addNotification(payload));
 
-    return payload;
-  });
-  return message;
+      return payload;
+    });
+    return message;
+  } catch (error) {}
 };
