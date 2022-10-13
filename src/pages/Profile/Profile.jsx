@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../../redux/user/userActions';
 import { useNavigate } from 'react-router-dom';
@@ -6,11 +6,9 @@ import ProfileFormUpdateInfo from '../../components/forms/ProfileForm/ProfileFor
 import ProfileFormUpdatePassword from '../../components/forms/ProfileForm/ProfileFormUpdatePassword';
 
 import {
-  Alert,
   Avatar,
   Button,
   Card,
-  Collapse,
   Divider,
   Grid,
   List,
@@ -62,6 +60,7 @@ const Profile = memo(() => {
                     height: 250,
                     aspect: 16 / 9,
                     canvasBorderRadius: 50,
+                    path: 'updateUserPhoto'
                   })
                 }
               >

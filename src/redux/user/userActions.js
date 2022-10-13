@@ -93,12 +93,9 @@ export const updateUserPhoto = createAsyncThunk(
   'user/updateUserPhoto',
   async ({ userPhoto }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.put(
-        '/api/user/update_photo',
-        {
-          userPhoto,
-        },
-      );
+      const { data } = await axios.put(`/api/user/update_photo`, {
+        userPhoto,
+      });
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
