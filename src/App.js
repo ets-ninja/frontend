@@ -16,11 +16,12 @@ import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import RestorePassword from './pages/RestorePassword';
+import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 
 const App = () => {
-  
+
   const location = useLocation();
 
   return (
@@ -62,14 +63,24 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
+        <Route exect element={<PublicPage />} path="/public" />
       </Routes>
+
       <Routes>
         <Route path="modal" element={<ModalWindow />}>
-          <Route path="/modal/intro-page" element={<IntroSwiper />} />
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
           <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
         </Route>
       </Routes>
+      {location.state?.backgroundLocation && (
+        <Routes>
+          <Route path="modal" element={<ModalWindow />}>
+          <Route path="/modal/intro-page" element={<IntroSwiper />} />
+            <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+            <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
+          </Route>
+        </Routes>
+      )}
     </div>
   );
 };
