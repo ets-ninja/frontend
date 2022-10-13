@@ -90,7 +90,6 @@ export default function PublicPage() {
     if (users?.length === 1 && users[0]?._id === user._id) {
       return;
     }
-    console.log('user click');
     const userToFind = user._id;
     setIsUserJars(true);
     reset({ filterQuery: null });
