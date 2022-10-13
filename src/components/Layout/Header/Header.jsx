@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { get, del } from 'idb-keyval';
 
-import { getUserDetails } from '../../../redux/user/userActions';
+import {
+  addNotificationToken,
+  getUserDetails,
+} from '../../../redux/user/userActions';
 import { logout } from '../../../redux/auth/authActions';
 
 import { styled } from '@mui/system';
@@ -14,7 +18,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
@@ -23,6 +26,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import ResponsiveContainer from '../../styled/ResponsiveContainer';
+import Notification from './Notification';
+import {
+  addNotification,
+  clearNotificationsList,
+} from '../../../redux/notifications/notificationSlice';
 
 const pages = [
   {
@@ -49,13 +58,51 @@ const Header = () => {
 
   const { userInfo } = useSelector(state => state.user);
   const { isLoggedIn } = useSelector(state => state.auth);
+  const { notificationToken } = useSelector(state => state.notification);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(getUserDetails());
+    } else {
+      dispatch(clearNotificationsList());
     }
   }, [dispatch, isLoggedIn]);
+
+  useEffect(() => {
+    if (
+      userInfo.notificationTokens &&
+      notificationToken &&
+      !userInfo.notificationTokens.includes(notificationToken)
+    ) {
+      dispatch(addNotificationToken());
+    }
+  }, [dispatch, notificationToken, isLoggedIn, userInfo]);
+
+  useEffect(() => {
+    const channel = new BroadcastChannel('sw-messages');
+    if (isLoggedIn && notificationToken) {
+      channel.addEventListener('message', event => {
+        //console.log('Received message ', event.data);
+
+        dispatch(addNotification(event.data));
+
+        const removeSeenMessage = async () => {
+          let notificationArr;
+          try {
+            notificationArr = await get('notificationList');
+            if (notificationArr) {
+              del('notificationList');
+            }
+          } catch (error) {}
+        };
+        removeSeenMessage();
+      });
+    }
+    return () => {
+      channel.removeEventListener('message');
+    };
+  }, [dispatch, isLoggedIn, notificationToken]);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -67,7 +114,6 @@ const Header = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -78,7 +124,7 @@ const Header = () => {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+      <ResponsiveContainer>
         <Toolbar disableGutters>
           <HiveIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
@@ -173,7 +219,7 @@ const Header = () => {
               ))}
             </Box>
           )}
-
+          {isLoggedIn && <Notification />}
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
@@ -243,7 +289,7 @@ const Header = () => {
             </Box>
           )}
         </Toolbar>
-      </Container>
+      </ResponsiveContainer>
     </AppBar>
   );
 };
