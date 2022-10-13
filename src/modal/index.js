@@ -21,17 +21,14 @@ export default function ModalWindow() {
           outline: '1px solid transparent',
           boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
           borderRadius: 2,
-          maxWidth: '800px',
-          minWidth: { xs: 'calc(100% - 34px)', sm: '566px', md: '600px' },
+          maxWidth: {xs: '100%', sm:'500px', md: '500px'},
+          minWidth: { xs: 'calc(100% - 34px)', sm: '500px', md: '' },
           maxHeight: { xs: 'calc(100% - 34px)', sm: '90vh' },
-          p: { xs: 2, sm: 4 },
-          pt: { sm: 2 },
-          pb: { sm: 2 },
         }}
       >
         <CloseIcon
           onClick={() => modal.close()}
-          sx={{ position: 'absolute', top: '10px', right: '10px' }}
+          sx={{ position: 'absolute', top: '10px', right: '10px', zIndex: '10', pointerEvents: 'all' }}
         />
         <Outlet />
       </Box>

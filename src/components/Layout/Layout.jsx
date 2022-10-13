@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import ErrorMessage from '../UIElements/ErrorMessage';
+import NotificationToast from '../UIElements/NotificationToast';
 
 const theme = createTheme({
   palette: {
@@ -88,6 +89,7 @@ const Layout = props => {
             href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
             rel="stylesheet"
           ></link>
+          <NotificationToast />
           <ErrorMessage />
           <Header />
           <main style={{ backgroundColor: 'white' }}>{props.children}</main>

@@ -18,7 +18,13 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 export default function PublicJarModal() {
   return (
-    <>
+    <Box
+      sx={{
+        p: { xs: 2, sm: 4 },
+        pt: { sm: 2 },
+        pb: { sm: 2 },
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -92,6 +98,6 @@ export default function PublicJarModal() {
       >
         Donate
       </Button>
-    </>
+    </Box>
   );
 }
