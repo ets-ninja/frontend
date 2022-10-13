@@ -14,6 +14,7 @@ const theme = createTheme({
     },
     secondary: {
       main: '#FBB13C',
+      dark: '#ffa617',
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
@@ -60,6 +61,24 @@ const theme = createTheme({
           `,
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      xxs: 400,
+      sm: 600,
+      smd: 768,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
+  hover: {
+    icon: {
+      fill: theme => theme.colors.yellow,
+      scale: '1.2',
+      transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+  },
 });
 
 const Layout = props => {
@@ -68,7 +87,7 @@ const Layout = props => {
       <Router>
         <ThemeProvider theme={theme}>
           <link
-            href="https://fonts.googleapis.com/css?family=Ubuntu"
+            href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
             rel="stylesheet"
           ></link>
           <NotificationToast />

@@ -83,14 +83,16 @@ const UpdatePhotoModal = () => {
   const saveUserPhoto = () => {
     switch (data.path) {
       case 'updateUserPhoto':
-        dispatch(updateUserPhoto({
-          userPhoto: `${previewCanvasRef.current.toDataURL()}`,
-        }),)
+        dispatch(
+          updateUserPhoto({
+            userPhoto: `${previewCanvasRef.current.toDataURL()}`,
+          }),
+        );
         break;
       default:
         break;
     }
-      modal.close();
+    modal.close();
   };
 
   return (
@@ -117,7 +119,7 @@ const UpdatePhotoModal = () => {
               aspect={aspect}
             >
               <img
-                alt=''
+                alt=""
                 ref={imgRef}
                 src={imgSrc}
                 style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}

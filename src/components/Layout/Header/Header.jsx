@@ -20,7 +20,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
@@ -29,6 +28,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import ResponsiveContainer from '../../styled/ResponsiveContainer';
 import Notification from './Notification';
 import {
   addMultipleNotification,
@@ -129,7 +129,7 @@ const Header = () => {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+      <ResponsiveContainer>
         <Toolbar disableGutters>
           <HiveIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
@@ -294,7 +294,7 @@ const Header = () => {
             </Box>
           )}
         </Toolbar>
-      </Container>
+      </ResponsiveContainer>
     </AppBar>
   );
 };
