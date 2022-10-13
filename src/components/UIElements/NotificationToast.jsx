@@ -44,7 +44,7 @@ const NotificationToast = () => {
         >
           <Alert severity="info" onClose={handleClose} sx={{ width: '100%' }}>
             <AlertTitle>You have new Notification</AlertTitle>
-            New donate from{' '}
+            New donate from
             <strong>{newNotification.notification.title}</strong>
           </Alert>
         </Snackbar>

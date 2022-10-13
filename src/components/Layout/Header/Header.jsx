@@ -31,9 +31,11 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Notification from './Notification';
 import {
+  addMultipleNotification,
   addNotification,
   clearNotificationsList,
 } from '../../../redux/notifications/notificationSlice';
+import loadBackgroundMessages from '../../../utils/notification/loadBackgroundMessages';
 
 const pages = [
   {
@@ -76,6 +78,18 @@ const Header = () => {
       dispatch(addNotificationToken());
     }
   }, [dispatch, notificationToken, isLoggedIn, userInfo]);
+
+  useEffect(() => {
+    if (isLoggedIn && notificationToken) {
+      const firstLoadMessages = async () => {
+        const messages = await loadBackgroundMessages();
+        if (messages) {
+          dispatch(addMultipleNotification(messages));
+        }
+      };
+      firstLoadMessages();
+    }
+  }, [dispatch, notificationToken, isLoggedIn]);
 
   useEffect(() => {
     const channel = notificationChannel.getInstance();

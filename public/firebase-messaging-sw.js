@@ -22,6 +22,23 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
+let channel;
+
+const getChannel = () => {
+  let channel = new BroadcastChannel('sw-messages');
+  return channel;
+};
+
+const notificationChannel = {
+  getInstance: () => {
+    //console.log(channel);
+    if (channel === undefined || channel === null) {
+      channel = getChannel();
+    }
+    return channel;
+  },
+};
+
 messaging.onBackgroundMessage(payload => {
   //console.log('Received background message ', payload);
 
@@ -48,6 +65,7 @@ messaging.onBackgroundMessage(payload => {
 
   updateDB();
 
-  const channel = new BroadcastChannel('sw-messages');
+  const channel = notificationChannel.getInstance();
+
   channel.postMessage(payload);
 });

@@ -17,6 +17,10 @@ const notificationSlice = createSlice({
       state.notificationList.unshift(payload);
       state.newNotification = payload;
     },
+    addMultipleNotification: (state, { payload }) => {
+      state.notificationList = state.notificationList.concat(payload);
+      //state.newNotification = payload[0];
+    },
     removeNotification: (state, { payload }) => {
       state.notificationList = state.notificationList.filter(
         notif => notif.messageId !== payload.messageId,
@@ -36,6 +40,7 @@ const notificationSlice = createSlice({
 export const {
   addToken,
   addNotification,
+  addMultipleNotification,
   removeNotification,
   clearNewNotification,
   clearNotificationsList,
