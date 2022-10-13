@@ -1,25 +1,33 @@
-import styled from '@emotion/styled';
-import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import JarCard from '../components/JarCard';
-import useModal from '../hooks/useModal';
 import {
   getPublicData,
   getPublicUsers,
   getPublicPagination,
+  getPublicStatus,
 } from '../redux/public/publicSelectors';
 import {
   fetchFilteredJars,
   fetchPublicJars,
   fetchUserJars,
 } from '../redux/public/publicActions';
-import { Avatar, Pagination, TextField, Typography } from '@mui/material';
-import Slider from '../components/SliderItemsPerPage';
+
+import styled from '@emotion/styled';
+import { Box } from '@mui/system';
+import { LinearProgress, Pagination, Skeleton } from '@mui/material';
+
+import useModal from '../hooks/useModal';
 import { useDebounceEffect } from '../hooks/useDebounceEffect';
-import { useForm, useWatch } from 'react-hook-form';
+import JarCard from '../components/JarCard';
 import publicSlice from '../redux/public/publicSlice';
+import {
+  FilterForm,
+  SliderItmesPerPage,
+  UserCard,
+} from '../components/publicPage';
+import CardSkeleton from '../components/publicPage/CardSkeleton';
 
 const ResponsiveContainer = styled('div')`
   padding-right: 15px;
@@ -62,13 +70,14 @@ export default function PublicPage() {
   const { pageCount } = useSelector(getPublicPagination);
   const jars = useSelector(getPublicData);
   const users = useSelector(getPublicUsers);
+  const status = useSelector(getPublicStatus);
+  console.log('status: ', status);
 
   useEffect(() => {
     if (!isFilter && !isUserJars)
       dispatch(fetchPublicJars({ page, jarsPerPage }));
     if (!isFilter && isUserJars) {
-      const userToFind = users[0]._id;
-      dispatch(fetchUserJars({ userToFind, page, jarsPerPage }));
+      dispatch(fetchUserJars({ userToFind: users[0]._id, page, jarsPerPage }));
     }
   }, [dispatch, isFilter, isUserJars, jarsPerPage, page, users]);
 
@@ -108,55 +117,16 @@ export default function PublicPage() {
 
   return (
     <ResponsiveContainer>
-      <Box
-        component="form"
-        noValidate
-        autoComplete="off"
-        onSubmit={e => e.preventDefault()}
-      >
-        <TextField
-          {...register('filterQuery')}
-          id="standard-basic"
-          label="Search"
-          variant="outlined"
-          sx={{ mb: 2, width: '100% ' }}
-        />
-      </Box>
+      <FilterForm register={register} />
+      {status.isLoading && <CardSkeleton quantity={jarsPerPage} />}
       {users && (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 1 }}>
           {users.map(el => (
-            <Box
-              key={el._id}
-              onClick={() => handleUserClick(el)}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                background: '#ebebeb',
-                borderRadius: '9999em',
-                p: '2px',
-                pr: 2,
-                mr: 1,
-                '&:hover': {
-                  cursor: 'pointer',
-                },
-              }}
-            >
-              <Avatar
-                alt={el.publicName || 'Rick Astley'}
-                src={
-                  el.userPhoto ||
-                  'https://americansongwriter.com/wp-content/uploads/2022/03/RickAstley.jpeg?fit=2000%2C800'
-                }
-                sx={{ width: 56, height: 56 }}
-              />
-              <Typography variant="h3" component="p" sx={{ ml: 2 }}>
-                {el.publicName || 'Rick Astley'}
-              </Typography>
-            </Box>
+            <UserCard user={el} handleUserClick={handleUserClick} />
           ))}
         </Box>
       )}
-      {!!jars?.length && (
+      {!status.isLoading && !!jars?.length && (
         <Box
           sx={{
             display: 'flex',
@@ -164,9 +134,9 @@ export default function PublicPage() {
             mb: { smd: '-15px', md: '-20px', xl: '-30px' },
           }}
         >
-          {jars.map((jar, i) => (
+          {jars.map(jar => (
             <JarCard
-              key={jar._id + i}
+              key={jar._id}
               bank={jar}
               handleOpenModal={handleOpenModal}
               handleUserClick={handleUserClick}
@@ -174,7 +144,6 @@ export default function PublicPage() {
           ))}
         </Box>
       )}
-
       <Box
         sx={{
           display: 'flex',
@@ -194,7 +163,10 @@ export default function PublicPage() {
             }}
           />
         )}
-        <Slider setJarsPerPage={setJarsPerPage} />
+        <SliderItmesPerPage
+          jarsPerPage={jarsPerPage}
+          setJarsPerPage={setJarsPerPage}
+        />
       </Box>
     </ResponsiveContainer>
   );

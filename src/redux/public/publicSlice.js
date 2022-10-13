@@ -23,45 +23,45 @@ const publicSlice = createSlice({
     //public jars
     [fetchPublicJars.pending]: state => {
       state.users = null;
-      state.loading = true;
+      state.isLoading = true;
       state.error = null;
     },
     [fetchPublicJars.fulfilled]: (state, { payload }) => {
       state.data = payload.jars;
       state.pagination = payload.pagination;
-      state.loading = false;
+      state.isLoading = false;
     },
     [fetchPublicJars.rejected]: (state, { payload }) => {
-      state.loading = false;
+      state.isLoading = false;
       state.error = payload;
     },
     //filtered jars
     [fetchFilteredJars.pending]: state => {
-      state.loading = true;
+      state.isLoading = true;
       state.error = null;
     },
     [fetchFilteredJars.fulfilled]: (state, { payload }) => {
       state.data = payload.jars;
       state.users = payload.users;
       state.pagination = payload.pagination;
-      state.loading = false;
+      state.isLoading = false;
     },
     [fetchFilteredJars.rejected]: (state, { payload }) => {
-      state.loading = false;
+      state.isLoading = false;
       state.error = payload;
     },
     //user jars
     [fetchUserJars.pending]: state => {
-      state.loading = true;
+      state.isLoading = true;
       state.error = null;
     },
     [fetchUserJars.fulfilled]: (state, { payload }) => {
       state.data = payload?.jars;
       state.pagination = payload.pagination;
-      state.loading = false;
+      state.isLoading = false;
     },
     [fetchUserJars.rejected]: (state, { payload }) => {
-      state.loading = false;
+      state.isLoading = false;
       state.error = payload;
     },
   },

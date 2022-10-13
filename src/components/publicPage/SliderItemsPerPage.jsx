@@ -2,11 +2,9 @@ import { Slider } from '@mui/material';
 import { useMediaQuery } from 'react-responsive';
 import { useState } from 'react';
 
-export default function SliderItmesPerPage({ setJarsPerPage }) {
+export default function SliderItmesPerPage({ setJarsPerPage, jarsPerPage }) {
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1200 });
-  const [currentPerPage, setCurrentPerPage] = useState(() =>
-    isTablet ? 10 : 9,
-  );
+  const [currentPerPage, setCurrentPerPage] = useState(() => jarsPerPage);
   return (
     <Slider
       value={currentPerPage}
