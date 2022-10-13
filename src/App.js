@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import LostPassword from './pages/LostPassword';
 import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
+import CreateWishlistItem from './pages/CreateWishlistItem';
 import WishlistItem from './pages/WishlistItem';
 import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
@@ -51,6 +52,11 @@ const App = () => {
           exect
           element={<ProtectedRoute component={Wishlist} />}
           path="/wishlist"
+        />
+        <Route
+          exect
+          element={<ProtectedRoute component={CreateWishlistItem} />}
+          path="/wishlist-create-item"
         />
         <Route exect element={<WishlistItem />} path="/wishlist/:id" />
         <Route

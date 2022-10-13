@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -41,6 +42,7 @@ const Wishlist = () => {
   const [pageCount, setPageCount] = useState(0);
 
   const { load, sendRequest } = request();
+  const navigate = useNavigate();
 
   const {
     loading,
@@ -230,7 +232,7 @@ const Wishlist = () => {
                   sx={{
                     color: theme => theme.colors.dark,
                   }}
-                  onClick={() => console.log('create')}
+                  onClick={() => navigate('/wishlist-create-item')}
                 >
                   Create new
                 </Button>
