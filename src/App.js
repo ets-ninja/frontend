@@ -61,7 +61,11 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
-        <Route exect element={<PublicPage />} path="/public" />
+        <Route
+          exect
+          element={<ProtectedRoute component={PublicPage} />}
+          path="/public"
+        />
       </Routes>
       {location.state?.backgroundLocation && (
         <Routes>
