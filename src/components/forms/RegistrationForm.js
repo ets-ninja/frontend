@@ -26,7 +26,7 @@ const RegistrationForm = () => {
 
   useEffect(() => {
     if (success) navigate('/login');
-    if (userInfo) navigate('/profile');
+    //if (userInfo) navigate('/profile');
   }, [navigate, userInfo, success]);
 
   const submitForm = data => {

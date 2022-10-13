@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { get, del } from 'idb-keyval';
 
-import { getUserDetails } from '../../../redux/user/userActions';
+import {
+  addNotificationToken,
+  getUserDetails,
+} from '../../../redux/user/userActions';
 import { logout } from '../../../redux/auth/authActions';
 
 import { styled } from '@mui/system';
@@ -23,6 +27,11 @@ import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import ResponsiveContainer from '../../styled/ResponsiveContainer';
+import Notification from './Notification';
+import {
+  addNotification,
+  clearNotificationsList,
+} from '../../../redux/notifications/notificationSlice';
 
 const pages = [
   {
@@ -45,13 +54,51 @@ const Header = () => {
 
   const { userInfo } = useSelector(state => state.user);
   const { isLoggedIn } = useSelector(state => state.auth);
+  const { notificationToken } = useSelector(state => state.notification);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(getUserDetails());
+    } else {
+      dispatch(clearNotificationsList());
     }
   }, [dispatch, isLoggedIn]);
+
+  useEffect(() => {
+    if (
+      userInfo.notificationTokens &&
+      notificationToken &&
+      !userInfo.notificationTokens.includes(notificationToken)
+    ) {
+      dispatch(addNotificationToken());
+    }
+  }, [dispatch, notificationToken, isLoggedIn, userInfo]);
+
+  useEffect(() => {
+    const channel = new BroadcastChannel('sw-messages');
+    if (isLoggedIn && notificationToken) {
+      channel.addEventListener('message', event => {
+        //console.log('Received message ', event.data);
+
+        dispatch(addNotification(event.data));
+
+        const removeSeenMessage = async () => {
+          let notificationArr;
+          try {
+            notificationArr = await get('notificationList');
+            if (notificationArr) {
+              del('notificationList');
+            }
+          } catch (error) {}
+        };
+        removeSeenMessage();
+      });
+    }
+    return () => {
+      channel.removeEventListener('message');
+    };
+  }, [dispatch, isLoggedIn, notificationToken]);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -63,7 +110,6 @@ const Header = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -104,7 +150,6 @@ const Header = () => {
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
                 color="inherit"
-                xs={{ px: 0 }}
               >
                 <MenuIcon />
               </IconButton>
@@ -170,7 +215,7 @@ const Header = () => {
               ))}
             </Box>
           )}
-
+          {isLoggedIn && <Notification />}
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
