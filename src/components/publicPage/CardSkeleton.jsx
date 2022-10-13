@@ -9,8 +9,9 @@ export default function CardSkeleton({ quantity }) {
         flexWrap: 'wrap',
       }}
     >
-      {new Array(quantity).fill('').map(el => (
+      {new Array(quantity).fill('').map((el, i) => (
         <Box
+          key={i}
           sx={{
             boxSizing: 'border-box',
             border: '1px solid #86868666',

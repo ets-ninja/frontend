@@ -16,7 +16,7 @@ import {
 
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
-import { LinearProgress, Pagination, Skeleton } from '@mui/material';
+import { Pagination } from '@mui/material';
 
 import useModal from '../hooks/useModal';
 import { useDebounceEffect } from '../hooks/useDebounceEffect';
@@ -26,8 +26,8 @@ import {
   FilterForm,
   SliderItmesPerPage,
   UserCard,
+  CardSkeleton,
 } from '../components/publicPage';
-import CardSkeleton from '../components/publicPage/CardSkeleton';
 
 const ResponsiveContainer = styled('div')`
   padding-right: 15px;
@@ -71,7 +71,6 @@ export default function PublicPage() {
   const jars = useSelector(getPublicData);
   const users = useSelector(getPublicUsers);
   const status = useSelector(getPublicStatus);
-  console.log('status: ', status);
 
   useEffect(() => {
     if (!isFilter && !isUserJars)
@@ -92,7 +91,7 @@ export default function PublicPage() {
       dispatch(fetchFilteredJars({ filterQuery, page, jarsPerPage }));
     },
     250,
-    [filterQuery, page],
+    [filterQuery, page, jarsPerPage],
   );
 
   const handleUserClick = user => {
