@@ -69,7 +69,8 @@ const Header = () => {
     if (
       userInfo?.notificationTokens &&
       notificationToken &&
-      !userInfo?.notificationTokens.includes(notificationToken)
+      !userInfo?.notificationTokens.includes(notificationToken) &&
+      isLoggedIn
     ) {
       dispatch(addNotificationToken());
     }

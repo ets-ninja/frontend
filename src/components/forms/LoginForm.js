@@ -45,7 +45,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitForm)}>
+      <form onSubmit={handleSubmit(submitForm)} noValidate>
         <Stack m={2} spacing={2}>
           <TextField
             type="email"
