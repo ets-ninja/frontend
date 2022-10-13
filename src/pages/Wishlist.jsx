@@ -243,7 +243,7 @@ const Wishlist = () => {
                 color: theme => theme.colors.dark,
               }}
             >
-              Total: {totalItems} items
+              Total: {totalItems || 0} items
             </Typography>
           </AppBar>
         </Box>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ResponsiveContainer from '../components/styled/ResponsiveContainer';
 import {
   Box,
@@ -13,10 +13,12 @@ import {
   Input,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 import { Controller, useForm } from 'react-hook-form';
 
 import request from '../hooks/useRequest';
+import useModal from '../hooks/useModal';
 
 const WishlistItem = () => {
   const [itemInfo, setItemInfo] = useState({});
@@ -24,6 +26,8 @@ const WishlistItem = () => {
   const [isSuccessful, setIsSuccessful] = useState(false);
 
   const { loading, sendRequest } = request();
+  const navigate = useNavigate();
+  const modal = useModal();
 
   let { id } = useParams();
 
@@ -62,7 +66,6 @@ const WishlistItem = () => {
   };
 
   const submitForm = async data => {
-    console.log(data);
     try {
       await sendRequest(`api/wishlist/update/${id}`, 'PATCH', data);
     } catch (err) {
@@ -71,6 +74,17 @@ const WishlistItem = () => {
     setEditMode(false);
     getItemInfo();
     setIsSuccessful(true);
+  };
+
+  const removeItem = async () => {
+    try {
+      const data = await sendRequest(`api/wishlist/delete/${id}`, 'DELETE');
+      if (data) {
+        navigate('/wishlist');
+      }
+    } catch (err) {
+      return err;
+    }
   };
 
   if (loading || !isSuccessful) {
@@ -82,31 +96,84 @@ const WishlistItem = () => {
       <ResponsiveContainer sx={{ py: 4 }}>
         {editMode ? (
           <form onSubmit={handleSubmit(submitForm)}>
-            <Stack m={2} spacing={2}>
+            <Stack alignItems="center">
               <Box
                 sx={{
-                  display: { xs: 'flex', sm: 'auto' },
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  gap: { xs: 0, sm: 4 },
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  width: '100%',
                 }}
               >
-                <CardMedia
-                  component="img"
-                  sx={{
-                    height: 300,
-                    width: { xs: '100%', sm: '50%', lg: '45%' },
-                  }}
-                  image={
-                    itemInfo.image ||
-                    'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
-                  }
-                  alt={`${itemInfo.name} photo`}
-                />
+                <IconButton
+                  size="large"
+                  aria-label="editClose"
+                  title="Close editing"
+                  onClick={() => setEditMode(false)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              <Box
+                sx={{
+                  display: { xs: 'flex' },
+                  flexDirection: { xs: 'column', md: 'row' },
+                  alignItems: { xs: 'center', md: 'initial' },
+                  gap: { xs: 6, md: 4 },
+                  width: '100%',
+                }}
+              >
                 <Box
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    width: { xs: '100%', sm: '50%', lg: '55%' },
+                    alignItems: 'stretch',
+                    width: { xs: '100%', md: '45%' },
+                    maxWidth: { xs: 500, md: 'initial' },
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      height: { sm: 280, md: 205, lg: 275, xl: 340 },
+                      width: { sm: '100%' },
+                    }}
+                    image={
+                      itemInfo.image ||
+                      'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
+                    }
+                    alt={`${itemInfo.name} photo`}
+                  />
+                  <Button
+                    variant="text"
+                    sx={{
+                      color: theme => theme.colors.dark,
+                      boxShadow:
+                        '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);',
+                      '&:hover': {
+                        boxShadow:
+                          '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);',
+                      },
+                    }}
+                    onClick={() =>
+                      modal.open('update-photo', {
+                        width: 250,
+                        height: 250,
+                        aspect: 16 / 9,
+                        canvasBorderRadius: 0,
+                        wishlistItemImage:
+                          itemInfo.image ||
+                          'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',
+                      })
+                    }
+                  >
+                    Change photo
+                  </Button>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: { xs: '100%', md: '55%' },
                   }}
                 >
                   <Box
@@ -189,7 +256,7 @@ const WishlistItem = () => {
                       )}
                     />
                   </Box>
-                  <Box sx={{}}>
+                  <Box>
                     <Button
                       type="submit"
                       color="primary"
@@ -198,133 +265,135 @@ const WishlistItem = () => {
                     >
                       Save
                     </Button>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      sx={{
-                        background: theme => theme.palette.danger.main,
-                        mt: 2,
-                        '&:hover': {
-                          background: theme => theme.palette.danger.dark,
-                        },
-                      }}
-                      onClick={() => console.log('delete')}
-                    >
-                      Delete
-                    </Button>
                   </Box>
                 </Box>
               </Box>
+              <Button
+                color="danger"
+                variant="contained"
+                sx={{
+                  mt: 10,
+                  color: theme => theme.colors.white,
+                  width: '200px',
+                }}
+                onClick={removeItem}
+              >
+                Delete
+              </Button>
             </Stack>
           </form>
         ) : (
-          <Box
-            sx={{
-              display: { xs: 'flex', sm: 'auto' },
-              flexDirection: { xs: 'column', sm: 'row' },
-              gap: { xs: 0, sm: 4 },
-            }}
-          >
-            <CardMedia
-              component="img"
-              sx={{
-                height: 300,
-                width: { xs: '100%', sm: '50%', lg: '45%' },
-              }}
-              image={
-                itemInfo.image ||
-                'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
-              }
-              alt={`${itemInfo.name} photo`}
-            />
+          <>
             <Box
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: { xs: '100%', sm: '50%', lg: '55%' },
+                display: { xs: 'flex' },
+                flexDirection: { xs: 'column', md: 'row' },
+                alignItems: { xs: 'center', md: 'initial' },
+                gap: { xs: 3, md: 4 },
               }}
             >
+              <CardMedia
+                component="img"
+                sx={{
+                  height: { xs: 170, sm: 280, md: 215, lg: 280, xl: 340 },
+                  width: { xs: 310, sm: '100%', md: '45%' },
+                  maxWidth: { xs: 500, md: 'initial' },
+                }}
+                image={
+                  itemInfo.image ||
+                  'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
+                }
+                alt={`${itemInfo.name} photo`}
+              />
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'flex-start',
-                  mb: 3,
+                  flexDirection: 'column',
+                  width: { xs: '100%', md: '55%' },
                 }}
               >
-                <Typography
-                  variant="h3"
+                <Box
                   sx={{
-                    fontWeight: 700,
-                    fontSize: { xs: 24, sm: 20, md: 30 },
-                    flexGrow: 1,
-                    mb: { xs: 2, sm: 0 },
-                    color: theme => theme.colors.dark,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
+                    mb: 3,
                   }}
                 >
-                  {itemInfo.name}
-                </Typography>
-                <IconButton
-                  onClick={() => setEditMode(true)}
-                  title="Edit"
-                  sx={{
-                    height: 30,
-                    width: 30,
-                    ml: 2,
-                    p: 0,
-                    '&:hover': { color: theme => theme.palette.primary },
-                  }}
-                >
-                  <EditIcon
+                  <Typography
+                    variant="h3"
                     sx={{
-                      fontSize: 20,
-                      color: 'inherit',
+                      fontWeight: 700,
+                      fontSize: { xs: 24, sm: 20, md: 30 },
+                      flexGrow: 1,
+                      mb: { xs: 2, sm: 0 },
+                      color: theme => theme.colors.dark,
                     }}
-                  />
-                </IconButton>
-              </Box>
-              <Box
-                sx={{
-                  mb: 3,
-                  borderBottom: 1,
-                }}
-              >
-                <Typography
+                  >
+                    {itemInfo.name}
+                  </Typography>
+                  <IconButton
+                    onClick={() => setEditMode(true)}
+                    title="Edit"
+                    sx={{
+                      height: 30,
+                      width: 30,
+                      ml: 2,
+                      p: 0,
+                      '&:hover': { color: theme => theme.palette.primary },
+                    }}
+                  >
+                    <EditIcon
+                      sx={{
+                        fontSize: 20,
+                        color: 'inherit',
+                      }}
+                    />
+                  </IconButton>
+                </Box>
+                <Box
                   sx={{
-                    fontSize: '1rem',
-                    fontStyle: 'italic',
-                    fontWeight: 700,
-                    color: theme => theme.colors.darkBlue,
+                    mb: 3,
+                    borderBottom: 1,
                   }}
                 >
-                  Final goal: {itemInfo.finalGoal} ₴
-                </Typography>
-              </Box>
-              <Box sx={{ mb: 3 }}>
-                {itemInfo.description ? (
-                  <Typography sx={{ color: theme => theme.colors.dark }}>
-                    {itemInfo.description}
+                  <Typography
+                    sx={{
+                      fontSize: '1rem',
+                      fontStyle: 'italic',
+                      fontWeight: 700,
+                      color: theme => theme.colors.darkBlue,
+                    }}
+                  >
+                    Final goal: {itemInfo.finalGoal} ₴
                   </Typography>
-                ) : (
-                  <Typography sx={{ fontStyle: 'italic' }}>
-                    No description...
-                  </Typography>
-                )}
-              </Box>
-              <Box
-                sx={{
-                  textAlign: 'right',
-                  fontStyle: 'italic',
-                }}
-              >
-                <Typography
-                  sx={{ fontSize: '1rem', color: theme => theme.colors.dark }}
+                </Box>
+                <Box sx={{ mb: 3 }}>
+                  {itemInfo.description ? (
+                    <Typography sx={{ color: theme => theme.colors.dark }}>
+                      {itemInfo.description}
+                    </Typography>
+                  ) : (
+                    <Typography sx={{ fontStyle: 'italic' }}>
+                      No description...
+                    </Typography>
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    textAlign: 'right',
+                    fontStyle: 'italic',
+                  }}
                 >
-                  Created on {formatteDate(new Date(itemInfo.createdAt))}
-                </Typography>
+                  <Typography
+                    sx={{ fontSize: '1rem', color: theme => theme.colors.dark }}
+                  >
+                    Created on {formatteDate(new Date(itemInfo.createdAt))}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
-          </Box>
+          </>
         )}
       </ResponsiveContainer>
     </>

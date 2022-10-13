@@ -20,3 +20,21 @@ main {
     min-height: calc(100vh - 56px - 304px);
   }
 }
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+::-webkit-scrollbar-thumb:active {
+  background: rgba(0, 0, 0, 0.9);
+}
