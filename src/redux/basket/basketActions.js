@@ -113,3 +113,32 @@ export const get_private_baskets = createAsyncThunk(
     }
     },
 );
+
+
+export const get_basket_by_id = createAsyncThunk(
+  'basket/get_basket_by_id',
+   async(  
+    { id },
+    { rejectWithValue }
+    ) => {
+    
+    try {
+      const req = await axios.get(
+        'api/basket/get_basket_by_id', 
+        { params: { id }} 
+        );
+
+      if(!req.data.basket){
+        return rejectWithValue({ message: "There are no baskets" });
+      }
+
+      return { basket: req.data.basket};
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);

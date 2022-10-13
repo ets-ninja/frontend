@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { get_owner_baskets, get_coowner_baskets, get_public_baskets, get_private_baskets } from './basketActions';
+import { get_owner_baskets, get_coowner_baskets, get_public_baskets, get_private_baskets, get_basket_by_id } from './basketActions';
 
 const initialState = {
   loading: true,
+  basket: { ownerId: {  } },
   baskets: [],
   paginationData: { page: 1, maxPageAmount: 1, currentType: "Created by me", currentOrder: "Newest to oldest" },
   error: null,
@@ -16,6 +17,9 @@ const basketSlice = createSlice({
     logout: state => {
       state.loading = false;
       state.error = null;
+      state.basket = {};
+      state.baskets = [];
+      state.paginationData = { page: 1, maxPageAmount: 1, currentType: "Created by me", currentOrder: "Newest to oldest" }
     },
     changePage: (state, { payload }) => {
       state.paginationData.page = payload.value;
@@ -94,6 +98,21 @@ const basketSlice = createSlice({
       state.loading = false;
       state.baskets = [];
       state.paginationData.maxPageAmount = 1;
+      state.error = payload;
+    },
+    //get_basket_by_id
+    [get_basket_by_id.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [get_basket_by_id.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.basket = payload.basket;
+    },
+    [get_basket_by_id.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.basket = { ownerId: {  } };
       state.error = payload;
     },
   },
