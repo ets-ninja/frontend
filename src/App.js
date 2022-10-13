@@ -14,12 +14,13 @@ import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
+import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import RestorePassword from './pages/RestorePassword';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 
-
 const App = () => {
+  
   const location = useLocation();
 
   return (
@@ -64,6 +65,7 @@ const App = () => {
       </Routes>
       <Routes>
         <Route path="modal" element={<ModalWindow />}>
+          <Route path="/modal/intro-page" element={<IntroSwiper />} />
           <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
           <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
         </Route>
