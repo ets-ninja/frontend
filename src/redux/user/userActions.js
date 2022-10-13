@@ -152,3 +152,24 @@ export const updateUserPhoto = createAsyncThunk(
     }
   },
 );
+
+export const addNotificationToken = createAsyncThunk(
+  'user/addNotificationToken',
+  async (arg, { getState, rejectWithValue }) => {
+    const { notificationToken } = getState().notification;
+    try {
+      const { data } = await axios.post('/api/user/add_notification', {
+        notificationToken,
+      });
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);

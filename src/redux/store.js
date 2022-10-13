@@ -15,8 +15,13 @@ import authPersistConfig from './auth/authPersistConfig';
 import authReducer from './auth/authSlice';
 import userReducer from './user/userSlice';
 import requestReducer from './request/requestSlice';
+import wishlistReducer from './wishlist/wishlistSlice';
+import wishlistConfig from './wishlist/wishlistConfig';
+
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
+import notificationReducer from './notifications/notificationSlice';
+import notificationConfig from './notifications/notificationConfig';
 
 // Actions
 import { refresh } from './auth/authActions';
@@ -43,8 +48,10 @@ export const store = configureStore({
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
     user: userReducer,
+    wishlist: persistReducer(wishlistConfig, wishlistReducer),
     modal: persistReducer(modalConfig, modalSlice.reducer),
     request: requestReducer,
+    notification: persistReducer(notificationConfig, notificationReducer),
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

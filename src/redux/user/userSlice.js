@@ -7,6 +7,7 @@ import {
   updateUserInfo,
   updateUserPassword,
   updateUserPhoto,
+  addNotificationToken,
 } from './userActions';
 
 const initialState = {
@@ -115,6 +116,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
+    // updateUserPhoto
     [updateUserPhoto.pending]: state => {
       state.success = false;
       state.loading = true;
@@ -126,6 +128,20 @@ const userSlice = createSlice({
       state.successInfo = payload;
     },
     [updateUserPhoto.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    // addNotificationToken
+    [addNotificationToken.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [addNotificationToken.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.successInfo = payload;
+    },
+    [addNotificationToken.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
