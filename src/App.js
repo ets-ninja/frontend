@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
 import * as Sentry from '@sentry/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchToken, onMessageListener } from './firebase';
+
 import './App.scss';
+
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Profile from './pages/Profile/Profile';
@@ -22,6 +27,23 @@ import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 const App = () => {
   
   const location = useLocation();
+
+  const { isLoggedIn } = useSelector(state => state.auth);
+  const { notificationToken } = useSelector(state => state.notification);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn && !notificationToken) {
+      fetchToken();
+    }
+  }, [dispatch, isLoggedIn, notificationToken]);
+
+  useEffect(() => {
+    if (notificationToken) {
+      onMessageListener();
+    }
+  }, [notificationToken]);
 
   return (
     <div className="App">
