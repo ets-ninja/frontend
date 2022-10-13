@@ -24,6 +24,7 @@ export default function ModalWindow() {
           maxWidth: { xs: '100%', sm: '500px', md: '500px' },
           minWidth: { xs: 'calc(100% - 34px)', sm: '500px' },
           maxHeight: { xs: 'calc(100% - 34px)', sm: '90vh' },
+          pb: 2,
         }}
       >
         <CloseIcon

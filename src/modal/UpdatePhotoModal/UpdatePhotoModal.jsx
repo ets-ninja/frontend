@@ -4,6 +4,7 @@ import { useDebounceEffect } from '../../hooks/useDebounceEffect';
 import { canvasPreview } from './canvasPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
+import { updateWishlistItem } from '../../redux/wishlist/wishlistActions';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
@@ -89,6 +90,13 @@ const UpdatePhotoModal = () => {
           }),
         );
         break;
+      case 'updateWishItemPhoto':
+        dispatch(
+          updateWishlistItem({
+            id: data.wishItemId,
+            data: { image: `${previewCanvasRef.current.toDataURL()}` },
+          }),
+        );
       default:
         break;
     }

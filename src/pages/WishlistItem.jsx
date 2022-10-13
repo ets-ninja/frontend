@@ -48,7 +48,7 @@ const WishlistItem = () => {
 
   useEffect(() => {
     getItemInfo();
-  }, []);
+  }, [dispatch]);
 
   const getItemInfo = async () => {
     dispatch(getSingleWishlistItem({ id }));
@@ -146,12 +146,11 @@ const WishlistItem = () => {
                     onClick={() =>
                       modal.open('update-photo', {
                         width: 250,
-                        height: 250,
+                        height: 141,
                         aspect: 16 / 9,
                         canvasBorderRadius: 0,
-                        wishlistItemImage:
-                          itemInfo.image ||
-                          'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',
+                        path: 'updateWishItemPhoto',
+                        wishItemId: id,
                       })
                     }
                   >
@@ -238,11 +237,25 @@ const WishlistItem = () => {
                           fullWidth={true}
                           onChange={field.onChange}
                           error={!!errors.description}
-                          {...register('description')}
+                          {...register('description', {
+                            maxLength: {
+                              value: 1000,
+                              message:
+                                'Description too long. It should be shorter than 1000 characters',
+                            },
+                          })}
                           defaultValue={itemInfo.description}
                         />
                       )}
                     />
+                    <Typography
+                      sx={{
+                        color: theme => theme.palette.danger.main,
+                        fontSize: '.7rem',
+                      }}
+                    >
+                      {errors?.description?.message}
+                    </Typography>
                   </Box>
                   <Box>
                     <Button
