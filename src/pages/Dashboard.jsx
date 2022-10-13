@@ -11,6 +11,8 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import BasketBox from '../components/BasketBox';
+import useModal from '../hooks/useModal';
+import { useEffect } from 'react';
 
 const StyledMenu = styled(props => (
   <Menu
@@ -56,6 +58,16 @@ const StyledMenu = styled(props => (
 }));
 
 const Dashboard = () => {
+
+  const modal = useModal();
+  
+  useEffect(()=>{
+    if (!localStorage.getItem('notFirstTime?')){
+      modal.open('intro-page')
+      localStorage.setItem('notFirstTime?', true)
+    }
+  }, [])
+
   const [hiddenFilterAnchor, sethiddenFilterAnchor] = React.useState(null);
   const hiddenFilterMenuOpen = Boolean(hiddenFilterAnchor);
 
