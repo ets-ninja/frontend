@@ -82,7 +82,10 @@ const Header = () => {
   useEffect(() => {
     if (isLoggedIn && notificationToken) {
       const firstLoadMessages = async () => {
-        const messages = await loadBackgroundMessages();
+        let messages;
+        try {
+          messages = await loadBackgroundMessages();
+        } catch (error) {}
         if (messages) {
           dispatch(addMultipleNotification(messages));
         }
