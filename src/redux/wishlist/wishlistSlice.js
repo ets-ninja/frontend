@@ -4,7 +4,7 @@ import { getSortedWishlistItems } from './wishlistActions';
 const initialState = {
   loading: false,
   items: [],
-  sorting: { filed: 'createdAt', order: '1' },
+  sorting: { field: 'createdAt', order: '-1' },
   pageCount: null,
   activePage: 0,
   error: null,
