@@ -45,7 +45,7 @@ const WishlistItem = () => {
   const getItemInfo = async () => {
     let data;
     try {
-      data = await sendRequest(`api/wishlist/${id}`, 'GET');
+      data = await sendRequest(`api/wishlist/getitem/${id}`, 'GET');
     } catch (err) {
       return err;
     }
