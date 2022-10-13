@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { get, del } from 'idb-keyval';
+//import { get, del } from 'idb-keyval';
 
 import {
   addNotificationToken,
   getUserDetails,
 } from '../../../redux/user/userActions';
 import { logout } from '../../../redux/auth/authActions';
+import { notificationChannel } from '../../../utils/notification/notificationChannel';
+import removeSeenNofitication from '../../../utils/notification/removeSeenNotification';
 
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
@@ -76,23 +78,13 @@ const Header = () => {
   }, [dispatch, notificationToken, isLoggedIn, userInfo]);
 
   useEffect(() => {
-    const channel = new BroadcastChannel('sw-messages');
+    const channel = notificationChannel.getInstance();
     if (isLoggedIn && notificationToken) {
       channel.addEventListener('message', event => {
         //console.log('Received message ', event.data);
 
         dispatch(addNotification(event.data));
-
-        const removeSeenMessage = async () => {
-          let notificationArr;
-          try {
-            notificationArr = await get('notificationList');
-            if (notificationArr) {
-              del('notificationList');
-            }
-          } catch (error) {}
-        };
-        removeSeenMessage();
+        removeSeenNofitication();
       });
     }
     return () => {

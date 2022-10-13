@@ -54,7 +54,7 @@ export const onMessageListener = async () => {
   const messagingResolve = await messaging;
   try {
     const message = onMessage(messagingResolve, payload => {
-      console.log(payload);
+      //console.log(payload);
       store.dispatch(addNotification(payload));
 
       return payload;
