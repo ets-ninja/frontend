@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { setItemToRemove } from '../redux/wishlist/wishlistSlice';
+import { setItemToDelete } from '../redux/wishlist/wishlistSlice';
 import useModal from '../hooks/useModal';
 
 const DeleteWishlistItemModal = () => {
@@ -12,7 +12,7 @@ const DeleteWishlistItemModal = () => {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(setItemToRemove(data.deleteWishlistItemId));
+    dispatch(setItemToDelete(data.deleteWishlistItemId));
     modal.close();
   };
 

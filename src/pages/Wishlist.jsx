@@ -16,11 +16,14 @@ import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 import WishlistCard from '../components/WishlistCard';
 import BasicPagination from '../components/BasicPagination';
 
-import { getSortedWishlistItems } from '../redux/wishlist/wishlistActions';
 import {
-  setSortedWishlistItems,
+  getSortedWishlistItems,
+  deleteWishlistItem,
+} from '../redux/wishlist/wishlistActions';
+import {
+  setSortingOptions,
   setWishlistPage,
-  setItemToRemove,
+  setItemToDelete,
 } from '../redux/wishlist/wishlistSlice';
 
 import request from '../hooks/useRequest';
@@ -41,29 +44,26 @@ const Wishlist = () => {
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
 
-  const { load, sendRequest } = request();
   const navigate = useNavigate();
 
   const {
     loading,
     items: wishlistItems,
-    totalItems,
-    sorting,
+    totalItemsQuantity,
+    sortingOptions,
     pageCount: pages,
     activePage,
-    itemToRemove,
+    itemToDelete,
   } = useSelector(state => state.wishlist);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setSortField(sorting.field);
-    setSortOrder(sorting.order);
+    setSortField(sortingOptions.field);
+    setSortOrder(sortingOptions.order);
     setPage(activePage);
     setPageCount(pages);
-
-    dispatch(setItemToRemove(null));
-  }, [activePage, pages]);
+  }, [dispatch, activePage, pages]);
 
   const handleOpenSortMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -85,7 +85,7 @@ const Wishlist = () => {
     if (sortField) {
       sortItems();
       dispatch(
-        setSortedWishlistItems({
+        setSortingOptions({
           field: sortField,
           order: sortOrder,
         }),
@@ -99,28 +99,20 @@ const Wishlist = () => {
   };
 
   const removeItem = async () => {
-    try {
-      const data = await sendRequest(
-        `api/wishlist/delete/${itemToRemove}`,
-        'DELETE',
-      );
-      if (data) {
-        if (wishlistItems.length === 1 && pageCount !== 1) {
-          handleChangePage(page - 1);
-          setPageCount(pageCount - 1);
-        }
-        sortItems();
-      }
-    } catch (err) {
-      return err;
+    dispatch(deleteWishlistItem({ id: itemToDelete }));
+    if (wishlistItems.length === 1 && pageCount !== 1) {
+      handleChangePage(page - 1);
+      setPageCount(pageCount - 1);
     }
+    sortItems();
   };
 
   useEffect(() => {
-    if (itemToRemove) {
+    if (itemToDelete) {
       removeItem();
     }
-  }, [itemToRemove]);
+    dispatch(setItemToDelete(null));
+  }, [itemToDelete]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -245,7 +237,7 @@ const Wishlist = () => {
                 color: theme => theme.colors.dark,
               }}
             >
-              Total: {totalItems || 0} items
+              Total: {totalItemsQuantity || 0} items
             </Typography>
           </AppBar>
         </Box>

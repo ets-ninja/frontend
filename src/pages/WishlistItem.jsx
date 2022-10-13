@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import ResponsiveContainer from '../components/styled/ResponsiveContainer';
 import {
   Box,
@@ -16,20 +17,27 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 import { Controller, useForm } from 'react-hook-form';
+import {
+  getSingleWishlistItem,
+  deleteWishlistItem,
+  updateWishlistItem,
+} from '../redux/wishlist/wishlistActions';
 
-import request from '../hooks/useRequest';
 import useModal from '../hooks/useModal';
 
 const WishlistItem = () => {
-  const [itemInfo, setItemInfo] = useState({});
   const [editMode, setEditMode] = useState(false);
-  const [isSuccessful, setIsSuccessful] = useState(false);
 
-  const { loading, sendRequest } = request();
   const navigate = useNavigate();
   const modal = useModal();
 
   let { id } = useParams();
+
+  const { loading, singleItemInfo: itemInfo } = useSelector(
+    state => state.wishlist,
+  );
+
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -43,14 +51,7 @@ const WishlistItem = () => {
   }, []);
 
   const getItemInfo = async () => {
-    let data;
-    try {
-      data = await sendRequest(`api/wishlist/getitem/${id}`, 'GET');
-    } catch (err) {
-      return err;
-    }
-    setItemInfo(data);
-    setIsSuccessful(true);
+    dispatch(getSingleWishlistItem({ id }));
   };
 
   const formatteDate = date => {
@@ -66,28 +67,16 @@ const WishlistItem = () => {
   };
 
   const submitForm = async data => {
-    try {
-      await sendRequest(`api/wishlist/update/${id}`, 'PATCH', data);
-    } catch (err) {
-      return;
-    }
+    dispatch(updateWishlistItem({ id, data }));
     setEditMode(false);
-    getItemInfo();
-    setIsSuccessful(true);
   };
 
   const removeItem = async () => {
-    try {
-      const data = await sendRequest(`api/wishlist/delete/${id}`, 'DELETE');
-      if (data) {
-        navigate('/wishlist');
-      }
-    } catch (err) {
-      return err;
-    }
+    dispatch(deleteWishlistItem({ id }));
+    navigate('/wishlist');
   };
 
-  if (loading || !isSuccessful) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 
