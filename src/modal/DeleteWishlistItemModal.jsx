@@ -43,7 +43,7 @@ const DeleteWishlistItemModal = () => {
           sx={{
             color: theme => theme.colors.white,
             py: 1.5,
-            mt: 1,
+            my: 1,
             letterSpacing: 1,
             background: theme => theme.palette.danger.main,
             '&:hover': {

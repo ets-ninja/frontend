@@ -223,8 +223,7 @@ const WishlistItem = () => {
                           fullWidth={true}
                           onChange={field.onChange}
                           error={!!errors.finalGoal}
-                          {...register('finalGoal', { required: true })}
-                          inputProps={{ min: 1 }}
+                          {...register('finalGoal', { required: true, min: 1 })}
                           startAdornment={
                             <InputAdornment position="start">
                               Final goal:{' '}
