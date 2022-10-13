@@ -2,8 +2,24 @@ import styled from '@emotion/styled';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import JarCard from '../components/JarCard';
 import useModal from '../hooks/useModal';
+import {
+  getPublicData,
+  getPublicUsers,
+  getPublicPagination,
+} from '../redux/public/publicSelectors';
+import {
+  fetchFilteredJars,
+  fetchPublicJars,
+  fetchUserJars,
+} from '../redux/public/publicActions';
+import { Avatar, Pagination, TextField, Typography } from '@mui/material';
+import Slider from '../components/SliderItemsPerPage';
+import { useDebounceEffect } from '../hooks/useDebounceEffect';
+import { useForm, useWatch } from 'react-hook-form';
+import publicSlice from '../redux/public/publicSlice';
 
 const ResponsiveContainer = styled('div')`
   padding-right: 15px;
@@ -33,65 +49,153 @@ const ResponsiveContainer = styled('div')`
 
 export default function PublicPage() {
   const modal = useModal();
-  const [val, setVal] = useState(0);
+  const dispatch = useDispatch();
+  const { register, control, reset } = useForm();
+  const filterQuery = useWatch({
+    control,
+    name: 'filterQuery',
+  });
+  const [isUserJars, setIsUserJars] = useState(false);
+  const [isFilter, setIsFilter] = useState(false);
+  const [page, setPage] = useState(1);
+  const [jarsPerPage, setJarsPerPage] = useState(9);
+  const { pageCount } = useSelector(getPublicPagination);
+  const jars = useSelector(getPublicData);
+  const users = useSelector(getPublicUsers);
 
   useEffect(() => {
-    const demoTimeout = setTimeout(() => {
-      setVal(prevVal => (prevVal === 1000 ? 0 : prevVal + 50));
-    }, 350);
-    return () => clearTimeout(demoTimeout);
-  }, [val]);
+    if (!isFilter && !isUserJars)
+      dispatch(fetchPublicJars({ page, jarsPerPage }));
+    if (!isFilter && isUserJars) {
+      const userToFind = users[0]._id;
+      dispatch(fetchUserJars({ userToFind, page, jarsPerPage }));
+    }
+  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, users]);
 
-  function handleOpenModal(e) {
+  useDebounceEffect(
+    () => {
+      if (filterQuery && !isFilter) setIsFilter(true);
+      if (!filterQuery) {
+        setIsFilter(false);
+        return;
+      }
+      if (isUserJars) setIsUserJars(false);
+      dispatch(fetchFilteredJars({ filterQuery, page, jarsPerPage }));
+    },
+    250,
+    [filterQuery, page],
+  );
+
+  const handleUserClick = user => {
+    if (users?.length === 1 && users[0]?._id === user._id) {
+      return;
+    }
+    console.log('user click');
+    const userToFind = user._id;
+    setIsUserJars(true);
+    reset({ filterQuery: null });
+    dispatch(publicSlice.actions.setUsers(user));
+    dispatch(fetchUserJars({ userToFind, page, jarsPerPage }));
+  };
+
+  function handleOpenModal(e, data) {
     if (
       e.target.getAttribute('data-clickable') ||
       e.target.parentElement.getAttribute('data-clickable')
     )
       return;
-    modal.open('public-jar/10');
+    modal.open('public-jar/10', data);
   }
 
   return (
     <ResponsiveContainer>
-      <div
-        style={{
-          background: '#FBB13C',
-          paddingTop: '100px',
-          marginBottom: '15px',
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={e => e.preventDefault()}
+      >
+        <TextField
+          {...register('filterQuery')}
+          id="standard-basic"
+          label="Search"
+          variant="outlined"
+          sx={{ mb: 2, width: '100% ' }}
+        />
+      </Box>
+      {users && (
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 1 }}>
+          {users.map(el => (
+            <Box
+              key={el._id}
+              onClick={() => handleUserClick(el)}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                background: '#ebebeb',
+                borderRadius: '9999em',
+                p: '2px',
+                pr: 2,
+                mr: 1,
+                '&:hover': {
+                  cursor: 'pointer',
+                },
+              }}
+            >
+              <Avatar
+                alt={el.publicName || 'Rick Astley'}
+                src={
+                  el.userPhoto ||
+                  'https://americansongwriter.com/wp-content/uploads/2022/03/RickAstley.jpeg?fit=2000%2C800'
+                }
+                sx={{ width: 56, height: 56 }}
+              />
+              <Typography variant="h3" component="p" sx={{ ml: 2 }}>
+                {el.publicName || 'Rick Astley'}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      )}
+      {!!jars?.length && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            mb: { smd: '-15px', md: '-20px', xl: '-30px' },
+          }}
+        >
+          {jars.map((jar, i) => (
+            <JarCard
+              key={jar._id + i}
+              bank={jar}
+              handleOpenModal={handleOpenModal}
+              handleUserClick={handleUserClick}
+            />
+          ))}
+        </Box>
+      )}
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          mt: 3,
         }}
-      ></div>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-        <JarCard
-          bank={{ user: {}, value: val, finalGoal: 1000 }}
-          handleOpenModal={handleOpenModal}
-        />
-        <JarCard
-          bank={{
-            user: {},
-            value: 143,
-            finalGoal: 500,
-            image: 'https://wallpaperaccess.com/full/5163201.jpg',
-          }}
-          handleOpenModal={handleOpenModal}
-        />
-        <JarCard
-          bank={{
-            user: {},
-            value: 15220,
-            finalGoal: 100000,
-          }}
-          handleOpenModal={handleOpenModal}
-        />
-        <JarCard bank={{ user: {}, value: 1964, finalGoal: 2000 }} />
-        <JarCard
-          bank={{
-            user: {},
-            name: 'very very very very long nameeeeeee',
-            value: 32,
-            finalGoal: 1000,
-          }}
-        />
-        <JarCard bank={{ user: {}, value: 115000, finalGoal: 200000 }} />
+      >
+        {pageCount > 1 && (
+          <Pagination
+            count={pageCount}
+            page={page}
+            showFirstButton={pageCount > 5}
+            showLastButton={pageCount > 5}
+            onChange={(_, value) => {
+              setPage(value);
+            }}
+          />
+        )}
+        <Slider setJarsPerPage={setJarsPerPage} />
       </Box>
     </ResponsiveContainer>
   );
