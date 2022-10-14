@@ -20,6 +20,7 @@ import { Pagination } from '@mui/material';
 
 import useModal from '../hooks/useModal';
 import { useDebounceEffect } from '../hooks/useDebounceEffect';
+import ResponsiveContainer from '../components/styled/ResponsiveContainer';
 import JarCard from '../components/JarCard';
 import publicSlice from '../redux/public/publicSlice';
 import {
@@ -28,32 +29,6 @@ import {
   UserCard,
   CardSkeleton,
 } from '../components/publicPage';
-
-const ResponsiveContainer = styled('div')`
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-  box-sizing: border-box;
-  @media (min-width: 600px) {
-    width: 570px;
-  }
-  @media (min-width: 768px) {
-    width: 720px;
-  }
-  @media (min-width: 900px) {
-    width: 870px;
-  }
-  @media (min-width: 1200px) {
-    width: 1170px;
-  }
-  @media (min-width: 1536px) {
-    width: 1400px;
-  }
-  @media (max-width: 599px) {
-    width: 100%;
-  }
-`;
 
 export default function PublicPage() {
   const modal = useModal();
