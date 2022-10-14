@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Snackbar from '@mui/material/Snackbar';
 import Fade from '@mui/material/Fade';
 import MuiAlert from '@mui/material/Alert';
-import { clearError } from '../../redux/request/requestSlice';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const ErrorMessage = () => {
+const InfoMessage = () => {
   const user = useSelector(state => state.user);
-  const request = useSelector(state => state.request);
-  const auth = useSelector(state => state.auth);
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   const [state, setState] = useState({
     open: false,
@@ -24,18 +21,18 @@ const ErrorMessage = () => {
   });
 
   useEffect(() => {
-    if (user.error || request.error || auth.error) {
-      setState(prevValue => ({ ...prevValue, open: true }));
+    if (false) {
     } else {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
-  }, [user.error, request.error, auth.error]);
+    // if (user.info) {
+    // } else {
+    //   setState(prevValue => ({ ...prevValue, open: false }));
+    // }
+  }, [user]);
 
   const handleClose = () => {
     setState({ ...state, open: false });
-    if (request.error) {
-      dispatch(clearError());
-    }
   };
 
   return (
@@ -46,17 +43,17 @@ const ErrorMessage = () => {
           horizontal: state.horizontal,
         }}
         open={state.open}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
         TransitionComponent={state.Transition}
         key={state.Transition.name}
         onClose={handleClose}
       >
-        <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
-          {user.error || auth.error || request.error}
+        <Alert severity="info" onClose={handleClose} sx={{ width: '100%' }}>
+          {user.succsessInfo?.message}
         </Alert>
       </Snackbar>
     </>
   );
 };
 
-export default ErrorMessage;
+export default InfoMessage;
