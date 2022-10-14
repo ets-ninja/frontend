@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
 import * as Sentry from '@sentry/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchToken, onMessageListener } from './firebase';
+
 import './App.scss';
+
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Profile from './pages/Profile/Profile';
@@ -14,13 +19,31 @@ import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
+import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import RestorePassword from './pages/RestorePassword';
+import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 
-
 const App = () => {
   const location = useLocation();
+
+  const { isLoggedIn } = useSelector(state => state.auth);
+  const { notificationToken } = useSelector(state => state.notification);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn && !notificationToken) {
+      fetchToken();
+    }
+  }, [dispatch, isLoggedIn, notificationToken]);
+
+  useEffect(() => {
+    if (notificationToken) {
+      onMessageListener();
+    }
+  }, [notificationToken]);
 
   return (
     <div className="App">
@@ -61,13 +84,16 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
+        <Route exect element={<PublicPage />} path="/public" />
       </Routes>
-      <Routes>
-        <Route path="modal" element={<ModalWindow />}>
-          <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
-          <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
-        </Route>
-      </Routes>
+      {location.state?.backgroundLocation && (
+        <Routes>
+          <Route path="modal" element={<ModalWindow />}>
+            <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
+            <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
+          </Route>
+        </Routes>
+      )}
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import storage from 'reduxjs-toolkit-persist/lib/storage';
 
-const modalConfig = {
-  key: 'modal',
+const wishlistConfig = {
+  key: 'wishlist',
   storage,
 };
 
-export default modalConfig;
+export default wishlistConfig;

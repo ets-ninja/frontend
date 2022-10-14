@@ -12,13 +12,19 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 20,
     background:
-      'linear-gradient(270.27deg, #58D68D 1.94%, rgba(88, 214, 141, 0.51) 99.95%);',
+      'linear-gradient(270.27deg, #FBB13C 1.94%, rgba(251, 177, 60, 51) 99.95%);',
   },
 }));
 
 export default function PublicJarModal() {
   return (
-    <>
+    <Box
+      sx={{
+        p: { xs: 2, sm: 4 },
+        pt: { sm: 2 },
+        pb: { sm: 2 },
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -84,14 +90,14 @@ export default function PublicJarModal() {
           mt: 3,
           mb: 3,
           borderRadius: 3,
-          backgroundColor: '#58D68D',
+          backgroundColor: '#FBB13C',
           boxShadow: 5,
           color: 'black',
-          '&:hover': { backgroundColor: '#358255', color: 'white' },
+          '&:hover': { backgroundColor: '#358255EE', color: 'white' },
         }}
       >
         Donate
       </Button>
-    </>
+    </Box>
   );
 }
