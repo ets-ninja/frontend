@@ -15,6 +15,7 @@ import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
 import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
+import CreationPage from './pages/CreationPage';
 import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
 import ModalWindow from './modal';
@@ -54,6 +55,11 @@ const App = () => {
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<LostPassword />} path="/lost-password" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
+        <Route
+          exect
+          element={<CreationPage />}
+          path="/creation"
+          />
         <Route
           exect
           element={<StripeStatusContainer />}
