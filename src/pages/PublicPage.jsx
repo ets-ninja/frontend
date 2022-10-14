@@ -71,12 +71,21 @@ export default function PublicPage() {
   const jars = useSelector(getPublicData);
   const users = useSelector(getPublicUsers);
   const status = useSelector(getPublicStatus);
+  const { isLoggedIn } = useSelector(state => state.auth);
 
   useEffect(() => {
     if (!isFilter && !isUserJars)
       dispatch(fetchPublicJars({ page, jarsPerPage }));
     if (!isFilter && isUserJars) {
       dispatch(fetchUserJars({ userToFind: users[0]._id, page, jarsPerPage }));
+    }
+
+    const redirectToBank = localStorage.getItem('redirectToBank');
+
+    if (isLoggedIn && redirectToBank) {
+      const shareBank = jars.filter(jars => redirectToBank === jars._id)
+      modal.open(`public-jar/${redirectToBank}` )
+      localStorage.removeItem('redirectToBank')
     }
   }, [dispatch, isFilter, isUserJars, jarsPerPage, page, users]);
 
@@ -111,7 +120,7 @@ export default function PublicPage() {
       e.target.parentElement.getAttribute('data-clickable')
     )
       return;
-    modal.open('public-jar/10', data);
+    modal.open(`public-jar/${data._id}`, data);
   }
 
   return (

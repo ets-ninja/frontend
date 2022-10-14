@@ -13,6 +13,7 @@ import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import jarStepHandler from './jarStepHandler';
+import { BakeryDiningOutlined } from '@mui/icons-material';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 40,
@@ -33,19 +34,10 @@ export default function JarCard({
   handleOpenModal = null,
   handleUserClick = null,
 }) {
-  const {
-    userPhoto = 'https://americansongwriter.com/wp-content/uploads/2022/03/RickAstley.jpeg?fit=2000%2C800',
-    publicName = 'Rick Astley',
-  } = bank.user;
-  const {
-    createdAt = new Date(Date.now()),
-    name = 'Toyota Supra',
-    image = 'https://cdn.arstechnica.net/wp-content/uploads/2022/04/razer-book-800x450.jpg',
-    expirationDate = new Date('25 Oct 2022 00:12:00'),
-    value = 53334,
-    goal = 60000,
-    description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ",
-  } = bank;
+  const user = bank.user;
+  const userNames = user?.publicName || (user.firstName && user.lastName);
+  const image = bank?.image || 'https://cdn.arstechnica.net/wp-content/uploads/2022/04/razer-book-800x450.jpg'
+
   return (
     <Box
       onClick={e => handleOpenModal(e, bank)}
@@ -96,8 +88,8 @@ export default function JarCard({
             data-clickable={true}
           >
             <Avatar
-              alt={`${publicName} avatar`}
-              src={userPhoto}
+              alt={`${userNames} avatar`}
+              src={user?.userPhoto}
               sx={{ width: 56, height: 56 }}
               data-clickable={true}
             />
@@ -107,11 +99,11 @@ export default function JarCard({
               sx={{ ml: 1 }}
               data-clickable={true}
             >
-              {publicName}
+              {userNames}
             </Typography>
           </Box>
           <Typography component="p" sx={{ fontWeight: '500' }}>
-            {new Date(createdAt).toLocaleDateString('en-US', {
+            {new Date(bank.createdAt).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
             })}
@@ -129,7 +121,7 @@ export default function JarCard({
         >
           <img
             src={image}
-            alt={`${name}`}
+            alt={`${bank.name}`}
             style={{
               display: 'block',
               maxWidth: '100%',
@@ -155,9 +147,9 @@ export default function JarCard({
               }}
             >
               <Typography align="center" sx={{ px: 2, py: 1 }}>
-                {description.length > 270
-                  ? `${description.substring(0, 270)}. . .`
-                  : description}
+                {bank.description.length > 270
+                  ? `${bank.description.substring(0, 270)}. . .`
+                  : bank.description}
               </Typography>
             </Box>
           </MediaQuery>
@@ -173,19 +165,19 @@ export default function JarCard({
               letterSpacing: '0.05em',
             }}
           >
-            {name}
+            {bank.name}
           </Typography>
         </Box>
       </Box>
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ pl: 1, mt: 1, flexGrow: '2' }}>
-            {description && (
+            {bank.description && (
               <MediaQuery maxWidth={767}>
                 <Typography component="p" sx={{ pl: { xs: 1, sm: 2 }, mb: 1 }}>
-                  {description.length > 90
-                    ? `${description.substring(0, 90)}. . .`
-                    : description}
+                  {bank.description.length > 90
+                    ? `${bank.description.substring(0, 90)}. . .`
+                    : bank.description}
                 </Typography>
               </MediaQuery>
             )}
@@ -198,13 +190,13 @@ export default function JarCard({
               }}
             >
               <Typography component="p" sx={{ fontWeight: '500' }}>
-                {`${value} of ${goal}`}
+                {`${bank.value} of ${bank.goal}`}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <TimerOutlinedIcon />
                 <Typography component="p" sx={{ fontWeight: '500' }}>
                   {`${Math.floor(
-                    new Date(new Date(expirationDate) - Date.now()) /
+                    new Date(new Date(bank.expirationDate) - Date.now()) /
                       (24 * 60 * 60 * 1000),
                   )} d.`}
                 </Typography>
@@ -212,7 +204,7 @@ export default function JarCard({
             </Box>
             <BorderLinearProgress
               variant="determinate"
-              value={(value * 100) / goal}
+              value={(bank.value * 100) / bank.goal}
               sx={{
                 height: '5px',
               }}
@@ -230,8 +222,8 @@ export default function JarCard({
             }}
           >
             <img
-              src={jarStepHandler(value, goal)}
-              alt={`${name}`}
+              src={jarStepHandler(bank.value, bank.goal)}
+              alt={`${bank.name}`}
               style={{
                 width: '100%',
                 height: 'auto',

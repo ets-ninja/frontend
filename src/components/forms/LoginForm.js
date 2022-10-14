@@ -22,6 +22,8 @@ const LoginForm = () => {
 
   const basketId = searchParams.get('basketId');
 
+  console.log(basketId)
+
   if (basketId) {
     localStorage.setItem('redirectToBank', basketId);
   }
@@ -35,8 +37,8 @@ const LoginForm = () => {
   useEffect(() => {
     const redirectToBank = localStorage.getItem('redirectToBank');
     if (redirectToBank && isLoggedIn) {
-      navigate(`/basket/:${redirectToBank}`);
-      localStorage.removeItem('redirectToBank')
+      navigate('/public');
+      // localStorage.removeItem('redirectToBank')
     } else if (isLoggedIn) {
       navigate('/wishlist');
     }
