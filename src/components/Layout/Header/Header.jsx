@@ -50,6 +50,10 @@ const pages = [
     name: 'Savings schemes',
     link: '/savingsschemes',
   },
+  {
+    name: 'Public jars',
+    link: '/public',
+  },
 ];
 
 const Header = () => {

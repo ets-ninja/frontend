@@ -20,6 +20,7 @@ import wishlistConfig from './wishlist/wishlistConfig';
 
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
+import publicSlice from './public/publicSlice';
 import notificationReducer from './notifications/notificationSlice';
 import notificationConfig from './notifications/notificationConfig';
 
@@ -51,6 +52,7 @@ export const store = configureStore({
     wishlist: persistReducer(wishlistConfig, wishlistReducer),
     modal: persistReducer(modalConfig, modalSlice.reducer),
     request: requestReducer,
+    public: publicSlice.reducer,
     notification: persistReducer(notificationConfig, notificationReducer),
   },
   middleware: getDefaultMiddleware =>
