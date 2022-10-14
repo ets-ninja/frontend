@@ -11,7 +11,7 @@ import {
 } from 'reduxjs-toolkit-persist';
 import authPersistConfig from './auth/authPersistConfig';
 
-
+// Reducers
 import authReducer from './auth/authSlice';
 import userReducer from './user/userSlice';
 import snackbarReducer from './snackbar/snackbarSlice';
@@ -25,6 +25,28 @@ import modalConfig from './modal/modalConfig';
 import publicSlice from './public/publicSlice';
 import notificationReducer from './notifications/notificationSlice';
 import notificationConfig from './notifications/notificationConfig';
+
+
+// Actions
+import { refresh } from './auth/authActions';
+
+const listenerMiddleware = createListenerMiddleware();
+
+listenerMiddleware.startListening({
+  type: 'persist/REHYDRATE',
+  effect: async (action, listenerApi) => {
+    if (!action.payload && action.key === 'persistedAuth') {
+      listenerApi.dispatch(refresh());
+    } else if (
+      action.payload.token === null &&
+      action.key === 'persistedAuth'
+    ) {
+      listenerApi.dispatch(refresh());
+    } else {
+      listenerApi.cancelActiveListeners();
+    }
+  },
+});
 
 export const store = configureStore({
   reducer: {
@@ -42,7 +64,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).prepend(listenerMiddleware.middleware),
 });
 
 export const persistor = persistStore(store);

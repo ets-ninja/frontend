@@ -3,20 +3,16 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useNavigate } from "react-router-dom";import CreationForm from '../components/forms/CreationForm';
+import { useNavigate } from "react-router-dom";
+import CreationForm from '../components/forms/CreationForm';
 import CreationForm2 from '../components/forms/CreationForm2';
 import CreationForm3 from '../components/forms/CreationForm3';
 import { useState } from 'react';
-// import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { pushBasketToSomewhere, selectBasket, cancelCreation, createBasket} from '../redux/basket/createBasketSlice'
-import { CardMedia } from '@mui/material';
-import ErrorMessage from '../components/UIElements/ErrorMessage';
-import { setProjectAnnotations } from '@storybook/react';
-import { setError } from '../redux/request/requestSlice';
+import { selectBasket, cancelCreation, createBasket} from '../redux/basket/createBasketSlice'
 import CreationResult from '../components/CreationResult';
+import { setError } from '../redux/snackbar/snackbarSlice';
 
 
 
@@ -117,16 +113,6 @@ const CreationPage = () => {
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          // if (isStepOptional(index)) {
-          //   labelProps.optional = (
-          //     <Typography
-          //       sx={{ fontSize: '12px !important' }}
-          //       variant="caption"
-          //     >
-          //       Optional
-          //     </Typography>
-          //   );
-          // }
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }
@@ -177,7 +163,6 @@ const CreationPage = () => {
           >
             <Button
               color="inherit"
-              // disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
               size={'large'}
@@ -185,11 +170,6 @@ const CreationPage = () => {
               {activeStep === 0 ? 'Cancel' : 'Back'}
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />
-            {/* {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Skip
-              </Button>
-            )} */}
 
             <Button
               size={'large'}
