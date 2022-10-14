@@ -93,8 +93,29 @@ export const updateUserPhoto = createAsyncThunk(
   'user/updateUserPhoto',
   async ({ userPhoto }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.put(`/api/user/update_photo`, {
+      const { data } = await axios.put('/api/user/update_photo', {
         userPhoto,
+      });
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const addNotificationToken = createAsyncThunk(
+  'user/addNotificationToken',
+  async (arg, { getState, rejectWithValue }) => {
+    const { notificationToken } = getState().notification;
+    try {
+      const { data } = await axios.post('/api/user/add_notification', {
+        notificationToken,
       });
       return data;
     } catch (error) {

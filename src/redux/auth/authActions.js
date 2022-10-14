@@ -21,9 +21,12 @@ export const refresh = createAsyncThunk(
 
 export const logout = createAsyncThunk(
   'auth/logout',
-  async (arg, { rejectWithValue }) => {
+  async (arg, { getState, rejectWithValue }) => {
+    const { notificationToken } = getState().notification;
     try {
-      const { data } = await axios.get('/api/auth/logout');
+      const { data } = await axios.post('/api/auth/logout', {
+        notificationToken,
+      });
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
