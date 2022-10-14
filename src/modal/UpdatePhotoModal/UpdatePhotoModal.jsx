@@ -5,6 +5,7 @@ import { canvasPreview } from './canvasPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
 import { updateWishlistItem } from '../../redux/wishlist/wishlistActions';
+import { setWishitemPhoto } from '../../redux/wishlist/wishlistSlice';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
@@ -97,6 +98,10 @@ const UpdatePhotoModal = () => {
             data: { image: `${previewCanvasRef.current.toDataURL()}` },
           }),
         );
+        break;
+      case 'setWishitemPhoto':
+        dispatch(setWishitemPhoto(`${previewCanvasRef.current.toDataURL()}`));
+        break;
       default:
         break;
     }

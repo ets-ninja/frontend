@@ -2,9 +2,6 @@ import React, { useState, Fragment } from 'react';
 import { Typography } from '@mui/material';
 import ResponsiveContainer from '../components/styled/ResponsiveContainer';
 import WishlistItemStepper from '../components/WishlistItemStepper';
-import WishlistItemMobileStepper from '../components/WishlistItemMobileStepper';
-
-const steps = ['Name and Goal', 'Image', 'Check and create'];
 
 const CreateWishlistItem = () => {
   return (
@@ -21,8 +18,7 @@ const CreateWishlistItem = () => {
       >
         Create a new wish
       </Typography>
-      <WishlistItemStepper steps={steps} />
-      <WishlistItemMobileStepper steps={steps} />
+      <WishlistItemStepper />
     </ResponsiveContainer>
   );
 };

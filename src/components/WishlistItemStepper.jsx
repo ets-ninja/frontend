@@ -1,5 +1,6 @@
-import React, { useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Stack,
@@ -9,23 +10,47 @@ import {
   Button,
   Typography,
   TextField,
+  MobileStepper,
+  CardMedia,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Controller, useForm } from 'react-hook-form';
 import request from '../hooks/useRequest';
+import useModal from '../hooks/useModal';
 
-const WishlistItemStepper = ({ steps }) => {
+import { createWishlistItem } from '../redux/wishlist/wishlistActions';
+import { setWishitemPhoto } from '../redux/wishlist/wishlistSlice';
+
+const steps = ['Name and Goal', 'Image', 'Check and create'];
+
+const WishlistItemStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
+  const maxSteps = steps.length;
 
-  const { loading, sendRequest } = request();
+  const theme = useTheme();
   const navigate = useNavigate();
+  const modal = useModal();
+  const dispatch = useDispatch();
+
+  const { newWishliItemPhoto: photo, success } = useSelector(
+    state => state.wishlist,
+  );
 
   const {
     register,
     handleSubmit,
+    getValues,
     control,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    dispatch(setWishitemPhoto(''));
+  }, []);
 
   const isStepOptional = step => {
     return step === 1;
@@ -71,10 +96,11 @@ const WishlistItemStepper = ({ steps }) => {
 
   const submitForm = async data => {
     data.name = data.name.trim();
+    data.image = photo;
     if (activeStep === 2) {
       try {
-        const response = await sendRequest(`api/wishlist`, 'POST', data);
-        if (response.id) {
+        dispatch(createWishlistItem({ data }));
+        if (success) {
           navigate('/wishlist');
         }
       } catch (err) {
@@ -86,8 +112,11 @@ const WishlistItemStepper = ({ steps }) => {
   };
 
   return (
-    <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-      <Stepper activeStep={activeStep}>
+    <Box>
+      <Stepper
+        activeStep={activeStep}
+        sx={{ display: { xs: 'none', md: 'flex' } }}
+      >
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
@@ -159,19 +188,31 @@ const WishlistItemStepper = ({ steps }) => {
                         <TextField
                           variant="standard"
                           type="number"
+                          min={1}
                           label="Final goal*"
                           value={field.value}
                           fullWidth={true}
+                          inputProps={{ min: 1 }}
                           onChange={field.onChange}
                           error={!!errors.finalGoal}
                           {...register('finalGoal', {
                             required: true,
-                            min: 1,
+                            min: {
+                              value: 1,
+                              message: 'Final goal should be greater than 0',
+                            },
                           })}
-                          defaultValue=""
                         />
                       )}
                     />
+                    <Typography
+                      sx={{
+                        color: theme => theme.palette.danger.main,
+                        fontSize: '.7rem',
+                      }}
+                    >
+                      {errors?.finalGoal?.message}
+                    </Typography>
                   </Box>
                   <Box>
                     <Controller
@@ -188,20 +229,151 @@ const WishlistItemStepper = ({ steps }) => {
                           fullWidth={true}
                           onChange={field.onChange}
                           error={!!errors.description}
-                          {...register('description')}
+                          {...register('description', {
+                            maxLength: {
+                              value: 1000,
+                              message:
+                                'Description is too long. It should be shorter than 1000 characters',
+                            },
+                          })}
                           defaultValue=""
                         />
                       )}
                     />
+                    <Typography
+                      sx={{
+                        color: theme => theme.palette.danger.main,
+                        fontSize: '.7rem',
+                      }}
+                    >
+                      {errors?.description?.message}
+                    </Typography>
                   </Box>
                 </Box>
               ) : activeStep === 1 ? (
-                'step 2'
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    wisth: '100%',
+                    maxWidth: 600,
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      height: { sm: 280, md: 205, lg: 275, xl: 340 },
+                      width: { sm: '100%' },
+                    }}
+                    image={
+                      photo ||
+                      'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
+                    }
+                    alt="Your photo"
+                  />
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    sx={{ color: theme => theme.colors.dark, mt: 3 }}
+                    startIcon={<AddAPhotoIcon />}
+                    onClick={() =>
+                      modal.open('update-photo', {
+                        width: 250,
+                        height: 141,
+                        aspect: 16 / 9,
+                        canvasBorderRadius: 0,
+                        path: 'setWishitemPhoto',
+                      })
+                    }
+                  >
+                    Choose photo for your wish
+                  </Button>
+                  {photo && (
+                    <Button
+                      color="danger"
+                      variant="outlined"
+                      size="small"
+                      sx={{
+                        mt: 2,
+                        color: theme => theme.colors.dark,
+                        width: '200px',
+                        borderColor: 'transparent',
+                      }}
+                      onClick={() => dispatch(setWishitemPhoto(''))}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </Box>
               ) : (
-                'step 3'
+                <Box>
+                  <Typography
+                    sx={{ mb: 3, fontStyle: 'italic', fontSize: '1rem' }}
+                  >
+                    Please review information that you have entered. If anything
+                    needs to be fixed, please go back.
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: { xs: 'column', md: 'row' },
+                      gap: 4,
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        height: { sm: 280, md: 205, lg: 275, xl: 340 },
+                        width: { xs: '100%', md: '50%' },
+                      }}
+                      image={
+                        photo ||
+                        'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
+                      }
+                      alt="Your photo"
+                    />
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontSize: '1rem',
+                          mb: { xs: 2, sm: 0 },
+                          color: theme => theme.colors.dark,
+                        }}
+                      >
+                        <b>Name:</b> {getValues('name')}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: '1rem',
+                          fontStyle: 'italic',
+                          color: theme => theme.colors.darkBlue,
+                        }}
+                      >
+                        <b>Final goal:</b> {getValues('finalGoal')} ₴
+                      </Typography>
+                      {getValues('description').length ? (
+                        <Typography sx={{ color: theme => theme.colors.dark }}>
+                          <b>Description:</b> {getValues('description')}
+                        </Typography>
+                      ) : (
+                        <Typography sx={{ fontStyle: 'italic' }}>
+                          No description added...
+                        </Typography>
+                      )}
+                    </Box>
+                  </Box>
+                </Box>
               )}
             </Stack>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            {/* Desktop controls */}
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                flexDirection: 'row',
+                pt: 4,
+              }}
+            >
               <Button
                 color="inherit"
                 disabled={activeStep === 0}
@@ -223,6 +395,44 @@ const WishlistItemStepper = ({ steps }) => {
               ) : (
                 <Button type="submit">Next</Button>
               )}
+            </Box>
+            {/* Mobile controls */}
+            <Box sx={{ display: { xs: 'block', md: 'none' }, mt: 4 }}>
+              <MobileStepper
+                variant="text"
+                steps={maxSteps}
+                position="static"
+                activeStep={activeStep}
+                xs={{ px: 0 }}
+                nextButton={
+                  <Button
+                    size="small"
+                    onClick={handleNext}
+                    disabled={activeStep === maxSteps - 1}
+                  >
+                    Next
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowLeft />
+                    ) : (
+                      <KeyboardArrowRight />
+                    )}
+                  </Button>
+                }
+                backButton={
+                  <Button
+                    size="small"
+                    onClick={handleBack}
+                    disabled={activeStep === 0}
+                  >
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowRight />
+                    ) : (
+                      <KeyboardArrowLeft />
+                    )}
+                    Back
+                  </Button>
+                }
+              />
             </Box>
           </form>
         </Fragment>

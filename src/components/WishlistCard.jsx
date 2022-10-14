@@ -109,7 +109,7 @@ const WishlistCard = ({
             '&:hover': { boxShadow: 5 },
           }}
         >
-          More detail
+          More details
         </Button>
         <Box
           sx={{

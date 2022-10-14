@@ -207,11 +207,20 @@ const WishlistItem = () => {
                         <Input
                           variant="standard"
                           type="number"
+                          min="1"
+                          step="1"
                           value={field.value}
                           fullWidth={true}
+                          inputProps={{ min: 1 }}
                           onChange={field.onChange}
                           error={!!errors.finalGoal}
-                          {...register('finalGoal', { required: true, min: 1 })}
+                          {...register('finalGoal', {
+                            required: true,
+                            min: {
+                              value: 1,
+                              message: 'Final goal should be greater than 0',
+                            },
+                          })}
                           startAdornment={
                             <InputAdornment position="start">
                               Final goal:{' '}
@@ -241,7 +250,7 @@ const WishlistItem = () => {
                             maxLength: {
                               value: 1000,
                               message:
-                                'Description too long. It should be shorter than 1000 characters',
+                                'Description is too long. It should be shorter than 1000 characters',
                             },
                           })}
                           defaultValue={itemInfo.description}

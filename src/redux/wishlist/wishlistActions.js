@@ -70,3 +70,20 @@ export const updateWishlistItem = createAsyncThunk(
     }
   },
 );
+
+export const createWishlistItem = createAsyncThunk(
+  '/wishlist-create-item',
+  async (arg, { rejectWithValue }) => {
+    const { data: payload } = arg;
+    try {
+      const { data } = await axios.post(`api/wishlist/`, payload);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);

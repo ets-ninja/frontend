@@ -4,6 +4,7 @@ import {
   getSingleWishlistItem,
   deleteWishlistItem,
   updateWishlistItem,
+  createWishlistItem,
 } from './wishlistActions';
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   totalItemsQuantity: null,
   activePage: 0,
   itemToDelete: null,
+  newWishliItemPhoto: '',
   error: null,
   success: false,
 };
@@ -31,6 +33,9 @@ const wishlistSlice = createSlice({
     },
     setItemToDelete: (state, { payload }) => {
       state.itemToDelete = payload;
+    },
+    setWishitemPhoto: (state, { payload }) => {
+      state.newWishliItemPhoto = payload;
     },
   },
   extraReducers: {
@@ -87,9 +92,26 @@ const wishlistSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
+    //createWishlistItem
+    [createWishlistItem.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [createWishlistItem.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+    },
+    [createWishlistItem.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
   },
 });
 
-export const { setSortingOptions, setWishlistPage, setItemToDelete } =
-  wishlistSlice.actions;
+export const {
+  setSortingOptions,
+  setWishlistPage,
+  setItemToDelete,
+  setWishitemPhoto,
+} = wishlistSlice.actions;
 export default wishlistSlice.reducer;
