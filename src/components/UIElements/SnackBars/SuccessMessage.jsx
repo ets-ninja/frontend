@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Snackbar from '@mui/material/Snackbar';
 import Fade from '@mui/material/Fade';
 import MuiAlert from '@mui/material/Alert';
+import { clearSuccess } from '../../../redux/snackbar/snackbarSlice';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -11,9 +12,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const SuccessMessage = () => {
   const user = useSelector(state => state.user);
-  //const request = useSelector(state => state.request);
-  //const auth = useSelector(state => state.auth);
-  //const dispatch = useDispatch();
+  const snackbar = useSelector(state => state.snackbar);
+  const dispatch = useDispatch();
 
   const [state, setState] = useState({
     open: false,
@@ -28,10 +28,14 @@ const SuccessMessage = () => {
     } else {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
-  }, [user.successInfo]);
+  }, [user.successInfo, snackbar.success]);
 
   const handleClose = () => {
     setState({ ...state, open: false });
+
+    if (snackbar.success) {
+      dispatch(clearSuccess());
+    }
   };
 
   return (
@@ -48,7 +52,7 @@ const SuccessMessage = () => {
         onClose={handleClose}
       >
         <Alert severity="success" onClose={handleClose} sx={{ width: '100%' }}>
-          {user.successInfo?.message}
+          {user.successInfo?.message || snackbar.success}
         </Alert>
       </Snackbar>
     </>
