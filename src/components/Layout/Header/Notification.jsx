@@ -8,7 +8,6 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
@@ -51,37 +50,6 @@ const Notification = () => {
             />
           </Badge>
         </IconButton>
-      </Tooltip>
-      <Tooltip title="Open notifications">
-        {notificationList.length > 0 ? (
-          <IconButton onClick={handleOpenNotifMenu} sx={{ p: 0 }}>
-            <NotificationsNoneIcon
-              sx={{
-                color: 'white',
-                fontSize: '40px',
-                position: 'relative',
-              }}
-            />
-            <Typography
-              sx={{
-                color: 'white',
-                fontSize: '12px',
-                position: 'absolute',
-              }}
-            >
-              {notificationList.length}
-            </Typography>
-          </IconButton>
-        ) : (
-          <IconButton onClick={handleOpenNotifMenu} sx={{ p: 0 }}>
-            <NotificationsIcon
-              sx={{
-                color: 'white',
-                fontSize: '40px',
-              }}
-            />
-          </IconButton>
-        )}
       </Tooltip>
       <Menu
         anchorEl={anchorElNotif}
