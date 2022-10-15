@@ -57,7 +57,7 @@ const App = () => {
         <Route exect element={<RestorePassword />} path="/restorepassword" />
         <Route
           exect
-          element={<CreationPage />}
+          element={<ProtectedRoute component={CreationPage} />}
           path="/creation"
           />
         <Route
