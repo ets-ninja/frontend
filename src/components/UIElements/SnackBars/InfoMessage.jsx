@@ -22,6 +22,9 @@ const InfoMessage = () => {
   });
 
   useEffect(() => {
+    if (snackbar.info) {
+      setState(prevValue => ({ ...prevValue, open: true }));
+    }
     if (!snackbar.info) {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
