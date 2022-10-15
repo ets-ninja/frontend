@@ -28,7 +28,7 @@ const InfoMessage = () => {
     if (!snackbar.info) {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
-  }, [snackbar]);
+  }, [snackbar.info]);
 
   const handleClose = () => {
     setState({ ...state, open: false });
