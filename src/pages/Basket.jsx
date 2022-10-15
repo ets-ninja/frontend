@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import EditIcon from '@mui/icons-material/Edit';
@@ -12,6 +12,7 @@ import LinearProgress, {
   linearProgressClasses,
 } from '@mui/material/LinearProgress';
 import BasketChart from '../components/Charts/BasketChart';
+import CreatePayment from '../components/Stripe/DonateLogic/CreatePayment';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 40,
@@ -28,6 +29,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const Basket = () => {
+  const [setupPayment, setSetupPayment] = useState(false);
   return (
     <Box
       sx={{
@@ -141,9 +143,13 @@ const Basket = () => {
             color: 'black',
             '&:hover': { backgroundColor: '#358255', color: 'white' },
           }}
+          variant="contained"
+          disabled={setupPayment}
+          onClick={() => setSetupPayment(true)}
         >
           Donate
         </Button>
+            {setupPayment && <CreatePayment />}
       </Box>
       <Box
         sx={{
