@@ -20,7 +20,7 @@ export const get_owner_baskets = createAsyncThunk(
 
       return {basketData: req.data.basketData, paginationData: req.data.paginationData};
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error?.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
         return rejectWithValue(error.message);
@@ -49,7 +49,7 @@ export const get_coowner_baskets = createAsyncThunk(
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
     } catch (error) {
-        if (error.response && error.response.data.message) {
+        if (error?.response.data.message) {
           return rejectWithValue(error.response.data.message);
         } else {
           return rejectWithValue(error.message);
@@ -77,7 +77,7 @@ export const get_public_baskets = createAsyncThunk(
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
     } catch (error) {
-        if (error.response && error.response.data.message) {
+        if (error?.response.data.message) {
           return rejectWithValue(error.response.data.message);
         } else {
           return rejectWithValue(error.message);
@@ -105,7 +105,7 @@ export const get_private_baskets = createAsyncThunk(
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
     } catch (error) {
-        if (error.response && error.response.data.message) {
+        if (error?.response.data.message) {
           return rejectWithValue(error.response.data.message);
         } else {
           return rejectWithValue(error.message);
@@ -134,7 +134,7 @@ export const get_basket_by_id = createAsyncThunk(
 
       return { basket: req.data.basket};
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error?.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
         return rejectWithValue(error.message);

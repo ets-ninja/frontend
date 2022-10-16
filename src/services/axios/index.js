@@ -6,8 +6,7 @@ import { setError } from '../../redux/request/requestSlice';
 const errorsBlacklist = ['/api/auth/refresh'];
 
 const instance = axios.create({
-  //baseURL: process.env.REACT_APP_API_URL,
-  baseURL: "http://localhost:5050",
+  baseURL: process.env.REACT_APP_API_URL,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });

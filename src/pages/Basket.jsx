@@ -38,13 +38,13 @@ const getDaysBetweenDates = (date1, date2) => {
 }
 
 const Basket = () => {
-  const id = useParams();
-
+  const params = useParams();
+  
   const { name, ownerId: { firstName }, description, goal, value, expirationDate, isPublic, createdAt, image } = useSelector(state => state.basket.basket);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(get_basket_by_id({ id: id.basket }))
+    dispatch(get_basket_by_id({ id: params.basketID }))
   }, [])
 
   return (
