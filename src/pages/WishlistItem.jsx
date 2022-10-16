@@ -22,6 +22,7 @@ import {
   deleteWishlistItem,
   updateWishlistItem,
 } from '../redux/wishlist/wishlistActions';
+import { setSuccess, setLoading } from '../redux/wishlist/wishlistSlice';
 
 import useModal from '../hooks/useModal';
 
@@ -33,9 +34,11 @@ const WishlistItem = () => {
 
   let { id } = useParams();
 
-  const { loading, singleItemInfo: itemInfo } = useSelector(
-    state => state.wishlist,
-  );
+  const {
+    success,
+    loading,
+    singleItemInfo: itemInfo,
+  } = useSelector(state => state.wishlist);
 
   const dispatch = useDispatch();
 
@@ -48,10 +51,11 @@ const WishlistItem = () => {
 
   useEffect(() => {
     getItemInfo();
+    dispatch(setSuccess(false));
   }, [dispatch]);
 
   const getItemInfo = async () => {
-    dispatch(getSingleWishlistItem({ id }));
+    await dispatch(getSingleWishlistItem({ id }));
   };
 
   const formatteDate = date => {
@@ -67,14 +71,25 @@ const WishlistItem = () => {
   };
 
   const submitForm = async data => {
-    dispatch(updateWishlistItem({ id, data }));
+    await dispatch(updateWishlistItem({ id, data }));
     setEditMode(false);
   };
 
   const removeItem = async () => {
-    dispatch(deleteWishlistItem({ id }));
+    await dispatch(deleteWishlistItem({ id }));
+  };
+
+  const resetStateStatusAndRedirect = async () => {
+    await dispatch(setSuccess(false));
+    await dispatch(setLoading(true));
     navigate('/wishlist');
   };
+
+  useEffect(() => {
+    if (success) {
+      resetStateStatusAndRedirect();
+    }
+  }, [success]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -211,7 +226,7 @@ const WishlistItem = () => {
                           step="1"
                           value={field.value}
                           fullWidth={true}
-                          inputProps={{ min: 1 }}
+                          inputProps={{ min: 1, step: 'any' }}
                           onChange={field.onChange}
                           error={!!errors.finalGoal}
                           {...register('finalGoal', {
@@ -380,7 +395,12 @@ const WishlistItem = () => {
                 </Box>
                 <Box sx={{ mb: 3 }}>
                   {itemInfo.description ? (
-                    <Typography sx={{ color: theme => theme.colors.dark }}>
+                    <Typography
+                      sx={{
+                        color: theme => theme.colors.dark,
+                        wordBreak: 'break-word',
+                      }}
+                    >
                       {itemInfo.description}
                     </Typography>
                   ) : (

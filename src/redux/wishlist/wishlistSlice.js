@@ -12,7 +12,7 @@ const initialState = {
   items: [],
   singleItemInfo: {},
   sortingOptions: { field: 'createdAt', order: '-1' },
-  pageCount: null,
+  pageCount: 0,
   totalItemsQuantity: null,
   activePage: 0,
   itemToDelete: null,
@@ -36,6 +36,12 @@ const wishlistSlice = createSlice({
     },
     setWishitemPhoto: (state, { payload }) => {
       state.newWishliItemPhoto = payload;
+    },
+    setSuccess: (state, { payload }) => {
+      state.success = payload;
+    },
+    setLoading: (state, { payload }) => {
+      state.loading = payload;
     },
   },
   extraReducers: {
@@ -73,7 +79,8 @@ const wishlistSlice = createSlice({
       state.error = null;
     },
     [deleteWishlistItem.fulfilled]: (state, { payload }) => {
-      state.loading = false;
+      state.loading = true;
+      state.success = true;
     },
     [deleteWishlistItem.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -98,7 +105,7 @@ const wishlistSlice = createSlice({
       state.error = null;
     },
     [createWishlistItem.fulfilled]: (state, { payload }) => {
-      state.loading = false;
+      state.loading = true;
       state.success = true;
     },
     [createWishlistItem.rejected]: (state, { payload }) => {
@@ -113,5 +120,7 @@ export const {
   setWishlistPage,
   setItemToDelete,
   setWishitemPhoto,
+  setSuccess,
+  setLoading,
 } = wishlistSlice.actions;
 export default wishlistSlice.reducer;

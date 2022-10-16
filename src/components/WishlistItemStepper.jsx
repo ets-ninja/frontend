@@ -17,12 +17,16 @@ import { useTheme } from '@mui/material/styles';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import LoadingSpinner from './UIElements/LoadingSpinner';
 import { Controller, useForm } from 'react-hook-form';
-import request from '../hooks/useRequest';
 import useModal from '../hooks/useModal';
 
 import { createWishlistItem } from '../redux/wishlist/wishlistActions';
-import { setWishitemPhoto } from '../redux/wishlist/wishlistSlice';
+import {
+  setWishitemPhoto,
+  setSuccess,
+  setLoading,
+} from '../redux/wishlist/wishlistSlice';
 
 const steps = ['Name and Goal', 'Image', 'Check and create'];
 
@@ -36,9 +40,11 @@ const WishlistItemStepper = () => {
   const modal = useModal();
   const dispatch = useDispatch();
 
-  const { newWishliItemPhoto: photo, success } = useSelector(
-    state => state.wishlist,
-  );
+  const {
+    newWishliItemPhoto: image,
+    loading,
+    success,
+  } = useSelector(state => state.wishlist);
 
   const {
     register,
@@ -47,10 +53,6 @@ const WishlistItemStepper = () => {
     control,
     formState: { errors },
   } = useForm();
-
-  useEffect(() => {
-    dispatch(setWishitemPhoto(''));
-  }, []);
 
   const isStepOptional = step => {
     return step === 1;
@@ -96,20 +98,30 @@ const WishlistItemStepper = () => {
 
   const submitForm = async data => {
     data.name = data.name.trim();
-    data.image = photo;
+    data.image = image;
     if (activeStep === 2) {
-      try {
-        dispatch(createWishlistItem({ data }));
-        if (success) {
-          navigate('/wishlist');
-        }
-      } catch (err) {
-        return err;
-      }
+      await dispatch(createWishlistItem({ data }));
     } else {
       handleNext();
     }
   };
+
+  const resetStateStatusesAndRedirect = async () => {
+    await dispatch(setWishitemPhoto(''));
+    await dispatch(setSuccess(false));
+    await dispatch(setLoading(true));
+    navigate('/wishlist');
+  };
+
+  useEffect(() => {
+    if (success) {
+      resetStateStatusesAndRedirect();
+    }
+  }, [success]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Box>
@@ -192,7 +204,7 @@ const WishlistItemStepper = () => {
                           label="Final goal*"
                           value={field.value}
                           fullWidth={true}
-                          inputProps={{ min: 1 }}
+                          inputProps={{ min: 1, step: 'any' }}
                           onChange={field.onChange}
                           error={!!errors.finalGoal}
                           {...register('finalGoal', {
@@ -267,7 +279,7 @@ const WishlistItemStepper = () => {
                       width: { sm: '100%' },
                     }}
                     image={
-                      photo ||
+                      image ||
                       'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
                     }
                     alt="Your photo"
@@ -289,7 +301,7 @@ const WishlistItemStepper = () => {
                   >
                     Choose photo for your wish
                   </Button>
-                  {photo && (
+                  {image && (
                     <Button
                       color="danger"
                       variant="outlined"
@@ -328,7 +340,7 @@ const WishlistItemStepper = () => {
                         width: { xs: '100%', md: '50%' },
                       }}
                       image={
-                        photo ||
+                        image ||
                         'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
                       }
                       alt="Your photo"
@@ -353,7 +365,12 @@ const WishlistItemStepper = () => {
                         <b>Final goal:</b> {getValues('finalGoal')} ₴
                       </Typography>
                       {getValues('description').length ? (
-                        <Typography sx={{ color: theme => theme.colors.dark }}>
+                        <Typography
+                          sx={{
+                            color: theme => theme.colors.dark,
+                            wordBreak: 'break-word',
+                          }}
+                        >
                           <b>Description:</b> {getValues('description')}
                         </Typography>
                       ) : (

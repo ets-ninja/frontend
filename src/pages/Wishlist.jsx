@@ -24,9 +24,8 @@ import {
   setSortingOptions,
   setWishlistPage,
   setItemToDelete,
+  setLoading,
 } from '../redux/wishlist/wishlistSlice';
-
-import request from '../hooks/useRequest';
 
 const sortFields = [
   { name: 'Date created', dbName: 'createdAt' },
@@ -59,6 +58,7 @@ const Wishlist = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setLoading(true));
     setSortField(sortingOptions.field);
     setSortOrder(sortingOptions.order);
     setPage(activePage);
@@ -73,24 +73,28 @@ const Wishlist = () => {
     setAnchorElNav(null);
   };
 
-  const sortItems = () => {
-    dispatch(
+  const sortItems = async () => {
+    await dispatch(
       getSortedWishlistItems({
         options: { page, field: sortField, order: sortOrder },
       }),
     );
   };
 
-  useEffect(() => {
+  const updateItems = async () => {
     if (sortField) {
-      sortItems();
-      dispatch(
+      await sortItems();
+      await dispatch(
         setSortingOptions({
           field: sortField,
           order: sortOrder,
         }),
       );
     }
+  };
+
+  useEffect(() => {
+    updateItems();
   }, [dispatch, sortField, sortOrder, page]);
 
   const handleChangePage = page => {
@@ -99,12 +103,12 @@ const Wishlist = () => {
   };
 
   const removeItem = async () => {
-    dispatch(deleteWishlistItem({ id: itemToDelete }));
+    await dispatch(deleteWishlistItem({ id: itemToDelete }));
     if (wishlistItems.length === 1 && pageCount !== 1) {
       handleChangePage(page - 1);
       setPageCount(pageCount - 1);
     }
-    sortItems();
+    await sortItems();
   };
 
   useEffect(() => {
