@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import {useParams} from "react-router-dom";
 import { loadStripe } from '@stripe/stripe-js';
 import { useForm } from 'react-hook-form';
-import request from '../../hooks/useRequest';
+import request from '../../../hooks/useRequest';
 
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import LoadingSpinner from '../UIElements/LoadingSpinner';
+import LoadingSpinner from '../../UIElements/LoadingSpinner';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST);
 
 const DonateForm = () => {
@@ -36,22 +36,9 @@ const DonateForm = () => {
         data,
       );
       setPaymentIntent(paymentSecret);
+      await sendRequest( 'api/payment/donate', 'POST', { paymentIntentId: paymentSecret.id, basketId: basket });
     } catch (err) {
       return;
-    }
-
-    if (loading) {
-      return <LoadingSpinner />;
-    } else if (!paymentIntent?.client_secret) {
-      return (
-        <>
-          <Typography variant="h5" align="center">
-            Loading failed, try again later
-          </Typography>
-        </>
-      );
-    } else {
-        await sendRequest( 'api/payment/donate', 'POST', { paymentIntentId: paymentIntent.id, basketId: basket });
     }
   };
 

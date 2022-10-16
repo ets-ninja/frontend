@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CreatePayment from './CreatePayment';
-import DonateForm from '../../../components/forms/DonateForm';
+import DonateForm from '../../../components/forms/Stripe/DonateForm';
 
 const DonateIndex = () => {
   const [showDonateMenu, setShowDonateMenu] = useState(false);
