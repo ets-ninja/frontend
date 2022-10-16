@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import BasketBox from './BasketBox';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -54,7 +54,7 @@ const orderOptions = [
 const BasketDashboardHeader = () => {
   const { page } = useSelector(state => state.basket.paginationData);
 
-  const [hiddenFilterAnchor, sethiddenFilterAnchor] = React.useState(null);
+  const [hiddenFilterAnchor, sethiddenFilterAnchor] = useState(null);
   const hiddenFilterMenuOpen = Boolean(hiddenFilterAnchor);
 
   const handleFilterClick = (event) => {
@@ -65,7 +65,7 @@ const BasketDashboardHeader = () => {
   };
 
   const { currentType, currentOrder }= useSelector(state => state.basket.paginationData);
-  const [archivedBasketsState, setarchivedBasketsState] = React.useState(false);
+  const [archivedBasketsState, setarchivedBasketsState] = useState(false);
 
   const dispatch = useDispatch();
 
