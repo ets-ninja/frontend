@@ -58,8 +58,7 @@ export default function PublicPage() {
     const redirectToBank = localStorage.getItem('redirectToBank');
 
     if (isLoggedIn && redirectToBank) {
-      const shareBank = jars.filter(jars => redirectToBank === jars._id)
-      modal.open(`public-jar/${redirectToBank}` )
+      modal.open(`public-jar/${redirectToBank}`)
       localStorage.removeItem('redirectToBank')
     }
   }, [dispatch, isFilter, isUserJars, jarsPerPage, page, users]);

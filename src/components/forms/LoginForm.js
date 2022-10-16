@@ -17,16 +17,8 @@ const LoginForm = () => {
   const { loading, isLoggedIn } = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [searchParams] = useSearchParams();
 
-  const basketId = searchParams.get('basketId');
-
-  console.log(basketId)
-
-  if (basketId) {
-    localStorage.setItem('redirectToBank', basketId);
-  }
 
   const {
     register,
@@ -35,14 +27,19 @@ const LoginForm = () => {
   } = useForm();
 
   useEffect(() => {
+  const basketId = searchParams.get('basketId');
+
+    if (basketId) {
+      localStorage.setItem('redirectToBank', basketId);
+    }
+
     const redirectToBank = localStorage.getItem('redirectToBank');
     if (redirectToBank && isLoggedIn) {
       navigate('/public');
-      // localStorage.removeItem('redirectToBank')
     } else if (isLoggedIn) {
       navigate('/wishlist');
     }
-  }, [navigate, isLoggedIn]);
+  }, [navigate, isLoggedIn ]);
 
   const submitForm = data => {
     dispatch(login(data));
