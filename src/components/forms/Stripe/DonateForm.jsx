@@ -15,7 +15,7 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST);
 const DonateForm = () => {
   const [paymentIntent, setPaymentIntent] = useState(null);
   const { loading, sendRequest } = request();
-  let { basket } = useParams();
+  let { basketID } = useParams();
 
   const {
     register,
@@ -36,7 +36,7 @@ const DonateForm = () => {
         data,
       );
       setPaymentIntent(paymentSecret);
-      await sendRequest( 'api/payment/donate', 'POST', { paymentIntentId: paymentSecret.id, basketId: basket });
+      await sendRequest( 'api/payment/donate', 'POST', { paymentIntentId: paymentSecret.id, basketId: basketID });
     } catch (err) {
       return;
     }

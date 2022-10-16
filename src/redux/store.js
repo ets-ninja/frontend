@@ -17,6 +17,7 @@ import userReducer from './user/userSlice';
 import requestReducer from './request/requestSlice';
 import wishlistReducer from './wishlist/wishlistSlice';
 import wishlistConfig from './wishlist/wishlistConfig';
+import basketReducer from './basket/basketSlice';
 
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
@@ -50,6 +51,7 @@ export const store = configureStore({
     auth: persistReducer(authPersistConfig, authReducer),
     user: userReducer,
     wishlist: persistReducer(wishlistConfig, wishlistReducer),
+    basket: basketReducer,
     modal: persistReducer(modalConfig, modalSlice.reducer),
     request: requestReducer,
     public: publicSlice.reducer,
