@@ -20,7 +20,6 @@ import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
-import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import RestorePassword from './pages/RestorePassword';
 import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';

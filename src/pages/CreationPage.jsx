@@ -32,9 +32,6 @@ const CreationPage = () => {
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()
 
-  const isStepOptional = step => {
-    return step === 1;
-  };
 
   const isStepSkipped = step => {
     return skipped.has(step);
@@ -84,21 +81,6 @@ const CreationPage = () => {
       return
     }
     setActiveStep(prevActiveStep => prevActiveStep - 1);
-  };
-
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-    setSkipped(prevSkipped => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
   };
 
   const handleReset = () => {
