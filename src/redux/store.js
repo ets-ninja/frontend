@@ -17,6 +17,7 @@ import userReducer from './user/userSlice';
 import snackbarReducer from './snackbar/snackbarSlice';
 import wishlistReducer from './wishlist/wishlistSlice';
 import wishlistConfig from './wishlist/wishlistConfig';
+import basketReducer from './basket/basketSlice';
 
 
 import creationBasketReducer from './basket/createBasketSlice'
@@ -54,6 +55,7 @@ export const store = configureStore({
     user: userReducer,
     wishlist: persistReducer(wishlistConfig, wishlistReducer),
     creationBasket: creationBasketReducer,
+    basket: basketReducer,
     modal: persistReducer(modalConfig, modalSlice.reducer),
     snackbar: snackbarReducer,
     public: publicSlice.reducer,
