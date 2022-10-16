@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect }  from 'react';
 import BasketBox from './BasketBox';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
