@@ -40,10 +40,10 @@ const PaymentForm = () => {
         {/* open the amount & description input */}
         {/* open the pm list*/}
         {/* add submit button */}
-      {/* <PaymentElement />
+      {/* <PaymentElement /> */}
       <Button variant="contained" type="submit" disabled={!stripe}>
         Submit
-      </Button> */}
+      </Button>
     </form>
   );
 };

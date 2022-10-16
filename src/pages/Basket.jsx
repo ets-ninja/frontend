@@ -12,7 +12,7 @@ import LinearProgress, {
   linearProgressClasses,
 } from '@mui/material/LinearProgress';
 import BasketChart from '../components/Charts/BasketChart';
-import CreatePayment from '../components/Stripe/DonateLogic/CreatePayment';
+import DonateIndex from '../components/Stripe/DonateLogic/DonateIndex';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 40,
@@ -29,7 +29,6 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const Basket = () => {
-  const [setupPayment, setSetupPayment] = useState(false);
   return (
     <Box
       sx={{
@@ -131,25 +130,7 @@ const Basket = () => {
             </Button>
           </Box>
         </Card>
-        <Button
-          sx={{
-            width: 330,
-            fontSize: 35,
-            mt: 3,
-            mb: 3,
-            borderRadius: 3,
-            backgroundColor: '#58D68D',
-            boxShadow: 5,
-            color: 'black',
-            '&:hover': { backgroundColor: '#358255', color: 'white' },
-          }}
-          variant="contained"
-          disabled={setupPayment}
-          onClick={() => setSetupPayment(true)}
-        >
-          Donate
-        </Button>
-            {setupPayment && <CreatePayment />}
+        <DonateIndex />
       </Box>
       <Box
         sx={{
