@@ -49,7 +49,7 @@ const App = () => {
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/basket/:basket" element={<Basket />} />
+        <Route path="/basket/:basketID" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<LostPassword />} path="/lost-password" />
