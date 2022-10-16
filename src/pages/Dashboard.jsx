@@ -11,6 +11,7 @@ import Switch from '@mui/material/Switch';
 import BasketBox from '../components/BasketBox';
 import useModal from '../hooks/useModal';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import StyledDropDownMenu from '../components/styled/StyledDropDownMenu';
 
@@ -204,6 +205,7 @@ const Dashboard = () => {
               </FormGroup>
             </StyledDropDownMenu>
             <Button
+              component={Link} to="/creation"
               variant="contained"
               sx={{
                 backgroundColor: '#58D68D',

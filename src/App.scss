@@ -28,3 +28,43 @@ main {
 } 
 
 
+.MuiStepLabel-labelContainer span {
+  font-size: 18px;
+}
+@media(max-width: 450px){
+  .MuiStepLabel-labelContainer span {
+    font-size: 12px;
+  } 
+}
+@media(max-width: 375px){
+  .MuiStepLabel-labelContainer span {
+    font-size: 10px;
+  } 
+}
+
+@media(max-width: 840px){
+  .jwhenl{
+    justify-content: center;
+  }
+}
+/*  *custom scroll bar*  */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: lightblue;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: lightskyblue;
+}
