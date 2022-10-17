@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import EditIcon from '@mui/icons-material/Edit';
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { get_basket_by_id } from '../redux/basket/basketActions';
 import { useParams } from 'react-router-dom';
 import { borderRadius } from '@mui/system';
+import DonateIndex from '../components/Stripe/DonateLogic/DonateIndex';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 40,
@@ -139,21 +140,7 @@ const Basket = () => {
             </Button>
           </Box>
         </Card>
-        <Button
-          sx={{
-            width: 330,
-            fontSize: 35,
-            mt: 3,
-            mb: 3,
-            borderRadius: 3,
-            backgroundColor: '#58D68D',
-            boxShadow: 5,
-            color: 'black',
-            '&:hover': { backgroundColor: '#358255', color: 'white' },
-          }}
-        >
-          Donate
-        </Button>
+        <DonateIndex />
       </Box>
       <Box
         sx={{
