@@ -100,16 +100,16 @@ const Header = () => {
 
   useEffect(() => {
     const channel = notificationChannel.getInstance();
-    if (isLoggedIn && notificationToken) {
-      channel.addEventListener('message', event => {
-        //console.log('Received message ', event.data);
+    const handleBackgroudMessage = event => {
+      dispatch(addNotification(event.data));
+      removeSeenNofitication();
+    };
 
-        dispatch(addNotification(event.data));
-        removeSeenNofitication();
-      });
+    if (isLoggedIn && notificationToken) {
+      channel.addEventListener('message', handleBackgroudMessage);
     }
     return () => {
-      channel.removeEventListener('message');
+      channel.removeEventListener('message', handleBackgroudMessage);
     };
   }, [dispatch, isLoggedIn, notificationToken]);
 
