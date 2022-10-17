@@ -25,7 +25,7 @@ const messaging = firebase.messaging();
 let channel;
 
 const getChannel = () => {
-  let channel = new BroadcastChannel('sw-messages');
+  const channel = new BroadcastChannel('sw-messages');
   return channel;
 };
 
