@@ -31,7 +31,6 @@ const messaging = (async () => {
     console.log('Firebase not supported this browser');
     return null;
   } catch (err) {
-    console.log(err);
     return null;
   }
 })();
@@ -45,16 +44,13 @@ export const fetchToken = async () => {
     if (currentToken) {
       store.dispatch(addToken(currentToken));
     }
-  } catch (err) {
-    console.log('An error occurred while retrieving token. ', err);
-  }
+  } catch (err) {}
 };
 
 export const onMessageListener = async () => {
   const messagingResolve = await messaging;
   try {
     const message = onMessage(messagingResolve, payload => {
-      //console.log(payload);
       store.dispatch(addNotification(payload));
 
       return payload;

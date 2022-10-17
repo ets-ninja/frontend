@@ -31,7 +31,6 @@ const getChannel = () => {
 
 const notificationChannel = {
   getInstance: () => {
-    //console.log(channel);
     if (channel === undefined || channel === null) {
       channel = getChannel();
     }
@@ -40,8 +39,6 @@ const notificationChannel = {
 };
 
 messaging.onBackgroundMessage(payload => {
-  //console.log('Received background message ', payload);
-
   payload.messageId = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
     /[018]/g,
     c =>
