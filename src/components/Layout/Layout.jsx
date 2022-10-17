@@ -83,6 +83,7 @@ const theme = createTheme({
       fill: '#000000ab',
       transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
       '&:hover': {
+        cursor: 'pointer',
         fill: theme => theme.colors.yellow,
         transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
       },
@@ -95,6 +96,7 @@ const theme = createTheme({
       fill: theme => theme.colors.yellow,
       transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
       '&:hover': {
+        cursor: 'pointer',
         transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
@@ -102,6 +104,7 @@ const theme = createTheme({
       fill: 'rgba(0,0,0,0.67)',
     },
     hover: {
+      cursor: 'pointer',
       fill: theme => theme.colors.yellow,
       scale: '1.2',
       transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',

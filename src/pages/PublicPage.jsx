@@ -125,7 +125,6 @@ export default function PublicPage() {
         <FilterForm register={register} />
         <SettingsBar setSortOrder={setSortOrder} />
       </Box>
-      {status.isLoading && <CardSkeleton quantity={jarsPerPage} />}
       {users && (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 1 }}>
           {users.map(el => (
@@ -133,6 +132,7 @@ export default function PublicPage() {
           ))}
         </Box>
       )}
+      {status.isLoading && <CardSkeleton quantity={jarsPerPage} />}
       {!status.isLoading && !!jars?.length && (
         <Box
           sx={{

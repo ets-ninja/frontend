@@ -131,6 +131,9 @@ export default function SettingsBar({ setSortOrder }) {
                 fill: theme => theme.colors.yellow,
                 transform: isSortAsc ? 'rotate(0.5turn)' : 'rotate(0)',
                 transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+                '&:hover': {
+                  cursor: 'pointer',
+                },
               }}
             />
           </Tooltip>
@@ -148,6 +151,9 @@ export default function SettingsBar({ setSortOrder }) {
             : theme => theme.icon.grey.fill,
           transform: isOpen ? 'rotate(1turn)' : 'rotate(0)',
           transition: theme => theme.icon.hover.transition,
+          '&:hover': {
+            cursor: 'pointer',
+          },
         }}
       />
     </Box>
