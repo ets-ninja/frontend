@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 
 import LoadingSpinner from '../../UIElements/LoadingSpinner';
 
-const DonateForm = () => {
+const DonateForm = (props) => {
   const [paymentIntent, setPaymentIntent] = useState(null);
   const { loading, sendRequest } = request();
   let { basketID } = useParams();
@@ -47,7 +47,7 @@ const DonateForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit(submitForm)}>
-        <Stack m={2} spacing={2}>
+        <Stack m={2} spacing={2} >
           <TextField
             type="number"
             {...register('amount', {
@@ -58,7 +58,7 @@ const DonateForm = () => {
               },
             })}
             label="Amount"
-            autoComplete=""
+            autoComplete=""   
           />
           <TextField
             type="text"

@@ -20,15 +20,12 @@ export default function UserCard({ user, handleUserClick }) {
       }}
     >
       <Avatar
-        alt={user.publicName || 'Rick Astley'}
-        src={
-          user.userPhoto ||
-          'https://americansongwriter.com/wp-content/uploads/2022/03/RickAstley.jpeg?fit=2000%2C800'
-        }
+        alt={user.publicName}
+        src={user?.userPhoto}
         sx={{ width: 56, height: 56 }}
       />
       <Typography variant="h3" component="p" sx={{ ml: 2 }}>
-        {user.publicName || 'Rick Astley'}
+        {user.publicName}
       </Typography>
     </Box>
   );
