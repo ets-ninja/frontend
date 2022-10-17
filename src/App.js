@@ -15,11 +15,11 @@ import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
 import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
+import CreationPage from './pages/CreationPage';
 import Dashboard from './pages/Dashboard';
 import Basket from './pages/Basket';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
-import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import RestorePassword from './pages/RestorePassword';
 import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
@@ -50,12 +50,17 @@ const App = () => {
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/basket/:basket" element={<Basket />} />
+        <Route path="/basket/:basketID" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<ConfirmEmail />} path="/confirm-email" />
         <Route exect element={<LostPassword />} path="/lost-password" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
+        <Route
+          exect
+          element={<ProtectedRoute component={CreationPage} />}
+          path="/creation"
+          />
         <Route
           exect
           element={<StripeStatusContainer />}
@@ -86,7 +91,11 @@ const App = () => {
           element={<ProtectedRoute component={Settings} />}
           path="/settings"
         />
-        <Route exect element={<PublicPage />} path="/public" />
+        <Route
+          exect
+          element={<ProtectedRoute component={PublicPage} />}
+          path="/public"
+        />
       </Routes>
       {location.state?.backgroundLocation && (
         <Routes>

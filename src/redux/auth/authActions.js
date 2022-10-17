@@ -10,9 +10,9 @@ export const refresh = createAsyncThunk(
       const { data } = await axios.get('/api/auth/refresh');
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -32,7 +32,7 @@ export const logout = createAsyncThunk(
       dispatch(setUser(null));
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
       } else {
         return rejectWithValue(error.message);
@@ -49,7 +49,7 @@ export const login = createAsyncThunk(
       dispatch(setUser(data.user));
       return data;  
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
       } else {
         return rejectWithValue(error.message);

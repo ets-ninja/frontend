@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { get, del } from 'idb-keyval';
 
 import {
   addNotificationToken,
   getUserDetails,
 } from '../../../redux/user/userActions';
 import { logout } from '../../../redux/auth/authActions';
+import { notificationChannel } from '../../../utils/notification/notificationChannel';
+import removeSeenNofitication from '../../../utils/notification/removeSeenNotification';
 
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
@@ -29,9 +30,11 @@ import Logout from '@mui/icons-material/Logout';
 import ResponsiveContainer from '../../styled/ResponsiveContainer';
 import Notification from './Notification';
 import {
+  addMultipleNotification,
   addNotification,
   clearNotificationsList,
 } from '../../../redux/notifications/notificationSlice';
+import loadBackgroundMessages from '../../../utils/notification/loadBackgroundMessages';
 
 const pages = [
   {
@@ -45,6 +48,10 @@ const pages = [
   {
     name: 'Savings schemes',
     link: '/savingsschemes',
+  },
+  {
+    name: 'Public jars',
+    link: '/public',
   },
 ];
 
@@ -77,27 +84,32 @@ const Header = () => {
   }, [dispatch, notificationToken, isLoggedIn, userInfo]);
 
   useEffect(() => {
-    const channel = new BroadcastChannel('sw-messages');
     if (isLoggedIn && notificationToken) {
-      channel.addEventListener('message', event => {
-        //console.log('Received message ', event.data);
+      const firstLoadMessages = async () => {
+        let messages;
+        try {
+          messages = await loadBackgroundMessages();
+        } catch (error) {}
+        if (messages) {
+          dispatch(addMultipleNotification(messages));
+        }
+      };
+      firstLoadMessages();
+    }
+  }, [dispatch, notificationToken, isLoggedIn]);
 
-        dispatch(addNotification(event.data));
+  useEffect(() => {
+    const channel = notificationChannel.getInstance();
+    const handleBackgroudMessage = event => {
+      dispatch(addNotification(event.data));
+      removeSeenNofitication();
+    };
 
-        const removeSeenMessage = async () => {
-          let notificationArr;
-          try {
-            notificationArr = await get('notificationList');
-            if (notificationArr) {
-              del('notificationList');
-            }
-          } catch (error) {}
-        };
-        removeSeenMessage();
-      });
+    if (isLoggedIn && notificationToken) {
+      channel.addEventListener('message', handleBackgroudMessage);
     }
     return () => {
-      channel.removeEventListener('message');
+      channel.removeEventListener('message', handleBackgroudMessage);
     };
   }, [dispatch, isLoggedIn, notificationToken]);
 

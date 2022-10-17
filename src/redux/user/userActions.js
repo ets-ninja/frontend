@@ -19,9 +19,9 @@ export const registerUser = createAsyncThunk(
       });
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -41,9 +41,9 @@ export const confirmEmail = createAsyncThunk(
       dispatch(setLoginState(data.token));
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -60,9 +60,27 @@ export const requestNewCorfirmEmail = createAsyncThunk(
         userId,
       });
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const loginUser = createAsyncThunk(
+  'user/login',
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('api/auth/login', { email, password });
+      return data;
+    } catch (error) {
+      if (error.response?.data?.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -78,9 +96,9 @@ export const getUserDetails = createAsyncThunk(
       const { data } = await axios.get('/api/user');
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -101,9 +119,9 @@ export const updateUserInfo = createAsyncThunk(
 
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -122,9 +140,9 @@ export const updateUserPassword = createAsyncThunk(
       });
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -142,9 +160,9 @@ export const updateUserPhoto = createAsyncThunk(
       });
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -163,9 +181,9 @@ export const addNotificationToken = createAsyncThunk(
       });
       return data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (error.response?.data?.message) {
         return rejectWithValue(error.response.data.message);
-      } else if (error.response && error.response.data) {
+      } else if (error.response?.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
