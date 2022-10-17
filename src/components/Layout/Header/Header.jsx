@@ -74,9 +74,10 @@ const Header = () => {
 
   useEffect(() => {
     if (
-      userInfo.notificationTokens &&
+      userInfo?.notificationTokens &&
       notificationToken &&
-      !userInfo.notificationTokens.includes(notificationToken)
+      !userInfo?.notificationTokens.includes(notificationToken) &&
+      isLoggedIn
     ) {
       dispatch(addNotificationToken());
     }

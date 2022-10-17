@@ -9,7 +9,7 @@ import './App.scss';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Profile from './pages/Profile/Profile';
-import Register from './pages/Register';
+import Register from './pages/Register/Register';
 import LostPassword from './pages/LostPassword';
 import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
@@ -24,6 +24,7 @@ import RestorePassword from './pages/RestorePassword';
 import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+import ConfirmEmail from './pages/Register/ConfirmEmail';
 
 const App = () => {
   const location = useLocation();
@@ -52,6 +53,7 @@ const App = () => {
         <Route path="/basket/:basketID" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
+        <Route exect element={<ConfirmEmail />} path="/confirm-email" />
         <Route exect element={<LostPassword />} path="/lost-password" />
         <Route exect element={<RestorePassword />} path="/restorepassword" />
         <Route

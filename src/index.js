@@ -24,7 +24,7 @@ root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Layout>
-        <App />
+          <App />
       </Layout>
     </PersistGate>
   </Provider>,
