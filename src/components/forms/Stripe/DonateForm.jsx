@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import LoadingSpinner from '../../UIElements/LoadingSpinner';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST);
 
-const DonateForm = () => {
+const DonateForm = (props) => {
   const [paymentIntent, setPaymentIntent] = useState(null);
   const { loading, sendRequest } = request();
   let { basketID } = useParams();
@@ -49,7 +49,7 @@ const DonateForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit(submitForm)}>
-        <Stack m={2} spacing={2}>
+        <Stack m={2} spacing={2} >
           <TextField
             type="number"
             {...register('amount', {
@@ -60,7 +60,7 @@ const DonateForm = () => {
               },
             })}
             label="Amount"
-            autoComplete=""
+            autoComplete=""   
           />
           <TextField
             type="text"
