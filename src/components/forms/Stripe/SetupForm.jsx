@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
   useStripe,
@@ -6,7 +6,7 @@ import {
   PaymentElement,
 } from '@stripe/react-stripe-js';
 
-import { setError } from '../../../redux/request/requestSlice';
+import { setError } from '../../../redux/snackbar/snackbarSlice';
 
 import Button from '@mui/material/Button';
 
