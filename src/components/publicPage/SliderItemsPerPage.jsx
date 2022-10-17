@@ -7,6 +7,7 @@ export default function SliderItmesPerPage({ setJarsPerPage, jarsPerPage }) {
   const [currentPerPage, setCurrentPerPage] = useState(() => jarsPerPage);
   return (
     <Slider
+      color="secondary"
       value={currentPerPage}
       step={isTablet ? 2 : 3}
       min={isTablet ? 2 : 3}

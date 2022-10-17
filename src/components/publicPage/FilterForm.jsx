@@ -8,13 +8,17 @@ export default function FilterForm({ register }) {
       noValidate
       autoComplete="off"
       onSubmit={e => e.preventDefault()}
+      sx={{
+        flexGrow: '3',
+      }}
     >
       <TextField
+        color="secondary"
         {...register('filterQuery')}
         id="standard-basic"
         label="Search"
         variant="outlined"
-        sx={{ mb: 2, width: '100% ' }}
+        sx={{ width: '100% ' }}
       />
     </Box>
   );
