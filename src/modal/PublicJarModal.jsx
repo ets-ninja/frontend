@@ -1,63 +1,91 @@
-import { Avatar, Box, Button, LinearProgress, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { linearProgressClasses } from '@mui/material/LinearProgress';
 import { useSelector } from 'react-redux';
 import getModalData from '../redux/modal/modalSelectors';
-
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 40,
-  borderRadius: 20,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor:
-      theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 20,
-    background:
-      'linear-gradient(270.27deg, #FBB13C 1.94%, rgba(251, 177, 60, 51) 99.95%);',
-  },
-}));
+import { Avatar, Box, Button, Typography } from '@mui/material';
+import SumLinearProgress from '../components/SumLinearProgress';
+import jarStepHandler from '../components/JarCard/jarStepHandler';
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 
 export default function PublicJarModal() {
   const {
     user,
     createdAt = new Date(Date.now()),
-    name = 'Toyota Supra',
-    image = 'https://cdn.arstechnica.net/wp-content/uploads/2022/04/razer-book-800x450.jpg',
+    name,
+    image = null,
     expirationDate = new Date('25 Oct 2022 00:12:00'),
-    value = 53334,
-    goal = 60000,
-    description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ",
+    value,
+    goal,
+    description,
   } = useSelector(getModalData);
 
   return (
     user && (
-      <>
+      <Box
+        sx={{
+          p: { xs: 2, sm: 4 },
+          pt: { sm: 2 },
+          pb: { sm: 2 },
+          maxWidth: '800px',
+          minWidth: { sm: '566px', md: '600px' },
+          maxHeight: { sm: '90vh' },
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
+            px: 1,
           }}
         >
-          <Avatar
-            alt={user.publicName || 'Rick Astley'}
-            src={
-              user.userPhoto ||
-              'https://americansongwriter.com/wp-content/uploads/2022/03/RickAstley.jpeg?fit=2000%2C800'
-            }
-            sx={{ width: 64, height: 64 }}
-          />
-          <Typography variant="h3" component="p" sx={{ ml: 2 }}>
-            {user.publicName || 'Rick Astley'}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar
+              alt={user.publicName || 'Rick Astley'}
+              src={user?.userPhoto}
+              sx={{ width: 64, height: 64 }}
+            />
+            <Typography variant="h3" component="p" sx={{ ml: 2 }}>
+              {user.publicName || 'Rick Astley'}
+            </Typography>
+          </Box>
+          <Typography component="p" sx={{ fontWeight: '500' }}>
+            {new Date(createdAt).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+            })}
           </Typography>
         </Box>
         <Box sx={{ pl: 3, pr: 3, mt: 2 }}>
           <Box sx={{ mb: 2 }}>
-            <img
-              src={image}
-              alt={name}
-              style={{ width: '100%', borderRadius: '10px' }}
-            />
+            {image ? (
+              <img
+                src={image}
+                alt={name}
+                style={{ width: '100%', borderRadius: '10px' }}
+              />
+            ) : (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  pt: 1,
+                }}
+              >
+                <img
+                  src={jarStepHandler(value, goal)}
+                  alt={`${name}`}
+                  style={{
+                    height: '280px',
+                    zIndex: '2',
+                  }}
+                />
+              </Box>
+            )}
           </Box>
           <Typography variant="h5" component="p">
             {name}
@@ -65,8 +93,25 @@ export default function PublicJarModal() {
           <Typography variant="h6" component="p">
             Goal: {goal}$
           </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              flexDirection: 'row-reverse',
+            }}
+          >
+            <TimerOutlinedIcon />
+            <Typography variant="h6" component="p" sx={{ fontWeight: '500' }}>
+              Time Left:
+              {` ${Math.floor(
+                new Date(new Date(expirationDate) - Date.now()) /
+                  (24 * 60 * 60 * 1000),
+              )} days`}
+            </Typography>
+          </Box>
           <Box sx={{ width: '100%', position: 'relative' }}>
-            <BorderLinearProgress
+            <SumLinearProgress
               variant="determinate"
               value={(value * 100) / goal}
               sx={{
@@ -90,22 +135,42 @@ export default function PublicJarModal() {
           </Box>
           <Typography>{description}</Typography>
         </Box>
-        <Button
-          sx={{
-            width: '100%',
-            fontSize: 35,
-            mt: 3,
-            mb: 3,
-            borderRadius: 3,
-            backgroundColor: '#FBB13C',
-            boxShadow: 5,
-            color: 'black',
-            '&:hover': { backgroundColor: '#358255EE', color: 'white' },
-          }}
-        >
-          Donate
-        </Button>
-      </>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Button
+            sx={{
+              width: '100%',
+              fontSize: '20px',
+              ml: 1,
+              mt: 1,
+              p: 1,
+              fontWeight: '500',
+              borderRadius: '5px',
+              backgroundColor: theme => theme.palette.secondary.main,
+              boxShadow: 5,
+              color: 'black',
+              '&:hover': {
+                backgroundColor: '#FBB13Ce9',
+                color: 'white',
+              },
+            }}
+          >
+            Donate
+          </Button>
+          <ShareOutlinedIcon
+            data-clickable={true}
+            sx={{
+              width: '46px',
+              height: '46px',
+              px: '5px',
+              ml: 1,
+              scale: '1',
+              transition: theme => theme.icon.hover.transition,
+              fill: theme => theme.colors.darkBlue,
+              '&:hover': theme => theme.icon.hover,
+            }}
+          />
+        </Box>
+      </Box>
     )
   );
 }
