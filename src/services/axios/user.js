@@ -21,12 +21,9 @@ instance.interceptors.response.use(
   response => {
     return response;
   },
-  // error => {
-  //   if (error.response.status === 401) {
-  //     store.dispatch(logout());
-  //   }
-  //   return Promise.reject(error);
-  // },
+  error => {
+    return Promise.reject(error);
+  },
 );
 
 export default instance;
