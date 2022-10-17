@@ -19,7 +19,6 @@ const notificationSlice = createSlice({
     },
     addMultipleNotification: (state, { payload }) => {
       state.notificationList = state.notificationList.concat(payload);
-      //state.newNotification = payload[0];
     },
     removeNotification: (state, { payload }) => {
       state.notificationList = state.notificationList.filter(
