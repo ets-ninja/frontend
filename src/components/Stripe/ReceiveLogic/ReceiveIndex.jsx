@@ -11,11 +11,11 @@ const WithdrawalIndex = () => {
   const { loading, sendRequest } = request();
   let { basketID } = useParams();
 
-  const data = { basketID: basketID };
+  const data = { basketId: basketID };
 
   async function handleReceive() {
     try {
-      await sendRequest('api/payment/recieve_money', 'GET', data);
+      await sendRequest('api/payment/recieve_money', 'POST', { basketId: basketID });
     } catch (err) {
       return;
     }
