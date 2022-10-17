@@ -7,10 +7,8 @@ import request from '../../../hooks/useRequest';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 import LoadingSpinner from '../../UIElements/LoadingSpinner';
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST);
 
 const DonateForm = () => {
   const [paymentIntent, setPaymentIntent] = useState(null);

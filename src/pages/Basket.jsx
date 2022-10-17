@@ -15,6 +15,7 @@ import { get_basket_by_id } from '../redux/basket/basketActions';
 import { useParams } from 'react-router-dom';
 import { borderRadius } from '@mui/system';
 import DonateIndex from '../components/Stripe/DonateLogic/DonateIndex';
+import ReceiveIndex from '../components/Stripe/ReceiveLogic/ReceiveIndex';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 40,
@@ -140,7 +141,10 @@ const Basket = () => {
             </Button>
           </Box>
         </Card>
-        <DonateIndex />
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}> 
+            <DonateIndex />
+            <ReceiveIndex />
+        </Box>
       </Box>
       <Box
         sx={{
