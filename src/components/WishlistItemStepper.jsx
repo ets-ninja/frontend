@@ -54,6 +54,10 @@ const WishlistItemStepper = () => {
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    dispatch(setWishitemPhoto(''));
+  }, []);
+
   const isStepOptional = step => {
     return step === 1;
   };
