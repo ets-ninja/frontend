@@ -12,6 +12,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const ErrorMessage = () => {
   const user = useSelector(state => state.user);
+  const creationBasket = useSelector(state => state.creationBasket);
   const snackbar = useSelector(state => state.snackbar);
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
@@ -30,6 +31,14 @@ const ErrorMessage = () => {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
   }, [user.error, snackbar.error, auth.error]);
+  
+  useEffect(() => {
+    if (creationBasket.errorInfo || snackbar.error) {
+      setState(prevValue => ({ ...prevValue, open: true }));
+    } else {
+      setState(prevValue => ({ ...prevValue, open: false }));
+    }
+  }, [creationBasket.errorInfo, snackbar.error]);
 
   const handleClose = () => {
     setState({ ...state, open: false });
@@ -52,7 +61,7 @@ const ErrorMessage = () => {
         onClose={handleClose}
       >
         <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
-          {user.error || auth.error || snackbar.error}
+          {user.error || auth.error || creationBasket.errorInfo || snackbar.error}
         </Alert>
       </Snackbar>
     </>

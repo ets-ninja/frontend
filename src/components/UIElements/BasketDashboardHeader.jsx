@@ -19,6 +19,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
 import { changePage, changeType, changeOrder } from '../../redux/basket/basketSlice'
+import { Link } from 'react-router-dom';
 
 import { get_owner_baskets, get_coowner_baskets, get_public_baskets, get_private_baskets } from '../../redux/basket/basketActions';
 
@@ -168,7 +169,7 @@ const BasketDashboardHeader = () => {
               <FormControlLabel control={<Switch checked={archivedBasketsState} onChange={() => { setarchivedBasketsState(!archivedBasketsState) }}/>} label="Archived" />
             </FormGroup>
           </StyledMenu>
-          <Button variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white", mb: { sm: 2, md: 0 } } }} >Create new</Button>
+          <Button component={Link} to='/creation' variant="contained" sx={{ backgroundColor: "#58D68D", color: 'black', '&:hover': { backgroundColor: '#358255', color: "white", mb: { sm: 2, md: 0 } } }} >Create new</Button>
         </Toolbar>
       </AppBar>
     </Box>
