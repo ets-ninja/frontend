@@ -6,6 +6,7 @@ import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import jarStepHandler from './jarStepHandler';
 import SumLinearProgress from '../SumLinearProgress';
+import transformTransactionTime from './transformTransactionTime';
 
 export default function JarCard({
   bank,
@@ -21,6 +22,7 @@ export default function JarCard({
     value,
     goal,
     description,
+    transactions = [],
   } = bank;
   return (
     <Box
@@ -217,7 +219,7 @@ export default function JarCard({
               }}
             />
             <Typography component="p" sx={{ fontSize: '13px', pl: 1 }}>
-              Last donation 5 min. ago
+              {transformTransactionTime(transactions[0]?.createdAt)}
             </Typography>
           </Box>
           {image && (
