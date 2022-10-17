@@ -7,7 +7,7 @@ const getChannel = () => {
 
 export const notificationChannel = {
   getInstance: () => {
-    if (channel === undefined || channel === null) {
+    if (!channel) {
       channel = getChannel();
     }
     return channel;
