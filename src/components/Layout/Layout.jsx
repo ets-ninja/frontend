@@ -72,8 +72,34 @@ const theme = createTheme({
       xl: 1536,
     },
   },
-  hover: {
-    icon: {
+  icon: {
+    sortSettings: {
+      width: '28px',
+      height: '28px',
+      px: '3px',
+      scale: '1',
+      fill: '#000000ab',
+      transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+      '&:hover': {
+        fill: theme => theme.colors.yellow,
+        transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+      },
+    },
+    sortSettingsActive: {
+      width: '28px',
+      height: '28px',
+      px: '3px',
+      scale: '1.2',
+      fill: theme => theme.colors.yellow,
+      transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+      '&:hover': {
+        transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+      },
+    },
+    grey: {
+      fill: 'rgba(0,0,0,0.67)',
+    },
+    hover: {
       fill: theme => theme.colors.yellow,
       scale: '1.2',
       transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',

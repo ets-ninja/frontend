@@ -14,9 +14,9 @@ import {
   fetchUserJars,
 } from '../redux/public/publicActions';
 
-import styled from '@emotion/styled';
 import { Box } from '@mui/system';
 import { Pagination } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import useModal from '../hooks/useModal';
 import { useDebounceEffect } from '../hooks/useDebounceEffect';
@@ -28,6 +28,7 @@ import {
   SliderItmesPerPage,
   UserCard,
   CardSkeleton,
+  SettingsBar,
 } from '../components/publicPage';
 
 export default function PublicPage() {
@@ -42,6 +43,7 @@ export default function PublicPage() {
   const [isFilter, setIsFilter] = useState(false);
   const [page, setPage] = useState(1);
   const [jarsPerPage, setJarsPerPage] = useState(9);
+  const [sortOrder, setSortOrder] = useState('date desc');
   const { pageCount } = useSelector(getPublicPagination);
   const jars = useSelector(getPublicData);
   const users = useSelector(getPublicUsers);
@@ -49,11 +51,18 @@ export default function PublicPage() {
 
   useEffect(() => {
     if (!isFilter && !isUserJars)
-      dispatch(fetchPublicJars({ page, jarsPerPage }));
+      dispatch(fetchPublicJars({ page, sortOrder, jarsPerPage }));
     if (!isFilter && isUserJars) {
-      dispatch(fetchUserJars({ userToFind: users[0]._id, page, jarsPerPage }));
+      dispatch(
+        fetchUserJars({
+          userToFind: users[0]._id,
+          page,
+          sortOrder,
+          jarsPerPage,
+        }),
+      );
     }
-  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, users]);
+  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, sortOrder, users]);
 
   useDebounceEffect(
     () => {
@@ -63,7 +72,9 @@ export default function PublicPage() {
         return;
       }
       if (isUserJars) setIsUserJars(false);
-      dispatch(fetchFilteredJars({ filterQuery, page, jarsPerPage }));
+      dispatch(
+        fetchFilteredJars({ filterQuery, page, sortOrder, jarsPerPage }),
+      );
     },
     250,
     [filterQuery, page, jarsPerPage],
@@ -77,7 +88,13 @@ export default function PublicPage() {
     setIsUserJars(true);
     reset({ filterQuery: null });
     dispatch(publicSlice.actions.setUsers(user));
-    dispatch(fetchUserJars({ userToFind, page, jarsPerPage }));
+    dispatch(fetchUserJars({ userToFind, page, sortOrder, jarsPerPage }));
+  };
+
+  const handleBackClick = () => {
+    setIsUserJars(false);
+    reset({ filterQuery: null });
+    setIsFilter(false);
   };
 
   function handleOpenModal(e, data) {
@@ -91,7 +108,23 @@ export default function PublicPage() {
 
   return (
     <ResponsiveContainer>
-      <FilterForm register={register} />
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        {(isFilter || isUserJars) && (
+          <ArrowBackIosIcon
+            onClick={handleBackClick}
+            sx={{
+              height: '40px',
+              width: '40px',
+              fill: 'rgba(0,0,0,0.67)',
+              scale: '1',
+              transition: theme => theme.icon.hover.transition,
+              '&:hover': theme => theme.icon.hover,
+            }}
+          />
+        )}
+        <FilterForm register={register} />
+        <SettingsBar setSortOrder={setSortOrder} />
+      </Box>
       {status.isLoading && <CardSkeleton quantity={jarsPerPage} />}
       {users && (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 1 }}>
