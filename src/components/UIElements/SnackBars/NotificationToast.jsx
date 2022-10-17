@@ -37,7 +37,7 @@ const NotificationToast = () => {
             horizontal: state.horizontal,
           }}
           open={state.open}
-          autoHideDuration={5000}
+          autoHideDuration={3000}
           TransitionComponent={state.Transition}
           key={state.Transition.name}
           onClose={handleClose}

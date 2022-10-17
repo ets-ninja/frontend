@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { store } from '../../redux/store';
-import { setError } from '../../redux/request/requestSlice';
+import { setError } from '../../redux/snackbar/snackbarSlice';
 
 const errorsBlacklist = ['/api/auth/refresh'];
 

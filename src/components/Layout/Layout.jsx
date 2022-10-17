@@ -3,8 +3,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
-import ErrorMessage from '../UIElements/ErrorMessage';
-import NotificationToast from '../UIElements/NotificationToast';
+import ErrorMessage from '../UIElements/SnackBars/ErrorMessage';
+import NotificationToast from '../UIElements/SnackBars/NotificationToast';
+import SuccessMessage from '../UIElements/SnackBars/SuccessMessage';
+import InfoMessage from '../UIElements/SnackBars/InfoMessage';
 
 const theme = createTheme({
   palette: {
@@ -118,6 +120,8 @@ const Layout = props => {
           ></link>
           <NotificationToast />
           <ErrorMessage />
+          <SuccessMessage />
+          <InfoMessage />
           <Header />
           <main style={{ backgroundColor: 'white' }}>{props.children}</main>
           <Footer />

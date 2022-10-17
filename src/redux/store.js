@@ -14,9 +14,10 @@ import authPersistConfig from './auth/authPersistConfig';
 // Reducers
 import authReducer from './auth/authSlice';
 import userReducer from './user/userSlice';
-import requestReducer from './request/requestSlice';
+import snackbarReducer from './snackbar/snackbarSlice';
 import wishlistReducer from './wishlist/wishlistSlice';
 import wishlistConfig from './wishlist/wishlistConfig';
+import basketReducer from './basket/basketSlice';
 
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
@@ -50,8 +51,9 @@ export const store = configureStore({
     auth: persistReducer(authPersistConfig, authReducer),
     user: userReducer,
     wishlist: persistReducer(wishlistConfig, wishlistReducer),
+    basket: basketReducer,
     modal: persistReducer(modalConfig, modalSlice.reducer),
-    request: requestReducer,
+    snackbar: snackbarReducer,
     public: publicSlice.reducer,
     notification: persistReducer(notificationConfig, notificationReducer),
   },
