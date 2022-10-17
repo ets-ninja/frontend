@@ -12,7 +12,14 @@ const initialAuthState = {
 const authSlice = createSlice({
   name: 'authentication',
   initialState: initialAuthState,
-  reducers: {},
+  reducers: {
+    setLoginState(state, action) {
+      state.loading = false;
+      state.isLoggedIn = true;
+      state.token = action.payload;
+      state.tokenExpiresAt = Date.now() + 86400000;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(login.rejected, (state, action) => {
@@ -27,7 +34,9 @@ const authSlice = createSlice({
         isAnyOf(login.fulfilled, refresh.fulfilled),
         (state, action) => {
           state.loading = false;
-          state.isLoggedIn = true;
+          if(action.payload.user.status==='active') {     
+            state.isLoggedIn = true;
+          }  
           state.token = action.payload.token;
           state.tokenExpiresAt = Date.now() + 86400000;
         },
@@ -45,4 +54,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { setLoginState } = authSlice.actions;
 export default authSlice.reducer;

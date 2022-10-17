@@ -9,6 +9,7 @@ import { setWishitemPhoto } from '../../redux/wishlist/wishlistSlice';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
+import { setPhotoTag } from '../../redux/basket/createBasketSlice';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -90,6 +91,9 @@ const UpdatePhotoModal = () => {
             userPhoto: `${previewCanvasRef.current.toDataURL()}`,
           }),
         );
+        break;
+      case 'changeBasketTag':
+        dispatch(setPhotoTag(`${previewCanvasRef.current.toDataURL()}`));
         break;
       case 'updateWishItemPhoto':
         dispatch(

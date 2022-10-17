@@ -30,20 +30,43 @@ main {
   bottom: 30px !important;
 }
 
-/* custom scrollbar */
+.MuiStepLabel-labelContainer span {
+  font-size: 18px;
+}
+@media (max-width: 450px) {
+  .MuiStepLabel-labelContainer span {
+    font-size: 12px;
+  }
+}
+@media (max-width: 375px) {
+  .MuiStepLabel-labelContainer span {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 840px) {
+  .jwhenl {
+    justify-content: center;
+  }
+}
+/*  *custom scroll bar*  */
+
+/* width */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
 }
+
+/* Track */
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: #f1f1f1;
 }
+
+/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
+  background: lightblue;
 }
+
+/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.4);
-}
-::-webkit-scrollbar-thumb:active {
-  background: rgba(0, 0, 0, 0.9);
+  background: lightskyblue;
 }

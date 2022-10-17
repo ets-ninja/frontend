@@ -28,30 +28,32 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-export default function JarCard({ bank, handleOpenModal = null }) {
+export default function JarCard({
+  bank,
+  handleOpenModal = null,
+  handleUserClick = null,
+}) {
   const {
     userPhoto = 'https://americansongwriter.com/wp-content/uploads/2022/03/RickAstley.jpeg?fit=2000%2C800',
     publicName = 'Rick Astley',
   } = bank.user;
   const {
-    _id,
     createdAt = new Date(Date.now()),
     name = 'Toyota Supra',
     image = 'https://cdn.arstechnica.net/wp-content/uploads/2022/04/razer-book-800x450.jpg',
     expirationDate = new Date('25 Oct 2022 00:12:00'),
     value = 53334,
-    finalGoal = 60000,
+    goal = 60000,
     description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ",
   } = bank;
   return (
     <Box
-      key={_id}
-      onClick={handleOpenModal}
+      onClick={e => handleOpenModal(e, bank)}
       sx={{
         color: theme => theme.colors.darkBlue,
         background: theme => theme.colors.white,
         boxSizing: 'border-box',
-        border: '1px solid #868686',
+        border: '1px solid #86868666',
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
         borderRadius: '5px',
         cursor: 'pointer',
@@ -89,6 +91,7 @@ export default function JarCard({ bank, handleOpenModal = null }) {
           }}
         >
           <Box
+            onClick={() => handleUserClick(bank.user)}
             sx={{ display: 'flex', alignItems: 'center' }}
             data-clickable={true}
           >
@@ -152,8 +155,8 @@ export default function JarCard({ bank, handleOpenModal = null }) {
               }}
             >
               <Typography align="center" sx={{ px: 2, py: 1 }}>
-                {description.length > 450
-                  ? `${description.substring(0, 365)}. . .`
+                {description.length > 270
+                  ? `${description.substring(0, 270)}. . .`
                   : description}
               </Typography>
             </Box>
@@ -180,7 +183,7 @@ export default function JarCard({ bank, handleOpenModal = null }) {
             {description && (
               <MediaQuery maxWidth={767}>
                 <Typography component="p" sx={{ pl: { xs: 1, sm: 2 }, mb: 1 }}>
-                  {description.length > 120
+                  {description.length > 90
                     ? `${description.substring(0, 90)}. . .`
                     : description}
                 </Typography>
@@ -195,7 +198,7 @@ export default function JarCard({ bank, handleOpenModal = null }) {
               }}
             >
               <Typography component="p" sx={{ fontWeight: '500' }}>
-                {`${value} of ${finalGoal}`}
+                {`${value} of ${goal}`}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <TimerOutlinedIcon />
@@ -209,7 +212,7 @@ export default function JarCard({ bank, handleOpenModal = null }) {
             </Box>
             <BorderLinearProgress
               variant="determinate"
-              value={(value * 100) / finalGoal}
+              value={(value * 100) / goal}
               sx={{
                 height: '5px',
               }}
@@ -227,7 +230,7 @@ export default function JarCard({ bank, handleOpenModal = null }) {
             }}
           >
             <img
-              src={jarStepHandler(value, finalGoal)}
+              src={jarStepHandler(value, goal)}
               alt={`${name}`}
               style={{
                 width: '100%',

@@ -6,8 +6,8 @@ import { removeNotification } from '../../../redux/notifications/notificationSli
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
@@ -41,35 +41,15 @@ const Notification = () => {
   return (
     <Box sx={{ flexGrow: 0, mr: '10px' }}>
       <Tooltip title="Open notifications">
-        {notificationList.length > 0 ? (
-          <IconButton onClick={handleOpenNotifMenu} sx={{ p: 0 }}>
-            <NotificationsNoneIcon
-              sx={{
-                color: 'white',
-                fontSize: '40px',
-                position: 'relative',
-              }}
-            />
-            <Typography
-              sx={{
-                color: 'white',
-                fontSize: '12px',
-                position: 'absolute',
-              }}
-            >
-              {notificationList.length}
-            </Typography>
-          </IconButton>
-        ) : (
-          <IconButton onClick={handleOpenNotifMenu} sx={{ p: 0 }}>
+        <IconButton onClick={handleOpenNotifMenu} sx={{ p: 0 }}>
+          <Badge badgeContent={notificationList.length} color="error" max={9}>
             <NotificationsIcon
               sx={{
                 color: 'white',
-                fontSize: '40px',
               }}
             />
-          </IconButton>
-        )}
+          </Badge>
+        </IconButton>
       </Tooltip>
       <Menu
         anchorEl={anchorElNotif}
