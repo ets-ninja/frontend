@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 import { Controller, useForm } from 'react-hook-form';
 import {
@@ -22,7 +23,17 @@ import {
   deleteWishlistItem,
   updateWishlistItem,
 } from '../redux/wishlist/wishlistActions';
-import { setSuccess, setLoading } from '../redux/wishlist/wishlistSlice';
+import {
+  setSuccess,
+  setLoading,
+  setItemToDelete,
+} from '../redux/wishlist/wishlistSlice';
+import {
+  setBasketName,
+  setDescription,
+  setMoneyGoal,
+  setPhotoTag,
+} from '../redux/basket/createBasketSlice';
 
 import useModal from '../hooks/useModal';
 
@@ -50,8 +61,12 @@ const WishlistItem = () => {
   } = useForm();
 
   useEffect(() => {
-    getItemInfo();
+    dispatch(setItemToDelete(null));
     dispatch(setSuccess(false));
+  }, []);
+
+  useEffect(() => {
+    getItemInfo();
   }, [dispatch]);
 
   const getItemInfo = async () => {
@@ -90,6 +105,15 @@ const WishlistItem = () => {
       resetStateStatusAndRedirect();
     }
   }, [success]);
+
+  const handleTransformButton = async () => {
+    await dispatch(setBasketName(itemInfo.name));
+    await dispatch(setMoneyGoal(itemInfo.finalGoal));
+    await dispatch(setDescription(itemInfo.description));
+    await dispatch(setPhotoTag(itemInfo.image));
+    await dispatch(setItemToDelete(itemInfo._id));
+    navigate('/creation');
+  };
 
   if (loading) {
     return <LoadingSpinner />;
@@ -312,116 +336,138 @@ const WishlistItem = () => {
             <Box
               sx={{
                 display: { xs: 'flex' },
-                flexDirection: { xs: 'column', md: 'row' },
-                alignItems: { xs: 'center', md: 'initial' },
-                gap: { xs: 3, md: 4 },
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 6,
               }}
             >
-              <CardMedia
-                component="img"
-                sx={{
-                  height: { xs: 170, sm: 280, md: 215, lg: 280, xl: 340 },
-                  width: { xs: 310, sm: '100%', md: '45%' },
-                  maxWidth: { xs: 500, md: 'initial' },
-                }}
-                image={
-                  itemInfo.image ||
-                  'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
-                }
-                alt={`${itemInfo.name} photo`}
-              />
               <Box
                 sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: { xs: '100%', md: '55%' },
+                  display: { xs: 'flex' },
+                  flexDirection: { xs: 'column', md: 'row' },
+                  alignItems: { xs: 'center', md: 'initial' },
+                  gap: { xs: 3, md: 4 },
+                  width: '100%',
                 }}
               >
+                <CardMedia
+                  component="img"
+                  sx={{
+                    height: { xs: 170, sm: 280, md: 215, lg: 280, xl: 340 },
+                    width: { xs: 310, sm: '100%', md: '45%' },
+                    maxWidth: { xs: 500, md: 'initial' },
+                  }}
+                  image={
+                    itemInfo.image ||
+                    'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
+                  }
+                  alt={`${itemInfo.name} photo`}
+                />
                 <Box
                   sx={{
                     display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    mb: 3,
+                    flexDirection: 'column',
+                    width: { xs: '100%', md: '55%' },
                   }}
                 >
-                  <Typography
-                    variant="h3"
+                  <Box
                     sx={{
-                      fontWeight: 700,
-                      fontSize: { xs: 24, sm: 20, md: 30 },
-                      flexGrow: 1,
-                      mb: { xs: 2, sm: 0 },
-                      color: theme => theme.colors.dark,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'flex-start',
+                      mb: 3,
                     }}
                   >
-                    {itemInfo.name}
-                  </Typography>
-                  <IconButton
-                    onClick={() => setEditMode(true)}
-                    title="Edit"
-                    sx={{
-                      height: 30,
-                      width: 30,
-                      ml: 2,
-                      p: 0,
-                      '&:hover': { color: theme => theme.palette.primary },
-                    }}
-                  >
-                    <EditIcon
-                      sx={{
-                        fontSize: 20,
-                        color: 'inherit',
-                      }}
-                    />
-                  </IconButton>
-                </Box>
-                <Box
-                  sx={{
-                    mb: 3,
-                    borderBottom: 1,
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: '1rem',
-                      fontStyle: 'italic',
-                      fontWeight: 700,
-                      color: theme => theme.colors.darkBlue,
-                    }}
-                  >
-                    Final goal: {itemInfo.finalGoal} ₴
-                  </Typography>
-                </Box>
-                <Box sx={{ mb: 3 }}>
-                  {itemInfo.description ? (
                     <Typography
+                      variant="h3"
                       sx={{
+                        fontWeight: 700,
+                        fontSize: { xs: 24, sm: 20, md: 30 },
+                        flexGrow: 1,
+                        mb: { xs: 2, sm: 0 },
                         color: theme => theme.colors.dark,
-                        wordBreak: 'break-word',
                       }}
                     >
-                      {itemInfo.description}
+                      {itemInfo.name}
                     </Typography>
-                  ) : (
-                    <Typography sx={{ fontStyle: 'italic' }}>
-                      No description...
-                    </Typography>
-                  )}
-                </Box>
-                <Box
-                  sx={{
-                    textAlign: 'right',
-                    fontStyle: 'italic',
-                  }}
-                >
-                  <Typography
-                    sx={{ fontSize: '1rem', color: theme => theme.colors.dark }}
+                    <IconButton
+                      onClick={() => setEditMode(true)}
+                      title="Edit"
+                      sx={{
+                        height: 30,
+                        width: 30,
+                        ml: 2,
+                        p: 0,
+                        '&:hover': { color: theme => theme.palette.primary },
+                      }}
+                    >
+                      <EditIcon
+                        sx={{
+                          fontSize: 20,
+                          color: 'inherit',
+                        }}
+                      />
+                    </IconButton>
+                  </Box>
+                  <Box
+                    sx={{
+                      mb: 3,
+                      borderBottom: 1,
+                    }}
                   >
-                    Created on {formatteDate(new Date(itemInfo.createdAt))}
-                  </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: '1rem',
+                        fontStyle: 'italic',
+                        fontWeight: 700,
+                        color: theme => theme.colors.darkBlue,
+                      }}
+                    >
+                      Final goal: {itemInfo.finalGoal} ₴
+                    </Typography>
+                  </Box>
+                  <Box sx={{ mb: 3 }}>
+                    {itemInfo.description ? (
+                      <Typography
+                        sx={{
+                          color: theme => theme.colors.dark,
+                          wordBreak: 'break-word',
+                        }}
+                      >
+                        {itemInfo.description}
+                      </Typography>
+                    ) : (
+                      <Typography sx={{ fontStyle: 'italic' }}>
+                        No description...
+                      </Typography>
+                    )}
+                  </Box>
+                  <Box
+                    sx={{
+                      textAlign: 'right',
+                      fontStyle: 'italic',
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '1rem',
+                        color: theme => theme.colors.dark,
+                      }}
+                    >
+                      Created on {formatteDate(new Date(itemInfo.createdAt))}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
+              <Button
+                variant="contained"
+                color="secondary"
+                title="Transfer this wish to the banka"
+                endIcon={<CurrencyExchangeIcon />}
+                onClick={handleTransformButton}
+              >
+                Make your wish a real goal!
+              </Button>
             </Box>
           </>
         )}

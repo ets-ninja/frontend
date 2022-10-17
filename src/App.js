@@ -109,7 +109,6 @@ const App = () => {
       {location.state?.backgroundLocation && (
         <Routes>
           <Route path="modal" element={<ModalWindow />}>
-            <Route path="/modal/intro-page" element={<IntroSwiper />} />
             <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
             <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
             <Route

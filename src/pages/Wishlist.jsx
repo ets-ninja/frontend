@@ -58,7 +58,11 @@ const Wishlist = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setItemToDelete(null));
     dispatch(setLoading(true));
+  }, []);
+
+  useEffect(() => {
     setSortField(sortingOptions.field);
     setSortOrder(sortingOptions.order);
     setPage(activePage);

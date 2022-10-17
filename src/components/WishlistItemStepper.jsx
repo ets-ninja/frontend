@@ -56,6 +56,7 @@ const WishlistItemStepper = () => {
 
   useEffect(() => {
     dispatch(setWishitemPhoto(''));
+    dispatch(setSuccess(false));
   }, []);
 
   const isStepOptional = step => {
