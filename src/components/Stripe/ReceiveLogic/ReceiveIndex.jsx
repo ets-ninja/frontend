@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import request from '../../../hooks/useRequest';
 
 import Button from '@mui/material/Button';
+import LoadingSpinner from '../../UIElements/LoadingSpinner';
 
 const WithdrawalIndex = () => {
   const { loading, sendRequest } = request();
@@ -12,14 +13,19 @@ const WithdrawalIndex = () => {
   async function handleReceive() {
     let withdrawStatus;
     try {
-        withdrawStatus = await sendRequest('api/payment/recieve_money', 'POST', { basketId: basketID });
+      withdrawStatus = await sendRequest('api/payment/recieve_money', 'POST', {
+        basketId: basketID,
+      });
     } catch (err) {
       return;
     }
 
-    if(withdrawStatus === 'succeeded'){
+    if (withdrawStatus === 'succeeded') {
       navigate(`/receive-status`);
     }
+  }
+  if (loading) {
+    return <LoadingSpinner />;
   }
 
   return (
