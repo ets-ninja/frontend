@@ -22,8 +22,9 @@ export default function ModalWindow() {
           boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
           borderRadius: 2,
           maxWidth: { xs: '100%', sm: 'auto' },
-          minWidth: { xs: 'calc(100% - 34px)', sm: 'auto' },
+          minWidth: { xs: 'calc(100% - 34px)', sm: '500px' },
           maxHeight: { xs: 'calc(100% - 34px)', sm: 'auto' },
+          pb: 2,
         }}
       >
         <CloseIcon
