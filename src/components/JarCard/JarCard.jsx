@@ -17,8 +17,8 @@ export default function JarCard({
   const {
     createdAt = new Date(Date.now()),
     name,
-    image,
-    expirationDate,
+    image = null,
+    expirationDate = null,
     value,
     goal,
     description,
@@ -201,15 +201,17 @@ export default function JarCard({
               <Typography component="p" sx={{ fontWeight: '500' }}>
                 {`${value} of ${goal}`}
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TimerOutlinedIcon />
-                <Typography component="p" sx={{ fontWeight: '500' }}>
-                  {`${Math.floor(
-                    new Date(new Date(expirationDate) - Date.now()) /
-                      (24 * 60 * 60 * 1000),
-                  )} d.`}
-                </Typography>
-              </Box>
+              {expirationDate && (
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TimerOutlinedIcon />
+                  <Typography component="p" sx={{ fontWeight: '500' }}>
+                    {`${Math.floor(
+                      new Date(new Date(expirationDate) - Date.now()) /
+                        (24 * 60 * 60 * 1000),
+                    )} d.`}
+                  </Typography>
+                </Box>
+              )}
             </Box>
             <SumLinearProgress
               variant="determinate"
