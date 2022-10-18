@@ -4,9 +4,8 @@ import { Box } from '@mui/system';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import jarStepHandler from './jarStepHandler';
+import { jarStepHandler, transformTransactionTime } from './utils';
 import SumLinearProgress from '../SumLinearProgress';
-import transformTransactionTime from './transformTransactionTime';
 
 export default function JarCard({
   bank,

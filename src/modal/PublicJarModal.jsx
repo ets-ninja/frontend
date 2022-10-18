@@ -1,11 +1,10 @@
 import { useSelector } from 'react-redux';
 import getModalData from '../redux/modal/modalSelectors';
 import { Avatar, Box, Button, Typography } from '@mui/material';
+import { jarStepHandler } from '../components/JarCard/utils';
 import SumLinearProgress from '../components/SumLinearProgress';
-import jarStepHandler from '../components/JarCard/jarStepHandler';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-
 export default function PublicJarModal() {
   const {
     user,
