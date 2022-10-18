@@ -87,13 +87,13 @@ const Wishlist = () => {
 
   const updateItems = async () => {
     if (sortField) {
-      await sortItems();
-      await dispatch(
+      dispatch(
         setSortingOptions({
           field: sortField,
           order: sortOrder,
         }),
       );
+      await sortItems();
     }
   };
 

@@ -94,9 +94,9 @@ const WishlistItem = () => {
     await dispatch(deleteWishlistItem({ id }));
   };
 
-  const resetStateStatusAndRedirect = async () => {
-    await dispatch(setSuccess(false));
-    await dispatch(setLoading(true));
+  const resetStateStatusAndRedirect = () => {
+    dispatch(setSuccess(false));
+    dispatch(setLoading(true));
     navigate('/wishlist');
   };
 
@@ -106,12 +106,12 @@ const WishlistItem = () => {
     }
   }, [success]);
 
-  const handleTransformButton = async () => {
-    await dispatch(setBasketName(itemInfo.name));
-    await dispatch(setMoneyGoal(itemInfo.finalGoal));
-    await dispatch(setDescription(itemInfo.description));
-    await dispatch(setPhotoTag(itemInfo.image));
-    await dispatch(setItemToDelete(itemInfo._id));
+  const handleTransformButton = () => {
+    dispatch(setBasketName(itemInfo.name));
+    dispatch(setMoneyGoal(itemInfo.finalGoal));
+    dispatch(setDescription(itemInfo.description));
+    dispatch(setPhotoTag(itemInfo.image));
+    dispatch(setItemToDelete(itemInfo._id));
     navigate('/creation');
   };
 

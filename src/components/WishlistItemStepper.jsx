@@ -111,10 +111,10 @@ const WishlistItemStepper = () => {
     }
   };
 
-  const resetStateStatusesAndRedirect = async () => {
-    await dispatch(setWishitemPhoto(''));
-    await dispatch(setSuccess(false));
-    await dispatch(setLoading(true));
+  const resetStateStatusesAndRedirect = () => {
+    dispatch(setWishitemPhoto(''));
+    dispatch(setSuccess(false));
+    dispatch(setLoading(true));
     navigate('/wishlist');
   };
 
