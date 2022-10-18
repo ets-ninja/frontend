@@ -25,7 +25,7 @@ export const getSingleWishlistItem = createAsyncThunk(
   async (arg, { rejectWithValue }) => {
     const { id } = arg;
     try {
-      const { data } = await axios.get(`api/wishlist/getitem/${id}`);
+      const { data } = await axios.get(`api/wishlist/get-item/${id}`);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
