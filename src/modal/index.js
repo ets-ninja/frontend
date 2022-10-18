@@ -21,10 +21,9 @@ export default function ModalWindow() {
           outline: '1px solid transparent',
           boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
           borderRadius: 2,
-          maxWidth: { xs: '100%', sm: '500px', md: '500px' },
-          minWidth: { xs: 'calc(100% - 34px)', sm: '500px' },
-          maxHeight: { xs: 'calc(100% - 34px)', sm: '90vh' },
-          pb: 2,
+          maxWidth: { xs: '100%', sm: 'auto' },
+          minWidth: { xs: 'calc(100% - 34px)', sm: 'auto' },
+          maxHeight: { xs: 'calc(100% - 34px)', sm: 'auto' },
         }}
       >
         <CloseIcon

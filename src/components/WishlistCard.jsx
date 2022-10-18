@@ -44,9 +44,9 @@ const WishlistCard = ({
       <Card
         sx={{
           width: {
-            lg: '25%',
-            md: '33.3333%',
-            sm: '50%',
+            lg: 'calc(25% + 1px);',
+            md: 'calc(33.3333% + 1px)',
+            sm: 'calc(50% + 1px)',
             xs: '100%',
           },
           maxWidth: { xs: 350, sm: '100%' },

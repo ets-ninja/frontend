@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React from 'react';
 import { Typography } from '@mui/material';
 import ResponsiveContainer from '../components/styled/ResponsiveContainer';
 import WishlistItemStepper from '../components/WishlistItemStepper';

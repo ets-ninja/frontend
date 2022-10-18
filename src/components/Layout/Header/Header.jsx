@@ -163,6 +163,7 @@ const Header = () => {
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
                 color="inherit"
+                sx={{ ml: -2 }}
               >
                 <MenuIcon />
               </IconButton>

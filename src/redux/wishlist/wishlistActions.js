@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../services/axios/';
 
 export const getSortedWishlistItems = createAsyncThunk(
-  '/wishlist-sorting',
+  'wishlist-sorting',
   async (arg, { rejectWithValue }) => {
     const { page, field, order } = arg.options;
     try {
@@ -21,7 +21,7 @@ export const getSortedWishlistItems = createAsyncThunk(
 );
 
 export const getSingleWishlistItem = createAsyncThunk(
-  '/wishlist-get-item',
+  'wishlist-get-item',
   async (arg, { rejectWithValue }) => {
     const { id } = arg;
     try {
@@ -38,7 +38,7 @@ export const getSingleWishlistItem = createAsyncThunk(
 );
 
 export const deleteWishlistItem = createAsyncThunk(
-  '/wishlist-delete-item',
+  'wishlist-delete-item',
   async (arg, { rejectWithValue }) => {
     const { id } = arg;
     try {
@@ -55,7 +55,7 @@ export const deleteWishlistItem = createAsyncThunk(
 );
 
 export const updateWishlistItem = createAsyncThunk(
-  '/wishlist-update-item',
+  'wishlist-update-item',
   async (arg, { rejectWithValue }) => {
     const { id, data: payload } = arg;
     try {
@@ -72,7 +72,7 @@ export const updateWishlistItem = createAsyncThunk(
 );
 
 export const createWishlistItem = createAsyncThunk(
-  '/wishlist-create-item',
+  'wishlist-create-item',
   async (arg, { rejectWithValue }) => {
     const { data: payload } = arg;
     try {
