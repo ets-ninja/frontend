@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import request from '../../../hooks/useRequest';
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import DonateForm from '../../forms/Stripe/DonateForm';
 
 const WithdrawalIndex = () => {
-  const [showDonateMenu, setShowDonateMenu] = useState(false);
   const { loading, sendRequest } = request();
   let { basketID } = useParams();
-
-  const data = { basketId: basketID };
+  const navigate = useNavigate();
 
   async function handleReceive() {
+    let withdrawStatus;
     try {
-      await sendRequest('api/payment/recieve_money', 'POST', { basketId: basketID });
+        withdrawStatus = await sendRequest('api/payment/recieve_money', 'POST', { basketId: basketID });
     } catch (err) {
       return;
+    }
+
+    if(withdrawStatus === 'succeeded'){
+      navigate(`/receive-status`);
     }
   }
 

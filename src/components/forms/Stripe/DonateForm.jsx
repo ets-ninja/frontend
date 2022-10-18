@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import {useParams} from "react-router-dom";
-import { loadStripe } from '@stripe/stripe-js';
+import React  from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import request from '../../../hooks/useRequest';
 
@@ -10,17 +10,14 @@ import Button from '@mui/material/Button';
 
 import LoadingSpinner from '../../UIElements/LoadingSpinner';
 
-const DonateForm = (props) => {
-  const [paymentIntent, setPaymentIntent] = useState(null);
+const DonateForm = props => {
   const { loading, sendRequest } = request();
   let { basketID } = useParams();
+  const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
-
+  let paymentSecret;
   const submitForm = async data => {
     if (data.amount <= 0 || data.last4.length !== 4) {
       alert('Data is inappropriate!');
@@ -28,15 +25,27 @@ const DonateForm = (props) => {
     }
     try {
       data.amount = data.amount * 100;
-      const paymentSecret = await sendRequest(
+      paymentSecret = await sendRequest(
         'api/payment/payment_secret',
         'POST',
         data,
       );
-      setPaymentIntent(paymentSecret);
-      await sendRequest( 'api/payment/donate', 'POST', { paymentIntentId: paymentSecret.id, basketId: basketID });
     } catch (err) {
       return;
+    }
+
+    let payment;
+    try {
+      payment = await sendRequest('api/payment/donate', 'POST', {
+        paymentIntentId: paymentSecret.id,
+        basketId: basketID,
+      });
+    } catch (err) {
+      return;
+    }
+
+    if (payment.status === 'success') {
+      navigate(`/donate-status`);
     }
   };
 
@@ -47,7 +56,7 @@ const DonateForm = (props) => {
   return (
     <>
       <form onSubmit={handleSubmit(submitForm)}>
-        <Stack m={2} spacing={2} >
+        <Stack m={2} spacing={2}>
           <TextField
             type="number"
             {...register('amount', {
@@ -58,7 +67,7 @@ const DonateForm = (props) => {
               },
             })}
             label="Amount"
-            autoComplete=""   
+            autoComplete=""
           />
           <TextField
             type="text"
