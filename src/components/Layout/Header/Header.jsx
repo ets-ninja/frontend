@@ -55,6 +55,17 @@ const pages = [
   },
 ];
 
+const loggedOutPages = [
+  {
+    name: 'Login',
+    link: '/login',
+  },
+  {
+    name: 'Sign up',
+    link: '/register',
+  },
+];
+
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -153,47 +164,44 @@ const Header = () => {
           >
             HoneyMoney
           </Typography>
-
-          {isLoggedIn && (
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                {pages.map(page => (
-                  <MenuLink to={page.link} key={page.name}>
-                    <MenuItem onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page.name}</Typography>
-                    </MenuItem>
-                  </MenuLink>
-                ))}
-              </Menu>
-            </Box>
-          )}
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              {(isLoggedIn ? pages : loggedOutPages).map(page => (
+                <MenuLink to={page.link} key={page.name}>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                </MenuLink>
+              ))}
+            </Menu>
+          </Box>
           <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -214,20 +222,18 @@ const Header = () => {
           >
             HoneyMoney
           </Typography>
-          {isLoggedIn && (
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map(page => (
-                <MenuLink to={page.link} key={page.name}>
-                  <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {page.name}
-                  </Button>
-                </MenuLink>
-              ))}
-            </Box>
-          )}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {(isLoggedIn ? pages : loggedOutPages).map(page => (
+              <MenuLink to={page.link} key={page.name}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page.name}
+                </Button>
+              </MenuLink>
+            ))}
+          </Box>
           {isLoggedIn && <Notification />}
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
