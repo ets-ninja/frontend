@@ -1,13 +1,11 @@
 import { useSelector } from 'react-redux';
 import getModalData from '../redux/modal/modalSelectors';
 import { Avatar, Box, Button, Typography } from '@mui/material';
+import { jarStepHandler } from '../components/JarCard/utils';
 import SumLinearProgress from '../components/SumLinearProgress';
-import jarStepHandler from '../components/JarCard/jarStepHandler';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { useState } from 'react';
-import DonateForm from '../components/forms/Stripe/DonateForm'
-
 export default function PublicJarModal() {
     const [showDonateMenu, setShowDonateMenu] = useState(null)
   const {
@@ -15,7 +13,7 @@ export default function PublicJarModal() {
     createdAt = new Date(Date.now()),
     name,
     image = null,
-    expirationDate = new Date('25 Oct 2022 00:12:00'),
+    expirationDate = null,
     value,
     goal,
     description,
@@ -25,9 +23,10 @@ export default function PublicJarModal() {
     user && (
       <Box
         sx={{
-          p: { xs: 2, sm: 4 },
-          pt: { sm: 2 },
-          pb: { sm: 2 },
+          overflowY: 'auto',
+          p: { xs: 2, sm: 4, md: 4 },
+          pt: { sm: 2, md: 2 },
+          pb: { sm: 2, md: 2 },
           maxWidth: '800px',
           minWidth: { sm: '566px', md: '600px' },
           maxHeight: { sm: '90vh' },
@@ -96,6 +95,25 @@ export default function PublicJarModal() {
           <Typography variant="h6" component="p">
             Goal: {goal}$
           </Typography>
+          {expirationDate && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                flexDirection: 'row-reverse',
+              }}
+            >
+              <TimerOutlinedIcon />
+              <Typography variant="h6" component="p" sx={{ fontWeight: '500' }}>
+                Time Left:
+                {` ${Math.floor(
+                  new Date(new Date(expirationDate) - Date.now()) /
+                    (24 * 60 * 60 * 1000),
+                )} days`}
+              </Typography>
+            </Box>
+          )}
           <Box
             sx={{
               display: 'flex',
@@ -174,9 +192,6 @@ export default function PublicJarModal() {
             }}
           />
         </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            {showDonateMenu && <DonateForm />}    
-          </Box>
       </Box>
     )
   );

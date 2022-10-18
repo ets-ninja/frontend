@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import jarStepHandler from './jarStepHandler';
+import { jarStepHandler, transformTransactionTime } from './utils';
 import SumLinearProgress from '../SumLinearProgress';
 
 export default function JarCard({
@@ -16,11 +16,12 @@ export default function JarCard({
   const {
     createdAt = new Date(Date.now()),
     name,
-    image,
-    expirationDate,
+    image = null,
+    expirationDate = null,
     value,
     goal,
     description,
+    transactions = [],
   } = bank;
   return (
     <Box
@@ -199,15 +200,17 @@ export default function JarCard({
               <Typography component="p" sx={{ fontWeight: '500' }}>
                 {`${value} of ${goal}`}
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TimerOutlinedIcon />
-                <Typography component="p" sx={{ fontWeight: '500' }}>
-                  {`${Math.floor(
-                    new Date(new Date(expirationDate) - Date.now()) /
-                      (24 * 60 * 60 * 1000),
-                  )} d.`}
-                </Typography>
-              </Box>
+              {expirationDate && (
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TimerOutlinedIcon />
+                  <Typography component="p" sx={{ fontWeight: '500' }}>
+                    {`${Math.floor(
+                      new Date(new Date(expirationDate) - Date.now()) /
+                        (24 * 60 * 60 * 1000),
+                    )} d.`}
+                  </Typography>
+                </Box>
+              )}
             </Box>
             <SumLinearProgress
               variant="determinate"
@@ -217,7 +220,7 @@ export default function JarCard({
               }}
             />
             <Typography component="p" sx={{ fontSize: '13px', pl: 1 }}>
-              Last donation 5 min. ago
+              {transformTransactionTime(transactions[0]?.createdAt)}
             </Typography>
           </Box>
           {image && (
