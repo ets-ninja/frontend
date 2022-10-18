@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { get_owner_baskets, get_coowner_baskets, get_public_baskets, get_private_baskets, get_basket_by_id } from './basketActions';
+import { 
+  get_owner_baskets, 
+  get_coowner_baskets, 
+  get_public_baskets, 
+  get_private_baskets, 
+  get_basket_by_id,
+  update_jar 
+} from './basketActions';
 
 const initialState = {
   loading: true,
@@ -111,6 +118,24 @@ const basketSlice = createSlice({
       state.basket = payload.basket;
     },
     [get_basket_by_id.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.basket = { ownerId: {  } };
+      state.error = payload;
+    },
+    //update_jar
+    [update_jar.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [update_jar.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.basket.name = payload.jar.name;
+      state.basket.description = payload.jar.description;
+      state.basket.goal = payload.jar.goal;
+      state.basket.expirationDate = payload.jar.expirationDate;
+    },
+    [update_jar.rejected]: (state, { payload }) => {
       state.loading = false;
       state.basket = { ownerId: {  } };
       state.error = payload;

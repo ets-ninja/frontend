@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^7.0.0-alpha.8",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.6",
     "@mui/styled-engine-sc": "^5.10.6",
+    "@mui/x-date-pickers": "latest",
     "@reduxjs/toolkit": "^1.8.5",
     "@sentry/react": "^7.13.0",
     "@sentry/tracing": "^7.13.0",
@@ -18,6 +20,8 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "chart.js": "^3.9.1",
+    "date-fns": "latest",
+    "dayjs": "latest",
     "firebase": "^9.10.0",
     "husky": "^8.0.1",
     "idb-keyval": "^6.2.0",
@@ -28,6 +32,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.36.0",
     "react-image-crop": "^10.0.7",
+    "react-number-format": "^5.0.1",
     "react-redux": "^8.0.2",
     "react-responsive": "^9.0.0",
     "react-router-dom": "^6.4.1",
@@ -51,9 +56,9 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"

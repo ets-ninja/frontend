@@ -30,6 +30,14 @@ const BasketBox = ({
 }) => {
   const theme = useTheme();
 
+  const sliceDesc = desc => {
+    if (desc?.length > 420) {
+      return `${desc.slice(0, 420)}...`;
+    } else {
+      return desc;
+    }
+  };
+
   return (
     <>
       <Card
@@ -59,8 +67,8 @@ const BasketBox = ({
           >
             {name}
           </Typography>
-          {(getDaysBetweenDates(Date.parse(expirationDate), Date.now()) <= 0) && <Typography  sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}>Expired</Typography>}
-          {(getDaysBetweenDates(Date.parse(expirationDate), Date.now()) > 0) && <Typography  sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}>{getDaysBetweenDates(Date.parse(expirationDate), Date.now()) + ' days left'}</Typography>}
+          {(getDaysBetweenDates(new Date(expirationDate), Date.now()) <= 0) && <Typography  sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}>Expired</Typography>}
+          {(getDaysBetweenDates(new Date(expirationDate), Date.now()) > 0) && <Typography  sx={{ userSelect: 'none', fontWeight: 700, marginRight: 2 }}>{getDaysBetweenDates(new Date(expirationDate), Date.now()) + ' days left'}</Typography>}
         </Box>
         <Box sx={{ width: 300, height: 350, position: 'relative' }}>
                     <CardMedia
@@ -71,7 +79,7 @@ const BasketBox = ({
                     />
                     <Box sx={{ opacity: 0, '&:hover': { opacity: 1 }, zIndex: 1, transition: '0.5s', backgroundColor: theme.colors.yellow, width: 300, height: 350, position: 'absolute', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center'  }}>
                         <Typography align="center">
-                            {description}
+                            {sliceDesc(description)}
                         </Typography>
                     </Box>
                 </Box>

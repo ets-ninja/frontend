@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../services/axios/';
 
 export const get_owner_baskets = createAsyncThunk(
-  'basket/get_owner_baskets',
+  'jar/get_owner_jars',
    async(  
     { archived, page, order },
     { rejectWithValue }
@@ -10,12 +10,12 @@ export const get_owner_baskets = createAsyncThunk(
     
     try {
       const req = await axios.get(
-        'api/basket/get_owner_baskets', 
+        'api/jar/get_owner_jars', 
         { params: { archived, page, order }} 
         );
 
       if(!req.data.basketData){
-        return rejectWithValue({ message: "There is an error with getting baskets" });
+        return rejectWithValue({ message: "There is an error with recieving jars" });
       }
 
       return {basketData: req.data.basketData, paginationData: req.data.paginationData};
@@ -31,7 +31,7 @@ export const get_owner_baskets = createAsyncThunk(
 
 
 export const get_coowner_baskets = createAsyncThunk(
-    'basket/get_coowner_baskets',
+    'jar/get_coowner_jars',
     async(  
       { archived, page, order },
       { rejectWithValue }
@@ -39,12 +39,12 @@ export const get_coowner_baskets = createAsyncThunk(
     
     try {
         const req = await axios.get(
-          '/api/basket/get_coowner_baskets',
+          '/api/jar/get_coowner_jars',
           { params: { archived, page, order } },
         );
 
         if(!req.data.basketData){
-          return rejectWithValue({ message: "There is an error with getting baskets" });
+          return rejectWithValue({ message: "There is an error with recieving jars" });
         }
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
@@ -59,7 +59,7 @@ export const get_coowner_baskets = createAsyncThunk(
 );
 
 export const get_public_baskets = createAsyncThunk(
-    'basket/get_public_baskets',
+    'jar/get_public_jars',
     async(  
       { archived, page, order },
       { rejectWithValue }
@@ -67,12 +67,12 @@ export const get_public_baskets = createAsyncThunk(
     
     try {
         const req = await axios.get(
-        '/api/basket/get_public_baskets',
+        '/api/jar/get_public_jars',
         { params: { archived, page, order } },
         );
 
         if(!req.data.basketData){
-          return rejectWithValue({ message: "There is an error with getting baskets" });
+          return rejectWithValue({ message: "There is an error with recieving jars" });
         }
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
@@ -87,7 +87,7 @@ export const get_public_baskets = createAsyncThunk(
 );
 
 export const get_private_baskets = createAsyncThunk(
-    'basket/get_private_baskets',
+    'jar/get_private_jars',
     async(  
       { archived, page, order },
       { rejectWithValue }
@@ -95,12 +95,12 @@ export const get_private_baskets = createAsyncThunk(
     
     try {
         const req = await axios.get(
-        '/api/basket/get_private_baskets',
+        '/api/jar/get_private_jars',
         { params: { archived, page, order } },
         );
 
         if(!req.data.basketData){
-          return rejectWithValue({ message: "There is an error with getting baskets" });
+          return rejectWithValue({ message: "There is an error with recieving jars" });
         }
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
@@ -116,7 +116,7 @@ export const get_private_baskets = createAsyncThunk(
 
 
 export const get_basket_by_id = createAsyncThunk(
-  'basket/get_basket_by_id',
+  'jar/get_jar_by_id',
    async(  
     { id },
     { rejectWithValue }
@@ -124,15 +124,39 @@ export const get_basket_by_id = createAsyncThunk(
     
     try {
       const req = await axios.get(
-        'api/basket/get_basket_by_id', 
+        'api/jar/get_jar_by_id', 
         { params: { id }} 
         );
 
       if(!req.data.basket){
-        return rejectWithValue({ message: "There are no baskets" });
+        return rejectWithValue({ message: `There are no jar with ${id} id` });
       }
 
       return { basket: req.data.basket};
+    } catch (error) {
+      if (error?.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const update_jar = createAsyncThunk(
+  'jar/update_jar',
+   async(  
+    { id, name, description, goal, expirationDate },
+    { rejectWithValue }
+    ) => {
+    
+    try {
+      const { data } = await axios.put(
+        'api/jar/update_jar', 
+        { id, name, description, goal, expirationDate } 
+        );
+
+      return data;
     } catch (error) {
       if (error?.response.data.message) {
         return rejectWithValue(error.response.data.message);
