@@ -5,6 +5,7 @@ import Box from '@mui/system/Box';
 import Typography from '@mui/material/Typography';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Button from '@mui/material/Button';
+import types from 'react-responsive';
 
 const DonateStatus = ({ type }) => {
   const [message, setMessage] = useState(null);
@@ -21,7 +22,7 @@ const DonateStatus = ({ type }) => {
       default:
         setMessage('Success!');
     }
-  });
+  },[type]);
 
   return (
     <Box
