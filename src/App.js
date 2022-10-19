@@ -26,6 +26,8 @@ import StripeStatusContainer from './pages/StripeStatusContainer';
 import MoneyStatusContainer from './pages/MoneyStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
+import IntroChecker from './components/IntroChecker/IntroChecker';
+import IntroSwiper from './pages/IntoPage/IntroSwiper';
 
 const App = () => {
   const location = useLocation();
@@ -50,7 +52,7 @@ const App = () => {
   return (
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<IntroChecker />} />
         <Route path="/basket/:basketID" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
@@ -61,6 +63,11 @@ const App = () => {
           exect
           element={<ProtectedRoute component={CreationPage} />}
           path="/creation"
+          />
+        <Route
+          exect
+          element={<ProtectedRoute component={Dashboard} />}
+          path="/dashboard"
           />
         <Route
           exect
@@ -113,6 +120,7 @@ const App = () => {
           <Route path="modal" element={<ModalWindow />}>
             <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
             <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
+            <Route path="/modal/intro-page" element={<IntroSwiper />} />
           </Route>
         </Routes>
       )}
