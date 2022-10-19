@@ -17,16 +17,16 @@ import { useTheme } from '@mui/material/styles';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import LoadingSpinner from './UIElements/LoadingSpinner';
+import LoadingSpinner from '@components/UIElements/LoadingSpinner';
 import { Controller, useForm } from 'react-hook-form';
-import useModal from '../hooks/useModal';
+import useModal from '@hooks/useModal';
 
-import { createWishlistItem } from '../redux/wishlist/wishlistActions';
+import { createWishlistItem } from '@redux/wishlist/wishlistActions';
 import {
   setWishitemPhoto,
   setSuccess,
   setLoading,
-} from '../redux/wishlist/wishlistSlice';
+} from '@redux/wishlist/wishlistSlice';
 
 const steps = ['Name and Goal', 'Image', 'Check and create'];
 

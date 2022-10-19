@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { Typography, Box } from '@mui/material';
 
-import useModal from '../hooks/useModal';
+import useModal from '@hooks/useModal';
 
 const WishlistCard = ({
   itemInfo: { _id, name, image, finalGoal, createdAt },

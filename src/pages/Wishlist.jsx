@@ -9,23 +9,23 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CheckIcon from '@mui/icons-material/Check';
-import ResponsiveContainer from '../components/styled/ResponsiveContainer';
-import StyledDropDownMenu from '../components/styled/StyledDropDownMenu';
-import LoadingSpinner from '../components/UIElements/LoadingSpinner';
+import ResponsiveContainer from '@components/styled/ResponsiveContainer';
+import StyledDropDownMenu from '@components/styled/StyledDropDownMenu';
+import LoadingSpinner from '@components/UIElements/LoadingSpinner';
 
-import WishlistCard from '../components/WishlistCard';
-import BasicPagination from '../components/BasicPagination';
+import WishlistCard from '@components/WishlistCard';
+import BasicPagination from '@components/BasicPagination';
 
 import {
   getSortedWishlistItems,
   deleteWishlistItem,
-} from '../redux/wishlist/wishlistActions';
+} from '@redux/wishlist/wishlistActions';
 import {
   setSortingOptions,
   setWishlistPage,
   setItemToDelete,
   setLoading,
-} from '../redux/wishlist/wishlistSlice';
+} from '@redux/wishlist/wishlistSlice';
 
 const sortFields = [
   { name: 'Date created', dbName: 'createdAt' },

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ResponsiveContainer from '../components/styled/ResponsiveContainer';
+import ResponsiveContainer from '@components/styled/ResponsiveContainer';
+import LoadingSpinner from '@components/UIElements/LoadingSpinner';
 import {
   Box,
   Button,
@@ -16,26 +17,25 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
-import LoadingSpinner from '../components/UIElements/LoadingSpinner';
 import { Controller, useForm } from 'react-hook-form';
 import {
   getSingleWishlistItem,
   deleteWishlistItem,
   updateWishlistItem,
-} from '../redux/wishlist/wishlistActions';
+} from '@redux/wishlist/wishlistActions';
 import {
   setSuccess,
   setLoading,
   setItemToDelete,
-} from '../redux/wishlist/wishlistSlice';
+} from '@redux/wishlist/wishlistSlice';
 import {
   setBasketName,
   setDescription,
   setMoneyGoal,
   setPhotoTag,
-} from '../redux/basket/createBasketSlice';
+} from '@redux/basket/createBasketSlice';
 
-import useModal from '../hooks/useModal';
+import useModal from '@hooks/useModal';
 
 const WishlistItem = () => {
   const [editMode, setEditMode] = useState(false);
