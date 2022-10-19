@@ -166,3 +166,27 @@ export const update_jar = createAsyncThunk(
     }
   },
 );
+
+export const update_jar_image = createAsyncThunk(
+  'jar/update_jar_image',
+   async(  
+    { id, image },
+    { rejectWithValue }
+    ) => {
+    
+    try {
+      const { data } = await axios.put(
+        'api/jar/update_jar_image', 
+        { id, image } 
+        );
+
+      return data;
+    } catch (error) {
+      if (error?.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);

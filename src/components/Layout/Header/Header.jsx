@@ -39,7 +39,7 @@ import loadBackgroundMessages from '../../../utils/notification/loadBackgroundMe
 const pages = [
   {
     name: 'My jars',
-    link: '/myjars',
+    link: '/',
   },
   {
     name: 'Wishlist',

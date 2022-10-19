@@ -4,6 +4,7 @@ import { useDebounceEffect } from '../../hooks/useDebounceEffect';
 import { canvasPreview } from './canvasPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
+import { update_jar_image } from '../../redux/basket/basketActions';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
@@ -90,6 +91,9 @@ const UpdatePhotoModal = () => {
         break;
       case 'changeBasketTag':
         dispatch(setPhotoTag(`${previewCanvasRef.current.toDataURL()}`))
+        break;
+      case 'updateJarImage':
+        dispatch(update_jar_image({ id: data.basketId, image: `${previewCanvasRef.current.toDataURL()}` }))
         break;
 
       default:

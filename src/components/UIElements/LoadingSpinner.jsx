@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const LoadingSpinner = () => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <CircularProgress />
+      <CircularProgress thickness='5' />
     </Box>
   );
 };

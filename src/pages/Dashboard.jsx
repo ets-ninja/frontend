@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import ResponsiveContainer from '../components/styled/ResponsiveContainer'
-import BasketDashboard from '../components/UIElements/BasketDashboard'
-import BasketDashboardHeader from '../components/UIElements/BasketDashboardHeader'
+import JarDashboard from '../components/UIElements/JarDashboard'
+import JarDashboardHeader from '../components/UIElements/JarDashboardHeader'
 
 const Dashboard = () => {
   return (
     <>
       <ResponsiveContainer>
-        <BasketDashboardHeader />
-        <BasketDashboard /> 
+        <JarDashboardHeader />
+        <JarDashboard /> 
       </ResponsiveContainer>
     </>
 )

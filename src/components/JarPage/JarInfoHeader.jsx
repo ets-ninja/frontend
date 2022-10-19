@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import { Link } from 'react-router-dom';
 import { update_jar } from '../../redux/basket/basketActions';
 import { useParams } from 'react-router-dom';
+import SaveIcon from '@mui/icons-material/Save';
 
 const JarInfoHeader = () => {
     const { basketID } = useParams(); 
@@ -46,10 +47,17 @@ const JarInfoHeader = () => {
         }
       };
 
+    const handleOnBlur = () => {
+      if(editedName?.length <= 40) {
+        setEditNameState(!editNameState); 
+        dispatch(update_jar({ id: basketID, name: editedName }));
+      }
+    }
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <IconButton sx={{ height: 35, width: 35, mt: 0.6, mr: 0.5 }} component={Link} to="/">
-            <ChevronLeftIcon fontSize="large" />
+              <ChevronLeftIcon fontSize="large" />
             </IconButton>
             <Typography
                 variant="h1"
@@ -59,14 +67,18 @@ const JarInfoHeader = () => {
             <TextField
                 sx={{ display: editNameState === true ? 'inline' : 'none', flexGrow: 1, heigth: 32 }}
                 id="outlined-name"
+                error={editedName?.length > 40}
+                helperText="Name should be below 40 letters"
                 label="Name"
                 value={editedName}
                 onChange={handleEditedNameChange}
-                variant="filled"
-                onBlur={() => { setEditNameState(!editNameState); dispatch(update_jar({ id: basketID, name: editedName }));} }
+                onBlur={handleOnBlur}
               />
-            <IconButton sx={{ height: 45, width: 45, ml: 0.5 }} onClick={() => { setEditNameState(!editNameState) }}>
-            <EditIcon sx={{ fontSize: 32 }} />
+            <IconButton sx={{ display: editNameState === false ? 'inline' : 'none', height: 45, width: 45, ml: 0.5 }} onClick={() => { setEditNameState(!editNameState) }}>
+              <EditIcon sx={{ fontSize: 32 }} />
+            </IconButton>
+            <IconButton sx={{ display: editNameState === true ? 'inline' : 'none', height: 45, width: 45, ml: 0.5 }} onClick={handleOnBlur}>
+              <SaveIcon sx={{ fontSize: 32 }} />
             </IconButton>
         </Box>
     )

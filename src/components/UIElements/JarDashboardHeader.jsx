@@ -1,5 +1,4 @@
 import React, { useEffect, useState }  from 'react';
-import BasketBox from './BasketBox';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -52,7 +51,7 @@ const orderOptions = [
   "Far to expire"
 ]
 
-const BasketDashboardHeader = () => {
+const JarDashboardHeader = () => {
   const { page } = useSelector(state => state.basket.paginationData);
 
   const [hiddenFilterAnchor, sethiddenFilterAnchor] = useState(null);
@@ -176,4 +175,4 @@ const BasketDashboardHeader = () => {
   );
 };
 
-export default BasketDashboardHeader;
+export default JarDashboardHeader;

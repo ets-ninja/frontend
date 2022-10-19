@@ -5,7 +5,8 @@ import {
   get_public_baskets, 
   get_private_baskets, 
   get_basket_by_id,
-  update_jar 
+  update_jar,
+  update_jar_image 
 } from './basketActions';
 
 const initialState = {
@@ -136,6 +137,21 @@ const basketSlice = createSlice({
       state.basket.expirationDate = payload.jar.expirationDate;
     },
     [update_jar.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.basket = { ownerId: {  } };
+      state.error = payload;
+    },
+    //update_jar_image
+    [update_jar_image.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [update_jar_image.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.basket.image = payload.jar.image;
+    },
+    [update_jar_image.rejected]: (state, { payload }) => {
       state.loading = false;
       state.basket = { ownerId: {  } };
       state.error = payload;

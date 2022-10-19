@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
+import Grid from '@mui/material/Grid';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 40,
@@ -32,36 +33,35 @@ const JarProgress = () => {
     } = useSelector(state => state.basket.basket);
 
     return (
-        <Box sx={{ width: '92%', position: 'relative' }}>
-            <BorderLinearProgress
-            variant="determinate"
-            value={Math.max(0, Math.min(100, value * 100 / goal))}
-            sx={{
-                height: '45px',
-            }}
-            />
-            <Typography
-            variant="h5"
-            component="p"
-            sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-            }}>
-            {value}$
+        <Box sx={{ display: 'flex', alignItems: 'center', width: "100%", pr: 6 }}>
+            <Box sx={{ position: 'relative', width: '100%', mr: 1 }}>
+                <BorderLinearProgress
+                variant="determinate"
+                value={Math.max(0, Math.min(100, value * 100 / goal))}
+                sx={{
+                    width: "100%",
+                    height: '45px',
+                }}
+                />
+                <Typography
+                variant="h5"
+                component="p"
+                sx={{
+                    position: 'absolute',   
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                }}>
+                {value}$
             </Typography>
-            <Typography
-            variant="h5"
-            component="p"
-            sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '105%',
-                transform: 'translate(-50%, -50%)',
-            }}>
-            {goal}$
-            </Typography>
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+                <Typography
+                variant="h5"
+                component="p">
+                {goal}$
+                </Typography>
+            </Box>
         </Box>
     )
 }

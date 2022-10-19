@@ -30,15 +30,17 @@ const JarPage = () => {
       <Box 
         sx={{
         display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap'
+        width: '100%',
+        flexDirection: { xs: 'column', sm: 'column', md: 'row' },
+        flexWrap: 'nowrap',
+        alignItems: { xs: 'center', sm: 'center', md: 'start' }
         }}>
-        <Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: { xs: '100%', sm: '100%', md: 'auto' }}}>
           <JarInfoHeader />
           <JarInfo />
           <Button
             sx={{
-              width: 330,
+              width: '100%',
               fontSize: 35,
               mt: 3,
               mb: 3,
@@ -57,8 +59,8 @@ const JarPage = () => {
             display: 'flex',
             flexDirection: 'column',
             flexGrow: 1,
-            ml: 4,
-            width: 'auto',
+            ml: { xs: 0, sm: 0, md: 4 },
+            width: { xs: '100%', sm: '100%', md: 'auto' },
             maxWidth: 1350,
             flexWrap: 'wrap',
           }}
@@ -67,7 +69,7 @@ const JarPage = () => {
           <JarDescription />
         </Box>
       </Box>
-      <BasketChart />
+      <BasketChart sx={{ width: "100%" }} />
     </ResponsiveContainer>
   );
 };

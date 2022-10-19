@@ -5,32 +5,46 @@ import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { jarStepHandler, transformTransactionTime } from './utils';
+import { useNavigate } from 'react-router-dom';
 import SumLinearProgress from '../SumLinearProgress';
 
 export default function JarCard({
   bank,
   handleOpenModal = null,
   handleUserClick = null,
+  isMyJar = false,
 }) {
   const { userPhoto = null, publicName = null } = bank.user;
   const {
-    createdAt = new Date(Date.now()),
+    _id,
+    creationDate = new Date(Date.now()),
     name,
     image = null,
     expirationDate = null,
     value,
     goal,
+    isPublic,
     description,
     transactions = [],
   } = bank;
+  const formattedExpirationDate = () => {
+    let days = Math.floor(
+      new Date(new Date(expirationDate) - Date.now()) /
+        (24 * 60 * 60 * 1000),
+    )
+    if(days <= 0) { return 'Expired' }
+    return `${days}  d.`;
+  }
+  const navigate = useNavigate();
   return (
     <Box
-      onClick={e => handleOpenModal(e, bank)}
+      onClick={e => isMyJar ? navigate('/basket/' + _id) : handleOpenModal(e, bank)}
       sx={{
         color: theme => theme.colors.darkBlue,
         background: theme => theme.colors.white,
         boxSizing: 'border-box',
         border: '1px solid #86868666',
+        outline: isMyJar ? isPublic ? '2px solid #00FF00' : '2px solid #DC143C' : '',
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
         borderRadius: '5px',
         cursor: 'pointer',
@@ -67,7 +81,19 @@ export default function JarCard({
             py: 1,
           }}
         >
-          <Box
+          {isMyJar === true && 
+            <Typography
+              variant="h3"
+              component="p"
+              sx={{
+                maxWidth: '75%',
+                fontWeight: '500',
+                letterSpacing: '0.05em',
+              }}>
+              {isPublic ? 'Public' : 'Private'}
+            </Typography>
+          }
+          {isMyJar === false && <Box
             onClick={() => handleUserClick(bank.user)}
             sx={{ display: 'flex', alignItems: 'center' }}
             data-clickable={true}
@@ -86,9 +112,9 @@ export default function JarCard({
             >
               {publicName}
             </Typography>
-          </Box>
+          </Box> }
           <Typography component="p" sx={{ fontWeight: '500' }}>
-            {new Date(createdAt).toLocaleDateString('en-US', {
+            {new Date(creationDate).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
             })}
@@ -179,7 +205,7 @@ export default function JarCard({
           <Box sx={{ pl: 1, mt: 1, flexGrow: '2' }}>
             {description && (
               <MediaQuery maxWidth={767}>
-                <Typography component="p" sx={{ pl: { xs: 1, sm: 2 }, mb: 1 }}>
+                <Typography component="p" sx={{ pl: { xs: 1, sm: 2, whiteSpace: 'pre-wrap' }, mb: 1 }}>
                   {description.length > 90
                     ? `${description.substring(0, 90)}. . .`
                     : description}
@@ -204,10 +230,7 @@ export default function JarCard({
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <TimerOutlinedIcon />
                   <Typography component="p" sx={{ fontWeight: '500' }}>
-                    {`${Math.floor(
-                      new Date(new Date(expirationDate) - Date.now()) /
-                        (24 * 60 * 60 * 1000),
-                    )} d.`}
+                    {formattedExpirationDate()}
                   </Typography>
                 </Box>
               )}
