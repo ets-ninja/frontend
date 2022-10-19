@@ -23,8 +23,11 @@ import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
 import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
+import MoneyStatusContainer from './pages/MoneyStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
+import IntroChecker from './components/IntroChecker/IntroChecker';
+import IntroSwiper from './pages/IntoPage/IntroSwiper';
 
 const App = () => {
   const location = useLocation();
@@ -49,7 +52,7 @@ const App = () => {
   return (
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<IntroChecker />} />
         <Route path="/basket/:basketID" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
@@ -63,8 +66,23 @@ const App = () => {
           />
         <Route
           exect
+          element={<ProtectedRoute component={Dashboard} />}
+          path="/dashboard"
+          />
+        <Route
+          exect
           element={<StripeStatusContainer />}
           path="/payment-status"
+        />
+        <Route
+          exect
+          element={<MoneyStatusContainer type={'donate'}/>}
+          path="/donate-status"
+        />
+        <Route
+          exect
+          element={<MoneyStatusContainer type={'receive'}/>}
+          path="/receive-status"
         />
         <Route
           exect
@@ -103,6 +121,7 @@ const App = () => {
           <Route path="/modal/intro-page" element={<IntroSwiper />} />
             <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
             <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
+            <Route path="/modal/intro-page" element={<IntroSwiper />} />
           </Route>
         </Routes>
       )}

@@ -77,7 +77,7 @@ const CreationPage = () => {
       dispatch(cancelCreation())
       setIsChecked1(false)
       setIsChecked3(false)
-      navigate('/')
+      navigate('/dashboard')
       return
     }
     setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -85,7 +85,7 @@ const CreationPage = () => {
 
   const handleReset = () => {
     setActiveStep(0);
-    navigate('/')
+    navigate('/dashboard')
   };
 
 
