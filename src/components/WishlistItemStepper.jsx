@@ -206,7 +206,7 @@ const WishlistItemStepper = () => {
                           variant="standard"
                           type="number"
                           min={1}
-                          label="Final goal*"
+                          label="Final goal, $*"
                           value={field.value}
                           fullWidth={true}
                           inputProps={{ min: 1, step: 'any' }}
@@ -367,7 +367,7 @@ const WishlistItemStepper = () => {
                           color: theme => theme.colors.darkBlue,
                         }}
                       >
-                        <b>Final goal:</b> {getValues('finalGoal')} ₴
+                        <b>Final goal:</b> ${getValues('finalGoal')}
                       </Typography>
                       {getValues('description').length ? (
                         <Typography

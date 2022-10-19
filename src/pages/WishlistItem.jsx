@@ -86,8 +86,8 @@ const WishlistItem = () => {
   };
 
   const submitForm = async data => {
-    await dispatch(updateWishlistItem({ id, data }));
     setEditMode(false);
+    await dispatch(updateWishlistItem({ id, data }));
   };
 
   const removeItem = async () => {
@@ -262,7 +262,7 @@ const WishlistItem = () => {
                           })}
                           startAdornment={
                             <InputAdornment position="start">
-                              Final goal:{' '}
+                              Final goal: ${' '}
                             </InputAdornment>
                           }
                           defaultValue={itemInfo.finalGoal}
@@ -423,7 +423,7 @@ const WishlistItem = () => {
                         color: theme => theme.colors.darkBlue,
                       }}
                     >
-                      Final goal: {itemInfo.finalGoal} ₴
+                      Final goal: ${itemInfo.finalGoal}
                     </Typography>
                   </Box>
                   <Box sx={{ mb: 3 }}>

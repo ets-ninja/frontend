@@ -93,7 +93,7 @@ const WishlistCard = ({
             fontSize: '1rem',
           }}
         >
-          {'Goal: ' + finalGoal + '₴'}
+          {'Goal: ' + '$' + finalGoal}
         </Typography>
         <Button
           component={Link}
