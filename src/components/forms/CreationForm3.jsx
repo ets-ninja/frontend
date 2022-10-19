@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectBasket} from '../../redux/basket/createBasketSlice'
 import defaultImage from '../../assets/swinka.png'
 import useModal from '../../hooks/useModal';
-import kartinka from '../JarCard/images/JarStep5.png'
+import jarPicture5 from '../JarCard/images/JarStep5.png'
 
 const CreationForm3 = ({isChecked3, setIsChecked3}) => {
 
@@ -36,7 +36,7 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
           <CardMedia
             component="img"
             sx={{ width: 300, height: 420 }}
-            image={kartinka}
+            image={jarPicture5}
             alt="Live from space album cover"
           />
         </Card>

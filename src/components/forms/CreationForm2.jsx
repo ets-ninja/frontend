@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
-import kartinka from '../JarCard/images/JarStep4.png'
+import jarPicture4 from '../JarCard/images/JarStep4.png'
 
 const CreationForm2 = ({setIsChecked1, isChecked1}) => {
 
@@ -36,7 +36,7 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
             style={{ filter: 'grayscale(50%)' }}
             component="img"
             sx={{ width: 300, height: 420 }}
-            image={kartinka}
+            image={jarPicture4}
             alt="Live from space album cover"
           />
         </Card>

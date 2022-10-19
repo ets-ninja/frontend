@@ -4,7 +4,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBasket, setBasketName, setDescription, setMoneyGoal } from '../../redux/basket/createBasketSlice'
 import NumField from '../NumField';
-import kartinka from '../JarCard/images/JarStep1.png'
+import jarPicture1 from '../JarCard/images/JarStep1.png'
 
 const CreationForm = () => {
 
@@ -27,7 +27,7 @@ const CreationForm = () => {
             style={{ filter: 'grayscale(100%)' }}
             component="img"
             sx={{ width: 300, height: 420 }}
-            image={kartinka}
+            image={jarPicture1}
             alt="Live from space album cover"
           />
         </Card>
