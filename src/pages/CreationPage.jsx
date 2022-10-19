@@ -26,6 +26,7 @@ const CreationPage = () => {
   const [skipped, setSkipped] = React.useState(new Set());
 
   const [isChecked1, setIsChecked1] = useState(false);
+  const [isChecked2, setIsChecked2] = useState(false);
   const [isChecked3, setIsChecked3] = useState(false);
 
   const navigate = useNavigate()
@@ -132,6 +133,8 @@ const CreationPage = () => {
             <CreationForm2
               setIsChecked1={setIsChecked1}
               isChecked1={isChecked1}
+              setIsChecked2={setIsChecked2}
+              isChecked2={isChecked2}
             />
           ) : (
             <CreationForm3

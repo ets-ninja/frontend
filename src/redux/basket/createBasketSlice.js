@@ -41,7 +41,8 @@ const initialState = {
     success: false,
     successInfo: '',
     error: null,
-    errorInfo: ''
+    errorInfo: '',
+    gaTag: ''
 }
 
 
@@ -68,26 +69,9 @@ const basketSlice = createSlice({
             state.photoTag = action.payload
         },
 
-        pushBasketToSomewhere: (state) => {
-
-            // const newBasket = {
-            //     basketName: state.basketName,
-            //     description: state.description,
-            //     moneyGoal: state.moneyGoal,
-            //     expirationDate: state.expirationDate,
-            //     isPublic: state.isPublic,
-            //   };
-
-
-            // axios.post('http://localhost:5050/api/basket/create_basket', Basket)
-            // createBasket(Basket)
-
-            // state.basketName = ''
-            // state.description = ''
-            // state.moneyGoal = ''
-            // state.expirationDate = null
-            // state.isPublic = false
-            // state.photoTag = null
+        setGaTag: (state, action) => {
+          if (action.payload.length > 20 ) return
+          state.gaTag = action.payload
         },
 
         cancelCreation: (state) => {
@@ -136,7 +120,7 @@ const basketSlice = createSlice({
 
 export default basketSlice.reducer;
 
-export const {setBasketName, setDescription, setMoneyGoal, setExpirationDate, setIsPublic, pushBasketToSomewhere, cancelCreation, setPhotoTag} = basketSlice.actions
+export const {setBasketName, setDescription, setMoneyGoal, setExpirationDate, setIsPublic, pushBasketToSomewhere, cancelCreation, setPhotoTag, setGaTag} = basketSlice.actions
 
 export const selectBasket = (state) => state.creationBasket;
 
