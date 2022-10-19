@@ -445,12 +445,8 @@ const WishlistItemStepper = () => {
                 activeStep={activeStep}
                 xs={{ px: 0 }}
                 nextButton={
-                  <Button
-                    size="small"
-                    onClick={handleNext}
-                    disabled={activeStep === maxSteps - 1}
-                  >
-                    Next
+                  <Button size="small" type="submit">
+                    {activeStep === steps.length - 1 ? 'Create' : 'Next'}
                     {theme.direction === 'rtl' ? (
                       <KeyboardArrowLeft />
                     ) : (
