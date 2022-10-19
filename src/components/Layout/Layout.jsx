@@ -3,8 +3,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
-import ErrorMessage from '../UIElements/ErrorMessage';
-import NotificationToast from '../UIElements/NotificationToast';
+import ErrorMessage from '../UIElements/SnackBars/ErrorMessage';
+import NotificationToast from '../UIElements/SnackBars/NotificationToast';
+import SuccessMessage from '../UIElements/SnackBars/SuccessMessage';
+import InfoMessage from '../UIElements/SnackBars/InfoMessage';
 
 const theme = createTheme({
   palette: {
@@ -72,8 +74,37 @@ const theme = createTheme({
       xl: 1536,
     },
   },
-  hover: {
-    icon: {
+  icon: {
+    sortSettings: {
+      width: '28px',
+      height: '28px',
+      px: '3px',
+      scale: '1',
+      fill: '#000000ab',
+      transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+      '&:hover': {
+        cursor: 'pointer',
+        fill: theme => theme.colors.yellow,
+        transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+      },
+    },
+    sortSettingsActive: {
+      width: '28px',
+      height: '28px',
+      px: '3px',
+      scale: '1.2',
+      fill: theme => theme.colors.yellow,
+      transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+      '&:hover': {
+        cursor: 'pointer',
+        transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
+      },
+    },
+    grey: {
+      fill: 'rgba(0,0,0,0.67)',
+    },
+    hover: {
+      cursor: 'pointer',
       fill: theme => theme.colors.yellow,
       scale: '1.2',
       transition: '250ms cubic-bezier(0.4, 0, 0.2, 1)',
@@ -92,6 +123,8 @@ const Layout = props => {
           ></link>
           <NotificationToast />
           <ErrorMessage />
+          <SuccessMessage />
+          <InfoMessage />
           <Header />
           <main style={{ backgroundColor: 'white' }}>{props.children}</main>
           <Footer />

@@ -4,16 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import Snackbar from '@mui/material/Snackbar';
 import Fade from '@mui/material/Fade';
 import MuiAlert from '@mui/material/Alert';
-import { clearError } from '../../redux/request/requestSlice';
+import { clearSuccess } from '../../../redux/snackbar/snackbarSlice';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const ErrorMessage = () => {
+const SuccessMessage = () => {
   const user = useSelector(state => state.user);
-  const request = useSelector(state => state.request);
-  const auth = useSelector(state => state.auth);
+  const creationBasket = useSelector(state => state.creationBasket);
+  const snackbar = useSelector(state => state.snackbar);
   const dispatch = useDispatch();
 
   const [state, setState] = useState({
@@ -24,17 +24,26 @@ const ErrorMessage = () => {
   });
 
   useEffect(() => {
-    if (user.error || request.error || auth.error) {
+    if (user.successInfo.message) {
       setState(prevValue => ({ ...prevValue, open: true }));
     } else {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
-  }, [user.error, request.error, auth.error]);
+  }, [user.successInfo, snackbar.success]);
+
+  useEffect(() => {
+    if (creationBasket.successInfo) {
+      setState(prevValue => ({ ...prevValue, open: true }));
+    } else {
+      setState(prevValue => ({ ...prevValue, open: false }));
+    }
+  }, [creationBasket.successInfo, snackbar.success]);
 
   const handleClose = () => {
     setState({ ...state, open: false });
-    if (request.error) {
-      dispatch(clearError());
+
+    if (snackbar.success) {
+      dispatch(clearSuccess());
     }
   };
 
@@ -46,17 +55,17 @@ const ErrorMessage = () => {
           horizontal: state.horizontal,
         }}
         open={state.open}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
         TransitionComponent={state.Transition}
         key={state.Transition.name}
         onClose={handleClose}
       >
-        <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
-          {user.error || auth.error || request.error}
+        <Alert severity="success" onClose={handleClose} sx={{ width: '100%' }}>
+          {user.successInfo?.message || creationBasket.successInfo ||snackbar.success}
         </Alert>
       </Snackbar>
     </>
   );
 };
 
-export default ErrorMessage;
+export default SuccessMessage;

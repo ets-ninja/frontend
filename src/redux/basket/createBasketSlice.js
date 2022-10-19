@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from '../../services/axios/user';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
-
 
 export const createBasket = createAsyncThunk(
   'creationBasket/createBasket',
@@ -36,12 +34,14 @@ const initialState = {
     basketName: '',
     description: '',
     moneyGoal: '',
-    expirationDate: null,  
+    expirationDate: null,
     isPublic: false,
     photoTag: '',
     loading: false,
     success: false,
-    error: null
+    successInfo: '',
+    error: null,
+    errorInfo: ''
 }
 
 
@@ -104,28 +104,32 @@ const basketSlice = createSlice({
           state.loading = true;
           state.error = null;
           state.success = false;
+          state.successInfo = '';
+          state.errorInfo = '';
         },
         [createBasket.fulfilled]: (state, { payload }) => {
           state.loading = false;
           state.success = true;
+          state.successInfo = 'Basket is created!';
           state.error = null;
-          state.basketName = ''
-          state.description = ''
-          state.moneyGoal = ''
-          state.expirationDate = null
-          state.isPublic = false
-          state.photoTag = null
+          state.basketName = '';
+          state.description = '';
+          state.moneyGoal = '';
+          state.expirationDate = null;
+          state.isPublic = false;
+          state.photoTag = null;
         },
         [createBasket.rejected]: (state, { payload }) => {
           state.loading = false;
           state.success = false;
           state.error = payload;
-          state.basketName = ''
-          state.description = ''
-          state.moneyGoal = ''
-          state.expirationDate = null
-          state.isPublic = false
-          state.photoTag = null
+          state.errorInfo = 'Error from server';
+          state.basketName = '';
+          state.description = '';
+          state.moneyGoal = '';
+          state.expirationDate = null;
+          state.isPublic = false;
+          state.photoTag = null;
         },
     }
 })

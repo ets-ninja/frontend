@@ -1,43 +1,28 @@
 import MediaQuery from 'react-responsive';
-import {
-  Avatar,
-  Badge,
-  Button,
-  LinearProgress,
-  linearProgressClasses,
-  styled,
-  Typography,
-} from '@mui/material';
+import { Avatar, Badge, Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import jarStepHandler from './jarStepHandler';
-import { BakeryDiningOutlined } from '@mui/icons-material';
-
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 40,
-  borderRadius: 20,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor:
-      theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 20,
-    background:
-      'linear-gradient(270.27deg, #FBB13C 1.94%, rgba(251, 177, 60, 51) 99.95%);',
-  },
-}));
+import { jarStepHandler, transformTransactionTime } from './utils';
+import SumLinearProgress from '../SumLinearProgress';
 
 export default function JarCard({
   bank,
   handleOpenModal = null,
   handleUserClick = null,
 }) {
-  const user = bank.user;
-  const userNames = user?.publicName || (user.firstName && user.lastName);
-  const image = bank?.image || 'https://cdn.arstechnica.net/wp-content/uploads/2022/04/razer-book-800x450.jpg'
-
+  const { userPhoto = null, publicName = null } = bank.user;
+  const {
+    createdAt = new Date(Date.now()),
+    name,
+    image = null,
+    expirationDate = null,
+    value,
+    goal,
+    description,
+    transactions = [],
+  } = bank;
   return (
     <Box
       onClick={e => handleOpenModal(e, bank)}
@@ -119,14 +104,34 @@ export default function JarCard({
             },
           }}
         >
-          <img
-            src={image}
-            alt={`${bank.name}`}
-            style={{
-              display: 'block',
-              maxWidth: '100%',
-            }}
-          />
+          {image ? (
+            <img
+              src={image}
+              alt={`${name}`}
+              style={{
+                display: 'block',
+                maxWidth: '100%',
+              }}
+            />
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                backgroundColor: '#EBEBEB',
+                pt: 1,
+              }}
+            >
+              <img
+                src={jarStepHandler(value, goal)}
+                alt={`${name}`}
+                style={{
+                  height: '197px',
+                  zIndex: '2',
+                }}
+              />
+            </Box>
+          )}
           <MediaQuery minWidth={769}>
             <Box
               sx={{
@@ -184,7 +189,10 @@ export default function JarCard({
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: { xs: 'column-reverse', xxs: 'row' },
+                flexDirection: {
+                  xs: 'column-reverse',
+                  xxs: image ? 'row' : 'column-reverse',
+                },
                 justifyContent: 'space-between',
                 px: 1,
               }}
@@ -192,17 +200,19 @@ export default function JarCard({
               <Typography component="p" sx={{ fontWeight: '500' }}>
                 {`${bank.value} of ${bank.goal}`}
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TimerOutlinedIcon />
-                <Typography component="p" sx={{ fontWeight: '500' }}>
-                  {`${Math.floor(
-                    new Date(new Date(bank.expirationDate) - Date.now()) /
-                      (24 * 60 * 60 * 1000),
-                  )} d.`}
-                </Typography>
-              </Box>
+              {expirationDate && (
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TimerOutlinedIcon />
+                  <Typography component="p" sx={{ fontWeight: '500' }}>
+                    {`${Math.floor(
+                      new Date(new Date(expirationDate) - Date.now()) /
+                        (24 * 60 * 60 * 1000),
+                    )} d.`}
+                  </Typography>
+                </Box>
+              )}
             </Box>
-            <BorderLinearProgress
+            <SumLinearProgress
               variant="determinate"
               value={(bank.value * 100) / bank.goal}
               sx={{
@@ -210,29 +220,31 @@ export default function JarCard({
               }}
             />
             <Typography component="p" sx={{ fontSize: '13px', pl: 1 }}>
-              Last donation 5 min. ago
+              {transformTransactionTime(transactions[0]?.createdAt)}
             </Typography>
           </Box>
-          <Box
-            sx={{
-              height: '0px',
-              width: '110px',
-              flexShrink: 0,
-              alignSelf: 'flex-end',
-            }}
-          >
-            <img
-              src={jarStepHandler(bank.value, bank.goal)}
-              alt={`${bank.name}`}
-              style={{
-                width: '100%',
-                height: 'auto',
-                zIndex: '2',
-                position: 'relative',
-                bottom: '146px',
+          {image && (
+            <Box
+              sx={{
+                height: '0px',
+                width: '110px',
+                flexShrink: 0,
+                alignSelf: 'flex-end',
               }}
-            />
-          </Box>
+            >
+              <img
+                src={jarStepHandler(value, goal)}
+                alt={`${name}`}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  zIndex: '2',
+                  position: 'relative',
+                  bottom: '146px',
+                }}
+              />
+            </Box>
+          )}
         </Box>
         <Box
           sx={{ display: 'flex', alignItems: 'center', pb: 2, mt: 1 }}
@@ -250,7 +262,7 @@ export default function JarCard({
               boxShadow: 5,
               color: 'black',
               '&:hover': {
-                backgroundColor: theme => theme.palette.secondary.main,
+                backgroundColor: '#FBB13Ce9',
                 color: 'white',
               },
             }}
@@ -268,7 +280,7 @@ export default function JarCard({
             data-clickable={true}
             sx={{
               ml: 1,
-              '&:hover svg': theme => theme.hover.icon,
+              '&:hover svg': theme => theme.icon.hover,
             }}
           >
             <TextsmsOutlinedIcon
@@ -277,7 +289,7 @@ export default function JarCard({
                 height: '40px',
                 px: '5px',
                 scale: '1',
-                transition: theme => theme.hover.icon.transition,
+                transition: theme => theme.icon.hover.transition,
                 fill: theme => theme.colors.darkBlue,
               }}
             />
@@ -289,9 +301,9 @@ export default function JarCard({
               height: '40px',
               px: '5px',
               scale: '1',
-              transition: theme => theme.hover.icon.transition,
+              transition: theme => theme.icon.hover.transition,
               fill: theme => theme.colors.darkBlue,
-              '&:hover': theme => theme.hover.icon,
+              '&:hover': theme => theme.icon.hover,
             }}
           />
         </Box>

@@ -1,7 +1,7 @@
 import { Card, CardMedia, Switch, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectBasket} from '../../redux/basket/createBasketSlice'
 import defaultImage from '../../assets/swinka.png'
 import useModal from '../../hooks/useModal';
@@ -10,7 +10,6 @@ import useModal from '../../hooks/useModal';
 const CreationForm3 = ({isChecked3, setIsChecked3}) => {
 
   const basket = useSelector(selectBasket);
-  const dispatch = useDispatch()
 
   const modal = useModal()
 
@@ -80,13 +79,13 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
           <img style={{position: 'absolute', width: '20px', height: '20px', right: '-10px', top: '45px', cursor: 'pointer', backgroundColor: "white" }}
           onClick={handleModalPhoto}
           src="https://www.freeiconspng.com/thumbs/edit-icon-png/edit-new-icon-22.png" alt="" srcSet="" />
-          <CardMedia 
+          <CardMedia
             component="img"
             sx={{ width: 200, height: 180, ml:'30px', border: 'solid 1px black'  }}
             image={basket.photoTag ? basket.photoTag : defaultImage}
             alt="Live from space album cover"
           />
-          
+
         </Box>
       </Stack>
     </Box>

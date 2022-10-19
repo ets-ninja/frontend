@@ -1,24 +1,30 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  useSearchParams,
+  useNavigate,
+  Link as RouterLink,
+} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
+import {
+  Stack,
+  TextField,
+  Button,
+  Typography,
+  Link,
+  Grid,
+} from '@mui/material';
 
 import { login } from '../../redux/auth/authActions';
 import LoadingSpinner from '../UIElements/LoadingSpinner';
 
 const LoginForm = () => {
   const { loading, isLoggedIn } = useSelector(state => state.auth);
+  const { userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
 
   const {
     register,
@@ -27,19 +33,23 @@ const LoginForm = () => {
   } = useForm();
 
   useEffect(() => {
-  const basketId = searchParams.get('basketId');
+    const basketId = searchParams.get('basketId');
 
     if (basketId) {
       localStorage.setItem('redirectToBank', basketId);
     }
-
     const redirectToBank = localStorage.getItem('redirectToBank');
+
     if (redirectToBank && isLoggedIn) {
       navigate('/public');
-    } else if (isLoggedIn) {
-      navigate('/wishlist');
     }
-  }, [navigate, isLoggedIn ]);
+
+    if (isLoggedIn && userInfo?.status === 'active') {
+      navigate('/wishlist');
+    } else if (!isLoggedIn && userInfo?.status === 'pending') {
+      navigate('/confirm-email');
+    }
+  }, [navigate, isLoggedIn, userInfo]);
 
   const submitForm = data => {
     dispatch(login(data));
@@ -51,7 +61,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitForm)}>
+      <form onSubmit={handleSubmit(submitForm)} noValidate>
         <Stack m={2} spacing={2}>
           <TextField
             type="email"
@@ -100,8 +110,8 @@ const LoginForm = () => {
         <Grid item xs={8}>
           <Typography variant="caption">
             <Link
-              href="#"
-              onClick={() => navigate('/register')}
+              component={RouterLink}
+              to="/register"
               underline="hover"
               color="black"
             >
@@ -116,8 +126,8 @@ const LoginForm = () => {
             justifyContent="flex-end"
           >
             <Link
-              href="#"
-              onClick={() => navigate('/lost-password')}
+              component={RouterLink}
+              to="/lost-password"
               underline="hover"
               color="black"
             >
