@@ -61,7 +61,7 @@ const WishlistItem = () => {
   } = useForm();
 
   useEffect(() => {
-    dispatch(setItemToDelete(null));
+    dispatch(setItemToDelete({ id: null, from: '' }));
     dispatch(setSuccess(false));
   }, []);
 
@@ -111,7 +111,7 @@ const WishlistItem = () => {
     dispatch(setMoneyGoal(itemInfo.finalGoal));
     dispatch(setDescription(itemInfo.description));
     dispatch(setPhotoTag(itemInfo.image));
-    dispatch(setItemToDelete(itemInfo._id));
+    dispatch(setItemToDelete({ id: itemInfo._id, from: 'transformation' }));
     navigate('/creation');
   };
 

@@ -15,7 +15,7 @@ const initialState = {
   pageCount: 0,
   totalItemsQuantity: null,
   activePage: 0,
-  itemToDelete: null,
+  itemToDelete: { id: null, from: '' },
   newWishliItemPhoto: '',
   error: null,
   success: false,

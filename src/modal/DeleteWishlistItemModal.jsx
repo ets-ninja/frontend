@@ -12,7 +12,7 @@ const DeleteWishlistItemModal = () => {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(setItemToDelete(data.deleteWishlistItemId));
+    dispatch(setItemToDelete({ id: data.deleteWishlistItemId, from: 'modal' }));
     modal.close();
   };
 

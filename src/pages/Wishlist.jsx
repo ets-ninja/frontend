@@ -58,7 +58,7 @@ const Wishlist = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setItemToDelete(null));
+    dispatch(setItemToDelete({ id: null, from: '' }));
     dispatch(setLoading(true));
   }, []);
 
@@ -107,7 +107,7 @@ const Wishlist = () => {
   };
 
   const removeItem = async () => {
-    await dispatch(deleteWishlistItem({ id: itemToDelete }));
+    await dispatch(deleteWishlistItem({ id: itemToDelete.id, v: 'wishlist' }));
     if (wishlistItems.length === 1 && pageCount !== 1) {
       handleChangePage(page - 1);
       setPageCount(pageCount - 1);
@@ -116,10 +116,10 @@ const Wishlist = () => {
   };
 
   useEffect(() => {
-    if (itemToDelete) {
+    if (itemToDelete.from === 'modal') {
       removeItem();
+      dispatch(setItemToDelete({ id: null, from: '' }));
     }
-    dispatch(setItemToDelete(null));
   }, [itemToDelete]);
 
   if (loading) {

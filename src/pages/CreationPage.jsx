@@ -66,9 +66,9 @@ const CreationPage = () => {
 
     if (activeStep === steps.length - 1) {
       dispatch(createBasket());
-      if (wishlistItemToDelete) {
-        dispatch(deleteWishlistItem({ id: wishlistItemToDelete }));
-        dispatch(setItemToDelete(null));
+      if (wishlistItemToDelete.from === 'transformation') {
+        dispatch(deleteWishlistItem({ id: wishlistItemToDelete.id }));
+        dispatch(setItemToDelete({ id: null, from: '' }));
       }
       setIsChecked1(false);
       setIsChecked3(false);
