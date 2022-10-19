@@ -13,7 +13,8 @@ export const createBasket = createAsyncThunk(
         moneyGoal: basketState.moneyGoal,
         expirationDate: basketState.expirationDate,
         isPublic: basketState.isPublic,
-        photoTag: basketState.photoTag
+        photoTag: basketState.photoTag,
+        gaTag: basketState.gaTag
       };
     try {
       await axios.post('http://localhost:5050/api/basket/create_basket', newBasket);
