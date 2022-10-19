@@ -205,9 +205,6 @@ const WishlistItem = () => {
                 >
                   <Box
                     sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'flex-start',
                       mb: 3,
                     }}
                   >
@@ -228,11 +225,24 @@ const WishlistItem = () => {
                           {...register('name', {
                             required: true,
                             minLength: 1,
+                            maxLength: {
+                              value: 80,
+                              message:
+                                'Name is too long. It should be shorter than 80 characters',
+                            },
                           })}
                           defaultValue={itemInfo.name}
                         />
                       )}
                     />
+                    <Typography
+                      sx={{
+                        color: theme => theme.palette.danger.main,
+                        fontSize: '.7rem',
+                      }}
+                    >
+                      {errors?.name?.message}
+                    </Typography>
                   </Box>
                   <Box
                     sx={{
@@ -259,6 +269,11 @@ const WishlistItem = () => {
                               value: 1,
                               message: 'Final goal should be greater than 0',
                             },
+                            max: {
+                              value: 10000000,
+                              message:
+                                'Final goal should be less than 10 000 000',
+                            },
                           })}
                           startAdornment={
                             <InputAdornment position="start">
@@ -269,6 +284,14 @@ const WishlistItem = () => {
                         />
                       )}
                     />
+                    <Typography
+                      sx={{
+                        color: theme => theme.palette.danger.main,
+                        fontSize: '.7rem',
+                      }}
+                    >
+                      {errors?.finalGoal?.message}
+                    </Typography>
                   </Box>
                   <Box sx={{ mb: 3 }}>
                     <Controller

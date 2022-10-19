@@ -191,11 +191,24 @@ const WishlistItemStepper = () => {
                           {...register('name', {
                             required: true,
                             minLength: 1,
+                            maxLength: {
+                              value: 80,
+                              message:
+                                'Name is too long. It should be shorter than 80 characters',
+                            },
                           })}
                           defaultValue=""
                         />
                       )}
                     />
+                    <Typography
+                      sx={{
+                        color: theme => theme.palette.danger.main,
+                        fontSize: '.7rem',
+                      }}
+                    >
+                      {errors?.name?.message}
+                    </Typography>
                   </Box>
                   <Box sx={{ mb: 3 }}>
                     <Controller
@@ -217,6 +230,11 @@ const WishlistItemStepper = () => {
                             min: {
                               value: 1,
                               message: 'Final goal should be greater than 0',
+                            },
+                            max: {
+                              value: 10000000,
+                              message:
+                                'Final goal should be less than 10 000 000',
                             },
                           })}
                         />
