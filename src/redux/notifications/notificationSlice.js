@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  isFCMSupported: null,
   notificationToken: null,
   newNotification: false,
   notificationList: [],
@@ -10,6 +11,9 @@ const notificationSlice = createSlice({
   name: 'notifications',
   initialState,
   reducers: {
+    setFCMSupport: (state, { payload }) => {
+      state.isFCMSupported = payload;
+    },
     addToken: (state, { payload }) => {
       state.notificationToken = payload;
     },
@@ -37,6 +41,7 @@ const notificationSlice = createSlice({
 });
 
 export const {
+  setFCMSupport,
   addToken,
   addNotification,
   addMultipleNotification,

@@ -63,6 +63,8 @@ const Notification = () => {
             maxWidth: 300,
             bgcolor: 'background.paper',
             p: 0,
+            maxHeight: 300,
+            overflow: 'scroll',
           }}
         >
           {notificationList.length > 0 ? (

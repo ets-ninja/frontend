@@ -1,8 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as Sentry from '@sentry/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { fetchToken, onMessageListener } from './firebase';
+import {
+  addMultipleNotification,
+  addNotification,
+} from './redux/notifications/notificationSlice';
+import removeSeenNofitication from './utils/notification/removeSeenNotification';
+import loadBackgroundMessages from './utils/notification/loadBackgroundMessages';
+import notificationChannel from './utils/notification/notificationChannel';
 
 import './App.scss';
 
@@ -30,21 +38,56 @@ const App = () => {
   const location = useLocation();
 
   const { isLoggedIn } = useSelector(state => state.auth);
-  const { notificationToken } = useSelector(state => state.notification);
+  const { notificationToken, isFCMSupported } = useSelector(
+    state => state.notification,
+  );
+
+  const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isLoggedIn && !notificationToken) {
+    if (isLoggedIn && isFCMSupported && !notificationToken) {
       fetchToken();
     }
-  }, [dispatch, isLoggedIn, notificationToken]);
 
-  useEffect(() => {
-    if (notificationToken) {
+    if (notificationToken && !isMessageListenerOn) {
       onMessageListener();
+      setIsMessageListenerOn(true);
     }
-  }, [notificationToken]);
+
+    const channel = notificationChannel.getInstance();
+
+    const handleBackgroudMessage = event => {
+      dispatch(addNotification(event.data));
+      removeSeenNofitication();
+    };
+
+    if (isLoggedIn && isFCMSupported && notificationToken) {
+      const firstLoadMessages = async () => {
+        let messages;
+        try {
+          messages = await loadBackgroundMessages();
+        } catch (error) {}
+        if (messages) {
+          dispatch(addMultipleNotification(messages));
+        }
+      };
+
+      firstLoadMessages();
+      channel.addEventListener('message', handleBackgroudMessage);
+    }
+
+    return () => {
+      channel.removeEventListener('message', handleBackgroudMessage);
+    };
+  }, [
+    dispatch,
+    isFCMSupported,
+    isLoggedIn,
+    isMessageListenerOn,
+    notificationToken,
+  ]);
 
   return (
     <div className="App">
@@ -60,7 +103,7 @@ const App = () => {
           exect
           element={<ProtectedRoute component={CreationPage} />}
           path="/creation"
-          />
+        />
         <Route
           exect
           element={<StripeStatusContainer />}

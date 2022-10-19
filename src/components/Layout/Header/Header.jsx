@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
 
 import {
   addNotificationToken,
   getUserDetails,
 } from '../../../redux/user/userActions';
 import { logout } from '../../../redux/auth/authActions';
-import { notificationChannel } from '../../../utils/notification/notificationChannel';
-import removeSeenNofitication from '../../../utils/notification/removeSeenNotification';
+import { clearNotificationsList } from '../../../redux/notifications/notificationSlice';
+
+import ResponsiveContainer from '../../styled/ResponsiveContainer';
+import Notification from './Notification';
 
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
@@ -27,14 +30,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import ResponsiveContainer from '../../styled/ResponsiveContainer';
-import Notification from './Notification';
-import {
-  addMultipleNotification,
-  addNotification,
-  clearNotificationsList,
-} from '../../../redux/notifications/notificationSlice';
-import loadBackgroundMessages from '../../../utils/notification/loadBackgroundMessages';
 
 const pages = [
   {
@@ -59,59 +54,67 @@ const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
+  const [socket, setSocket] = useState(null);
+  const [isTokenSet, setIsTokenSet] = useState(false);
+  const [isInRoom, setIsInRoom] = useState(false);
+
   const { userInfo } = useSelector(state => state.user);
   const { isLoggedIn } = useSelector(state => state.auth);
-  const { notificationToken } = useSelector(state => state.notification);
+  const { notificationToken, isFCMSupported } = useSelector(
+    state => state.notification,
+  );
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isFCMSupported !== null && !isFCMSupported) {
+      setSocket(io(process.env.REACT_APP_API_URL));
+    }
+  }, [isFCMSupported]);
 
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(getUserDetails());
     } else {
+      if (isFCMSupported !== null && !isFCMSupported && socket) {
+        socket.emit('leave');
+      }
       dispatch(clearNotificationsList());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isLoggedIn]);
 
   useEffect(() => {
+    if (isFCMSupported !== null && !isFCMSupported && socket) {
+      if (!isInRoom && isLoggedIn && userInfo?.id) {
+        socket.emit('join', userInfo.id);
+        setIsInRoom(true);
+      }
+    }
+  }, [dispatch, isLoggedIn, socket, userInfo?.id, isInRoom, isFCMSupported]);
+
+  useEffect(() => {
     if (
-      userInfo?.notificationTokens &&
+      isFCMSupported &&
+      isLoggedIn &&
+      !isTokenSet &&
       notificationToken &&
-      !userInfo?.notificationTokens.includes(notificationToken) &&
-      isLoggedIn
+      userInfo?.notificationTokens &&
+      !userInfo?.notificationTokens.includes(notificationToken)
     ) {
-      dispatch(addNotificationToken());
+      try {
+        dispatch(addNotificationToken());
+        setIsTokenSet(true);
+      } catch (err) {}
     }
-  }, [dispatch, notificationToken, isLoggedIn, userInfo]);
-
-  useEffect(() => {
-    if (isLoggedIn && notificationToken) {
-      const firstLoadMessages = async () => {
-        let messages;
-        try {
-          messages = await loadBackgroundMessages();
-        } catch (error) {}
-        if (messages) {
-          dispatch(addMultipleNotification(messages));
-        }
-      };
-      firstLoadMessages();
-    }
-  }, [dispatch, notificationToken, isLoggedIn]);
-
-  useEffect(() => {
-    const channel = notificationChannel.getInstance();
-    const handleBackgroudMessage = event => {
-      dispatch(addNotification(event.data));
-      removeSeenNofitication();
-    };
-
-    if (isLoggedIn && notificationToken) {
-      channel.addEventListener('message', handleBackgroudMessage);
-    }
-    return () => {
-      channel.removeEventListener('message', handleBackgroudMessage);
-    };
-  }, [dispatch, isLoggedIn, notificationToken]);
+  }, [
+    dispatch,
+    notificationToken,
+    isLoggedIn,
+    userInfo?.notificationTokens,
+    isTokenSet,
+    isFCMSupported,
+  ]);
 
   const handleOpenNavMenu = e => {
     setAnchorElNav(e.currentTarget);
