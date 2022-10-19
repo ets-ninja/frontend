@@ -23,6 +23,7 @@ import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
 import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
+import MoneyStatusContainer from './pages/MoneyStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
 
@@ -65,6 +66,16 @@ const App = () => {
           exect
           element={<StripeStatusContainer />}
           path="/payment-status"
+        />
+        <Route
+          exect
+          element={<MoneyStatusContainer type={'donate'}/>}
+          path="/donate-status"
+        />
+        <Route
+          exect
+          element={<MoneyStatusContainer type={'receive'}/>}
+          path="/receive-status"
         />
         <Route
           exect
