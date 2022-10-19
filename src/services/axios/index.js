@@ -22,9 +22,9 @@ instance.interceptors.request.use(
     return config;
   },
   error => {
-    if (error.response && error.response.data.message) {
+    if (error.response?.data?.message) {
       store.dispatch(setError(error.response.data.message));
-    } else if (error.response && error.response.data) {
+    } else if (error.response?.data) {
       store.dispatch(setError(error.response.data));
     } else {
       store.dispatch(setError(error.message));
@@ -41,9 +41,9 @@ instance.interceptors.response.use(
     if (errorsBlacklist.some(endpoint => endpoint === error.config?.url)) {
       return Promise.reject(error);
     }
-    if (error.response && error.response.data.message) {
+    if (error.response?.data?.message) {
       store.dispatch(setError(error.response.data.message));
-    } else if (error.response && error.response.data) {
+    } else if (error.response?.data) {
       store.dispatch(setError(error.response.data));
     } else {
       store.dispatch(setError(error.message));
