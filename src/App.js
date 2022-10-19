@@ -25,8 +25,11 @@ import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
+import ReactGA from "react-ga4";
 
 const App = () => {
+  ReactGA.initialize("G-FNKW7FG3BS");
+  ReactGA.send("pageview");
   const location = useLocation();
 
   const { isLoggedIn } = useSelector(state => state.auth);

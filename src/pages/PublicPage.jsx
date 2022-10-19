@@ -17,6 +17,7 @@ import {
 import { Box } from '@mui/system';
 import { Pagination } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ReactGA from "react-ga4";
 
 import useModal from '../hooks/useModal';
 import { useDebounceEffect } from '../hooks/useDebounceEffect';
@@ -32,6 +33,7 @@ import {
 } from '../components/publicPage';
 
 export default function PublicPage() {
+  ReactGA.send("pageview");
   const modal = useModal();
   const dispatch = useDispatch();
   const { register, control, reset } = useForm();

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectBasket, cancelCreation, createBasket} from '../redux/basket/createBasketSlice'
 import CreationResult from '../components/CreationResult';
 import { setError } from '../redux/snackbar/snackbarSlice';
+import ReactGA from "react-ga4";
 
 
 
@@ -20,7 +21,7 @@ import { setError } from '../redux/snackbar/snackbarSlice';
 const steps = ['TextInfo', 'AdditionSettings', 'Finishing!'];
 
 const CreationPage = () => {
-  
+  ReactGA.send("pageview");
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
@@ -65,6 +66,12 @@ const CreationPage = () => {
       dispatch(createBasket())
       setIsChecked1(false)
       setIsChecked3(false)
+      ReactGA.event({
+        category: "Jar",
+        action: "Jar Creation",
+        label: "User created a jar", // optional
+        value: 99, // optional, must be a number
+      });
      }
   };
 
