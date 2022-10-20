@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
@@ -8,7 +8,10 @@ import {
   getUserDetails,
 } from '../../../redux/user/userActions';
 import { logout } from '../../../redux/auth/authActions';
-import { clearNotificationsList } from '../../../redux/notifications/notificationSlice';
+import {
+  addNotification,
+  clearNotificationsList,
+} from '../../../redux/notifications/notificationSlice';
 
 import ResponsiveContainer from '../../styled/ResponsiveContainer';
 import Notification from './Notification';
@@ -68,6 +71,7 @@ const Header = () => {
   const [socket, setSocket] = useState(null);
   const [isTokenSet, setIsTokenSet] = useState(false);
   const [isInRoom, setIsInRoom] = useState(false);
+  const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
 
   const { userInfo } = useSelector(state => state.user);
   const { isLoggedIn } = useSelector(state => state.auth);
@@ -82,6 +86,21 @@ const Header = () => {
       setSocket(io(process.env.REACT_APP_API_URL));
     }
   }, [isFCMSupported]);
+
+  useEffect(() => {
+    if (socket && !isMessageListenerOn) {
+      socket.on('message', data => {
+        dispatch(addNotification(data));
+      });
+      setIsMessageListenerOn(true);
+
+      return () => {
+        socket.off('message');
+        setIsMessageListenerOn(false);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   useEffect(() => {
     if (isLoggedIn) {

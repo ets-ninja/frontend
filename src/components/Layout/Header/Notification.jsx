@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { removeNotification } from '../../../redux/notifications/notificationSlice';
+import {
+  clearNotificationsList,
+  removeNotification,
+} from '../../../redux/notifications/notificationSlice';
 
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
@@ -64,49 +67,60 @@ const Notification = () => {
             bgcolor: 'background.paper',
             p: 0,
             maxHeight: 300,
-            overflow: 'scroll',
+            overflowY: 'scroll',
           }}
         >
           {notificationList.length > 0 ? (
-            notificationList.map(notification => (
-              <ListItem key={notification.messageId} disablePadding>
+            <>
+              <ListItem>
                 <ListItemButton
                   onClick={() => {
-                    handleClickOnNotification(notification);
+                    dispatch(clearNotificationsList());
                   }}
                 >
-                  <ListItemAvatar>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={notification.notification?.image}
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="You have new donation!"
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body1"
-                          color="text.primary"
-                          display="block"
-                        >
-                          {notification.notification?.title}
-                        </Typography>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                          display="block"
-                        >
-                          {notification.notification?.body}
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
+                  Remove all notifications
                 </ListItemButton>
               </ListItem>
-            ))
+              {notificationList.map(notification => (
+                <ListItem key={notification.messageId} disablePadding>
+                  <ListItemButton
+                    onClick={() => {
+                      handleClickOnNotification(notification);
+                    }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src={notification.notification?.image}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary="You have new donation!"
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body1"
+                            color="text.primary"
+                            display="block"
+                          >
+                            {notification.notification?.title}
+                          </Typography>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                            display="block"
+                          >
+                            {notification.notification?.body}
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </>
           ) : (
             <ListItem disablePadding>
               <ListItemButton>
