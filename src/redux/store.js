@@ -1,4 +1,4 @@
-import { configureStore, createListenerMiddleware } from '@reduxjs/toolkit';
+import { configureStore, createListenerMiddleware  } from '@reduxjs/toolkit';
 import {
   persistReducer,
   persistStore,
@@ -19,11 +19,14 @@ import wishlistReducer from './wishlist/wishlistSlice';
 import wishlistConfig from './wishlist/wishlistConfig';
 import basketReducer from './basket/basketSlice';
 
+
+import creationBasketReducer from './basket/createBasketSlice'
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
 import publicSlice from './public/publicSlice';
 import notificationReducer from './notifications/notificationSlice';
 import notificationConfig from './notifications/notificationConfig';
+
 
 // Actions
 import { refresh } from './auth/authActions';
@@ -36,7 +39,7 @@ listenerMiddleware.startListening({
     if (!action.payload && action.key === 'persistedAuth') {
       listenerApi.dispatch(refresh());
     } else if (
-      action.payload.token === null &&
+      action.payload?.token === null &&
       action.key === 'persistedAuth'
     ) {
       listenerApi.dispatch(refresh());
@@ -51,6 +54,7 @@ export const store = configureStore({
     auth: persistReducer(authPersistConfig, authReducer),
     user: userReducer,
     wishlist: persistReducer(wishlistConfig, wishlistReducer),
+    creationBasket: creationBasketReducer,
     basket: basketReducer,
     modal: persistReducer(modalConfig, modalSlice.reducer),
     snackbar: snackbarReducer,

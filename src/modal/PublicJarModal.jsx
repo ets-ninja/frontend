@@ -1,11 +1,15 @@
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import getModalData from '../redux/modal/modalSelectors';
 import { Avatar, Box, Button, Typography } from '@mui/material';
 import { jarStepHandler } from '../components/JarCard/utils';
 import SumLinearProgress from '../components/SumLinearProgress';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
+import DonateForm from '../components/forms/Stripe/DonateForm';
+
 export default function PublicJarModal() {
+  const [showDonateMenu, setShowDonateMenu] = useState(null);
   const {
     user,
     createdAt = new Date(Date.now()),
@@ -155,6 +159,7 @@ export default function PublicJarModal() {
                 color: 'white',
               },
             }}
+            onClick={() => setShowDonateMenu(true)}
           >
             Donate
           </Button>
@@ -171,6 +176,15 @@ export default function PublicJarModal() {
               '&:hover': theme => theme.icon.hover,
             }}
           />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {showDonateMenu && <DonateForm />}
         </Box>
       </Box>
     )

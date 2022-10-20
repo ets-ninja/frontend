@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { get, del } from 'idb-keyval';
 
 import {
   addNotificationToken,
   getUserDetails,
 } from '../../../redux/user/userActions';
 import { logout } from '../../../redux/auth/authActions';
+import { notificationChannel } from '../../../utils/notification/notificationChannel';
+import removeSeenNofitication from '../../../utils/notification/removeSeenNotification';
 
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
@@ -29,9 +30,11 @@ import Logout from '@mui/icons-material/Logout';
 import ResponsiveContainer from '../../styled/ResponsiveContainer';
 import Notification from './Notification';
 import {
+  addMultipleNotification,
   addNotification,
   clearNotificationsList,
 } from '../../../redux/notifications/notificationSlice';
+import loadBackgroundMessages from '../../../utils/notification/loadBackgroundMessages';
 
 const pages = [
   {
@@ -49,6 +52,17 @@ const pages = [
   {
     name: 'Public jars',
     link: '/public',
+  },
+];
+
+const loggedOutPages = [
+  {
+    name: 'Login',
+    link: '/login',
+  },
+  {
+    name: 'Sign up',
+    link: '/register',
   },
 ];
 
@@ -71,36 +85,42 @@ const Header = () => {
 
   useEffect(() => {
     if (
-      userInfo.notificationTokens &&
+      userInfo?.notificationTokens &&
       notificationToken &&
-      !userInfo.notificationTokens.includes(notificationToken)
+      !userInfo?.notificationTokens.includes(notificationToken) &&
+      isLoggedIn
     ) {
       dispatch(addNotificationToken());
     }
   }, [dispatch, notificationToken, isLoggedIn, userInfo]);
 
   useEffect(() => {
-    const channel = new BroadcastChannel('sw-messages');
     if (isLoggedIn && notificationToken) {
-      channel.addEventListener('message', event => {
-        //console.log('Received message ', event.data);
+      const firstLoadMessages = async () => {
+        let messages;
+        try {
+          messages = await loadBackgroundMessages();
+        } catch (error) {}
+        if (messages) {
+          dispatch(addMultipleNotification(messages));
+        }
+      };
+      firstLoadMessages();
+    }
+  }, [dispatch, notificationToken, isLoggedIn]);
 
-        dispatch(addNotification(event.data));
+  useEffect(() => {
+    const channel = notificationChannel.getInstance();
+    const handleBackgroudMessage = event => {
+      dispatch(addNotification(event.data));
+      removeSeenNofitication();
+    };
 
-        const removeSeenMessage = async () => {
-          let notificationArr;
-          try {
-            notificationArr = await get('notificationList');
-            if (notificationArr) {
-              del('notificationList');
-            }
-          } catch (error) {}
-        };
-        removeSeenMessage();
-      });
+    if (isLoggedIn && notificationToken) {
+      channel.addEventListener('message', handleBackgroudMessage);
     }
     return () => {
-      channel.removeEventListener('message');
+      channel.removeEventListener('message', handleBackgroudMessage);
     };
   }, [dispatch, isLoggedIn, notificationToken]);
 
@@ -144,47 +164,44 @@ const Header = () => {
           >
             HoneyMoney
           </Typography>
-
-          {isLoggedIn && (
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                {pages.map(page => (
-                  <MenuLink to={page.link} key={page.name}>
-                    <MenuItem onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page.name}</Typography>
-                    </MenuItem>
-                  </MenuLink>
-                ))}
-              </Menu>
-            </Box>
-          )}
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              {(isLoggedIn ? pages : loggedOutPages).map(page => (
+                <MenuLink to={page.link} key={page.name}>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                </MenuLink>
+              ))}
+            </Menu>
+          </Box>
           <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -205,20 +222,18 @@ const Header = () => {
           >
             HoneyMoney
           </Typography>
-          {isLoggedIn && (
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map(page => (
-                <MenuLink to={page.link} key={page.name}>
-                  <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {page.name}
-                  </Button>
-                </MenuLink>
-              ))}
-            </Box>
-          )}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {(isLoggedIn ? pages : loggedOutPages).map(page => (
+              <MenuLink to={page.link} key={page.name}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page.name}
+                </Button>
+              </MenuLink>
+            ))}
+          </Box>
           {isLoggedIn && <Notification />}
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>

@@ -22,9 +22,23 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(payload => {
-  //console.log('Received background message ', payload);
+let channel;
 
+const getChannel = () => {
+  const channel = new BroadcastChannel('sw-messages');
+  return channel;
+};
+
+const notificationChannel = {
+  getInstance: () => {
+    if (channel === undefined || channel === null) {
+      channel = getChannel();
+    }
+    return channel;
+  },
+};
+
+messaging.onBackgroundMessage(payload => {
   payload.messageId = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
     /[018]/g,
     c =>
@@ -48,6 +62,7 @@ messaging.onBackgroundMessage(payload => {
 
   updateDB();
 
-  const channel = new BroadcastChannel('sw-messages');
+  const channel = notificationChannel.getInstance();
+
   channel.postMessage(payload);
 });

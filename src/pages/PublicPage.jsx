@@ -76,7 +76,6 @@ export default function PublicPage() {
         return;
       }
       if (isUserJars) setIsUserJars(false);
-
       dispatch(
         fetchFilteredJars({ filterQuery, page, sortOrder, jarsPerPage }),
       );
