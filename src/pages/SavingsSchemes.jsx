@@ -59,7 +59,7 @@ const SavingsSchemes = () => {
       >
         {Schemes.map((schema)=>(
 
-        <Box
+        <Box key={schema.id}
           sx={{
             display: 'flex',
             gap: { xs:'25px', sm: '60px', md:'60px'},
@@ -88,15 +88,15 @@ const SavingsSchemes = () => {
               {schema.creator}
             </Typography>
             <Box sx={{ display: 'flex', flexDirection:'row', justifyContent: 'space-around', mt: '10px'}}>
-              <Typography sx={{fontSize: '13px', lineHeight: '1'}}>
+              <Box sx={{fontSize: '13px', lineHeight: '1'}}>
                <Typography sx={{color: 'green', fontWeight: '600', fontSize: { xs:'17px', sm: '20px', md:'20px'}, lineHeight: '1' }}>{schema.free}%</Typography> Free 
-              </Typography>
-              <Typography sx={{fontSize: '13px', lineHeight: '1'}}>
+              </Box>
+              <Box sx={{fontSize: '13px', lineHeight: '1'}}>
                 <Typography sx={{color: 'purple', fontWeight: '600', fontSize: { xs:'17px', sm: '20px', md:'20px'}, lineHeight: '1' }}>{schema.saving}%</Typography> Investing
-              </Typography>
-              <Typography sx={{fontSize: '13px', lineHeight: '1'}}>
+              </Box>
+              <Box sx={{fontSize: '13px', lineHeight: '1'}}>
                 <Typography sx={{color: 'blue', fontWeight: '600', fontSize: { xs:'17px', sm: '20px', md:'20px'}, lineHeight: '1' }}>{schema.wishes}%</Typography> Wishes
-              </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>))}
