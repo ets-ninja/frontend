@@ -12,11 +12,15 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#5299D3',
-      dark: '#111D4A',
+      dark: '#388acc',
     },
     secondary: {
       main: '#FBB13C',
       dark: '#ffa617',
+    },
+    danger: {
+      main: '#db3c3c',
+      dark: '#c73535',
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
