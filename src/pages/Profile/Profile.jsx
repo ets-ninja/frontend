@@ -61,7 +61,7 @@ const Profile = memo(() => {
                     height: 250,
                     aspect: 1,
                     canvasBorderRadius: 50,
-                    path: 'updateUserPhoto'
+                    path: 'updateUserPhoto',
                   })
                 }
               >
