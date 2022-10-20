@@ -46,7 +46,6 @@ const App = () => {
   );
 
   const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
-  const [isMessageLoaded, setIsMessageLoaded] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -67,7 +66,7 @@ const App = () => {
       removeSeenNofitication();
     };
 
-    if (isLoggedIn && isFCMSupported && notificationToken && !isMessageLoaded) {
+    if (isLoggedIn && isFCMSupported && notificationToken) {
       const firstLoadMessages = async () => {
         let messages;
 
@@ -81,7 +80,6 @@ const App = () => {
           console.log('Hello');
           dispatch(addMultipleNotification(messages));
         }
-        setIsMessageLoaded(true);
       };
       firstLoadMessages();
 
@@ -91,8 +89,6 @@ const App = () => {
         channel.removeEventListener('message', handleBackgroudMessage);
       };
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     dispatch,
     isFCMSupported,
