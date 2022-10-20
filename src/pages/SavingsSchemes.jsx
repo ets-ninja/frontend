@@ -100,51 +100,6 @@ const SavingsSchemes = () => {
             </Box>
           </Box>
         </Box>))}
-
-        {/* <Box
-          sx={{
-            display: 'flex',
-            gap: { xs:'25px', sm: '60px', md:'60px'},
-            boxShadow: '0px 2px 10px gray',
-            borderRadius: '30px',
-            minWidth: { xs:'310px', sm: '500px', md:'500px'},
-            maxWidth: { xs:'310px', sm: '400px', md:'500px'},
-            cursor: 'pointer',
-            transition: 'all 0.3s ease-in-out',
-            ":hover": { scale:' 1.1 ' }
-          }}
-        >
-          <CardMedia
-            sx={{ maxWidth: { xs:'100px', sm: '150px', md:'150px'}, maxHeight: { xs:'100px', sm: '150px', md:'150px'}, borderRadius: '30px' }}
-            component="img"
-            src="https://kniga.biz.ua/images/author/1556_1118191243.jpg"
-          />
-          <Box>
-            <Typography
-              sx={{
-                fontSize: { xs:'16px', sm: '26px', md:'26px'},
-                fontWeight: '500',
-                mt: '20px'
-              }}
-            >
-              By Robert Kiyosaki
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection:'row', justifyContent: 'space-around', mt: '10px'}}>
-              <Typography sx={{fontSize: '13px', lineHeight: '1'}}>
-               <Typography sx={{color: 'green', fontWeight: '600', fontSize: { xs:'17px', sm: '20px', md:'20px'}, lineHeight: '1' }}>50%</Typography> Free 
-              </Typography>
-              <Typography sx={{fontSize: '13px', lineHeight: '1'}}>
-                <Typography sx={{color: 'purple', fontWeight: '600', fontSize: { xs:'17px', sm: '20px', md:'20px'}, lineHeight: '1' }}>30%</Typography> Saving{' '}
-              </Typography>
-              <Typography sx={{fontSize: '13px', lineHeight: '1'}}>
-                <Typography sx={{color: 'blue', fontWeight: '600', fontSize: { xs:'17px', sm: '20px', md:'20px'}, lineHeight: '1' }}>20%</Typography> Wishes
-              </Typography>
-            </Box>
-          </Box>
-        </Box> */}
-
-
-
       </Box>
     </Box>
   );
