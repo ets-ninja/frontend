@@ -4,7 +4,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBasket, setBasketName, setDescription, setMoneyGoal } from '../../redux/basket/createBasketSlice'
 import NumField from '../NumField';
-
+import jarPicture1 from '../JarCard/images/JarStep1.png'
 
 const CreationForm = () => {
 
@@ -21,13 +21,13 @@ const CreationForm = () => {
     >
       {window.innerWidth > 840 ? (
         <Card
-          sx={{ml: '100px'}}
+          sx={{ml: '100px', boxShadow: 'none'}}
         >
           <CardMedia
             style={{ filter: 'grayscale(100%)' }}
             component="img"
             sx={{ width: 300, height: 420 }}
-            image="https://img.freepik.com/free-photo/wicker-basket-isolated_2829-18051.jpg?w=360"
+            image={jarPicture1}
             alt="Live from space album cover"
           />
         </Card>

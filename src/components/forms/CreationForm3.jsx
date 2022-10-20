@@ -5,8 +5,10 @@ import { useSelector } from 'react-redux';
 import { selectBasket } from '../../redux/basket/createBasketSlice';
 import defaultImage from '../../assets/swinka.png';
 import useModal from '../../hooks/useModal';
+import jarPicture5 from '../JarCard/images/JarStep5.png'
 
-const CreationForm3 = ({ isChecked3, setIsChecked3 }) => {
+const CreationForm3 = ({isChecked3, setIsChecked3}) => {
+
   const basket = useSelector(selectBasket);
 
   const modal = useModal();
@@ -31,11 +33,11 @@ const CreationForm3 = ({ isChecked3, setIsChecked3 }) => {
       }}
     >
       {window.innerWidth > 840 ? (
-        <Card sx={{ ml: '100px' }}>
+        <Card sx={{ ml: '100px', boxShadow: 'none' }}>
           <CardMedia
             component="img"
             sx={{ width: 300, height: 420 }}
-            image="https://img.freepik.com/free-photo/wicker-basket-isolated_2829-18051.jpg?w=360"
+            image={jarPicture5}
             alt="Live from space album cover"
           />
         </Card>

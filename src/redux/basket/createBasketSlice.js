@@ -47,12 +47,15 @@ const basketSlice = createSlice({
   initialState,
   reducers: {
     setBasketName: (state, action) => {
+      if (action.payload.length > 35) return  
       state.basketName = action.payload;
     },
     setDescription: (state, action) => {
+      if (action.payload.length > 1000) return  
       state.description = action.payload;
     },
     setMoneyGoal: (state, action) => {
+      if (action.payload.length > 99) return  
       state.moneyGoal = action.payload;
     },
     setExpirationDate: (state, action) => {
@@ -64,25 +67,6 @@ const basketSlice = createSlice({
     setPhotoTag: (state, action) => {
       state.photoTag = action.payload;
     },
-
-    pushBasketToSomewhere: state => {
-      // const newBasket = {
-      //     basketName: state.basketName,
-      //     description: state.description,
-      //     moneyGoal: state.moneyGoal,
-      //     expirationDate: state.expirationDate,
-      //     isPublic: state.isPublic,
-      //   };
-      // axios.post('http://localhost:5050/api/basket/create_basket', Basket)
-      // createBasket(Basket)
-      // state.basketName = ''
-      // state.description = ''
-      // state.moneyGoal = ''
-      // state.expirationDate = null
-      // state.isPublic = false
-      // state.photoTag = null
-    },
-
     cancelCreation: state => {
       state.basketName = '';
       state.description = '';

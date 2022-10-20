@@ -20,7 +20,7 @@ import { setItemToDelete } from '../redux/wishlist/wishlistSlice';
 import CreationResult from '../components/CreationResult';
 import { setError } from '../redux/snackbar/snackbarSlice';
 
-const steps = ['TextInfo', 'AdditionSettings', 'Finishing!'];
+const steps = ['TextInfo', 'AdditionalSettings', 'Finishing!'];
 
 const CreationPage = () => {
   const [activeStep, setActiveStep] = React.useState(0);
