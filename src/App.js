@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import * as Sentry from '@sentry/react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchToken, onMessageListener } from './firebase';
 
@@ -28,14 +28,32 @@ import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
 import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
+import { fetchModalJar } from './redux/modal/modalActions';
 
 const App = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { isLoggedIn } = useSelector(state => state.auth);
   const { notificationToken } = useSelector(state => state.notification);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!location.pathname.includes('public-jar')) return;
+    if (isLoggedIn) {
+      dispatch(
+        fetchModalJar({
+          jarToFind: location.pathname.substring(
+            location.pathname.lastIndexOf('/') + 1,
+          ),
+        }),
+      );
+      navigate('/public');
+    } else {
+      //navigate to share modal
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn && !notificationToken) {
@@ -63,12 +81,12 @@ const App = () => {
           exect
           element={<ProtectedRoute component={CreationPage} />}
           path="/creation"
-          />
+        />
         <Route
           exect
           element={<ProtectedRoute component={Dashboard} />}
           path="/dashboard"
-          />
+        />
         <Route
           exect
           element={<StripeStatusContainer />}
@@ -76,12 +94,12 @@ const App = () => {
         />
         <Route
           exect
-          element={<MoneyStatusContainer type={'donate'}/>}
+          element={<MoneyStatusContainer type={'donate'} />}
           path="/donate-status"
         />
         <Route
           exect
-          element={<MoneyStatusContainer type={'receive'}/>}
+          element={<MoneyStatusContainer type={'receive'} />}
           path="/receive-status"
         />
         <Route

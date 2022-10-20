@@ -21,6 +21,7 @@ export default function useModal() {
   };
 
   const close = () => {
+    dispatch(modalSlice.actions.closeModal());
     navigate(location.state === null ? '/' : -1);
   };
 

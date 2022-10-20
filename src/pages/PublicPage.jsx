@@ -30,6 +30,11 @@ import {
   CardSkeleton,
   SettingsBar,
 } from '../components/publicPage';
+import {
+  getModalData,
+  getModalIsLoading,
+  getModalIsOpen,
+} from '../redux/modal/modalSelectors';
 
 export default function PublicPage() {
   const modal = useModal();
@@ -45,9 +50,19 @@ export default function PublicPage() {
   const [jarsPerPage, setJarsPerPage] = useState(9);
   const [sortOrder, setSortOrder] = useState('date desc');
   const { pageCount } = useSelector(getPublicPagination);
+  const modalData = useSelector(getModalData);
+  const modalIsLoading = useSelector(getModalIsLoading);
+  const modalIsOpen = useSelector(getModalIsOpen);
   const jars = useSelector(getPublicData);
   const users = useSelector(getPublicUsers);
   const status = useSelector(getPublicStatus);
+
+  useEffect(() => {
+    if (!modalData && modalIsLoading && !modalIsOpen) {
+      modal.open('public-jar/0');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalData]);
 
   useEffect(() => {
     if (!isFilter && !isUserJars) {

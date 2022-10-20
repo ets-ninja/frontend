@@ -15,12 +15,12 @@ export default function JarCard({
 }) {
   const { userPhoto = null, publicName = null } = jar.user;
   const {
-    createdAt = new Date(Date.now()),
     name,
     image = null,
-    expirationDate = null,
     value,
     goal,
+    creationDate = new Date(Date.now()),
+    expirationDate = null,
     description,
     transactions = [],
   } = jar;
@@ -110,7 +110,7 @@ export default function JarCard({
               </Typography>
             </Box>
             <Typography component="p" sx={{ fontWeight: '500' }}>
-              {new Date(createdAt).toLocaleDateString('en-US', {
+              {new Date(creationDate).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
               })}
@@ -244,7 +244,7 @@ export default function JarCard({
                 }}
               />
               <Typography component="p" sx={{ fontSize: '13px', pl: 1 }}>
-                {transformTransactionTime(transactions[0]?.createdAt)}
+                {transformTransactionTime(transactions[0]?.creationDate)}
               </Typography>
             </Box>
             {image && (

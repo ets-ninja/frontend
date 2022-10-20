@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import getModalData from '../redux/modal/modalSelectors';
+import { getModalData } from '../redux/modal/modalSelectors';
 import { Avatar, Box, Button, Typography } from '@mui/material';
 import { jarStepHandler } from '../components/JarCard/utils';
 import SumLinearProgress from '../components/SumLinearProgress';
@@ -10,19 +10,9 @@ import DonateForm from '../components/forms/Stripe/DonateForm';
 
 export default function PublicJarModal() {
   const [showDonateMenu, setShowDonateMenu] = useState(null);
-  const {
-    user,
-    createdAt = new Date(Date.now()),
-    name,
-    image = null,
-    expirationDate = null,
-    value,
-    goal,
-    description,
-  } = useSelector(getModalData);
-
+  const data = useSelector(getModalData);
   return (
-    user && (
+    data?.user && (
       <Box
         sx={{
           overflowY: 'auto',
@@ -49,16 +39,16 @@ export default function PublicJarModal() {
             }}
           >
             <Avatar
-              alt={user.publicName || 'Rick Astley'}
-              src={user?.userPhoto}
+              alt={data.user.publicName || 'Rick Astley'}
+              src={data.user.userPhoto}
               sx={{ width: 64, height: 64 }}
             />
             <Typography variant="h3" component="p" sx={{ ml: 2 }}>
-              {user.publicName || 'Rick Astley'}
+              {data.user.publicName || 'Rick Astley'}
             </Typography>
           </Box>
           <Typography component="p" sx={{ fontWeight: '500' }}>
-            {new Date(createdAt).toLocaleDateString('en-US', {
+            {new Date(data.creationDate).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
             })}
@@ -66,10 +56,10 @@ export default function PublicJarModal() {
         </Box>
         <Box sx={{ pl: 3, pr: 3, mt: 2 }}>
           <Box sx={{ mb: 2 }}>
-            {image ? (
+            {data.image ? (
               <img
-                src={image}
-                alt={name}
+                src={data.image}
+                alt={data.name}
                 style={{ width: '100%', borderRadius: '10px' }}
               />
             ) : (
@@ -81,8 +71,8 @@ export default function PublicJarModal() {
                 }}
               >
                 <img
-                  src={jarStepHandler(value, goal)}
-                  alt={`${name}`}
+                  src={jarStepHandler(data.value, data.goal)}
+                  alt={`${data.name}`}
                   style={{
                     height: '280px',
                     zIndex: '2',
@@ -92,12 +82,12 @@ export default function PublicJarModal() {
             )}
           </Box>
           <Typography variant="h5" component="p">
-            {name}
+            {data.name}
           </Typography>
           <Typography variant="h6" component="p">
-            Goal: {goal}$
+            Goal: {data.goal}$
           </Typography>
-          {expirationDate && (
+          {data.expirationDate && (
             <Box
               sx={{
                 display: 'flex',
@@ -110,7 +100,7 @@ export default function PublicJarModal() {
               <Typography variant="h6" component="p" sx={{ fontWeight: '500' }}>
                 Time Left:
                 {` ${Math.floor(
-                  new Date(new Date(expirationDate) - Date.now()) /
+                  new Date(new Date(data.expirationDate) - Date.now()) /
                     (24 * 60 * 60 * 1000),
                 )} days`}
               </Typography>
@@ -119,7 +109,7 @@ export default function PublicJarModal() {
           <Box sx={{ width: '100%', position: 'relative' }}>
             <SumLinearProgress
               variant="determinate"
-              value={(value * 100) / goal}
+              value={(data.value * 100) / data.goal}
               sx={{
                 height: '45px',
                 mt: 2,
@@ -136,10 +126,10 @@ export default function PublicJarModal() {
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              {value}$
+              {data.value}$
             </Typography>
           </Box>
-          <Typography>{description}</Typography>
+          <Typography>{data.description}</Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Button
