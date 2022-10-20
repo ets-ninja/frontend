@@ -24,11 +24,7 @@ import {
   deleteWishlistItem,
   updateWishlistItem,
 } from '@redux/wishlist/wishlistActions';
-import {
-  setSuccess,
-  setLoading,
-  setItemToDelete,
-} from '@redux/wishlist/wishlistSlice';
+import { setLoading, setItemToDelete } from '@redux/wishlist/wishlistSlice';
 import {
   setBasketName,
   setDescription,
@@ -46,11 +42,9 @@ const WishlistItem = () => {
 
   let { id } = useParams();
 
-  const {
-    success,
-    loading,
-    singleItemInfo: itemInfo,
-  } = useSelector(state => state.wishlist);
+  const { loading, singleItemInfo: itemInfo } = useSelector(
+    state => state.wishlist,
+  );
 
   const dispatch = useDispatch();
 
@@ -63,7 +57,6 @@ const WishlistItem = () => {
 
   useEffect(() => {
     dispatch(setItemToDelete({ id: null, from: '' }));
-    dispatch(setSuccess({ state: false, from: '' }));
   }, []);
 
   useEffect(() => {
@@ -97,19 +90,9 @@ const WishlistItem = () => {
 
   const removeItem = async () => {
     await dispatch(deleteWishlistItem({ id }));
-  };
-
-  const resetStateStatusAndRedirect = () => {
-    dispatch(setSuccess({ state: false, from: '' }));
     dispatch(setLoading(true));
     navigate('/wishlist');
   };
-
-  useEffect(() => {
-    if (success.from === 'delete') {
-      resetStateStatusAndRedirect();
-    }
-  }, [success]);
 
   const handleTransformButton = () => {
     dispatch(setBasketName(itemInfo.name));

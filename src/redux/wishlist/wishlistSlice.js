@@ -16,7 +16,7 @@ const initialState = {
   itemToDelete: { id: null, from: '' },
   newWishliItemPhoto: '',
   error: null,
-  success: { state: false, from: '' },
+  success: false,
   successInfo: '',
 };
 
@@ -73,7 +73,6 @@ const wishlistSlice = createSlice({
     },
     [deleteWishlistItem.fulfilled]: (state, { payload }) => {
       state.loading = true;
-      state.success = { state: true, from: 'delete' };
       state.successInfo = 'Your wish has been deleted';
     },
     [deleteWishlistItem.rejected]: (state, { payload }) => {
@@ -101,7 +100,7 @@ const wishlistSlice = createSlice({
     },
     [createWishlistItem.fulfilled]: (state, { payload }) => {
       state.loading = true;
-      state.success = { state: true, from: 'create' };
+      state.success = true;
       state.successInfo = 'Your wish has been saved';
     },
     [createWishlistItem.rejected]: (state, { payload }) => {

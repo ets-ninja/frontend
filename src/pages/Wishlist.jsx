@@ -75,22 +75,16 @@ const Wishlist = () => {
     );
   };
 
-  const updateItems = async () => {
-    if (sortField) {
-      await sortItems();
-    }
-  };
-
   useEffect(() => {
-    updateItems();
-  }, [dispatch, sortField, sortOrder, page]);
+    sortItems();
+  }, [sortField, sortOrder, page]);
 
   const handleChangePage = page => {
     setPage(page);
   };
 
   const removeItem = async () => {
-    await dispatch(deleteWishlistItem({ id: itemToDelete.id, v: 'wishlist' }));
+    await dispatch(deleteWishlistItem({ id: itemToDelete.id }));
     dispatch(setItemToDelete({ id: null, from: '' }));
     if (wishlistItems.length === 1 && pageCount !== 1) {
       handleChangePage(page - 1);

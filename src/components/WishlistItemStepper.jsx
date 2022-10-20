@@ -59,7 +59,7 @@ const WishlistItemStepper = () => {
 
   useEffect(() => {
     dispatch(setWishitemPhoto(''));
-    dispatch(setSuccess({ state: false, from: '' }));
+    dispatch(setSuccess(false));
   }, []);
 
   const isStepOptional = step => {
@@ -114,13 +114,13 @@ const WishlistItemStepper = () => {
 
   const resetStateStatusesAndRedirect = () => {
     dispatch(setWishitemPhoto(''));
-    dispatch(setSuccess({ state: false, from: '' }));
+    dispatch(setSuccess(false));
     dispatch(setLoading(true));
     navigate('/wishlist');
   };
 
   useEffect(() => {
-    if (success.from === 'create') {
+    if (success) {
       resetStateStatusesAndRedirect();
     }
   }, [success]);
