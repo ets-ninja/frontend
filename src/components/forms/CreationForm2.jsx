@@ -9,7 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import jarPicture4 from '../JarCard/images/JarStep4.png'
 
-const CreationForm2 = ({setIsChecked1, isChecked1}) => {
+const CreationForm2 = ({setIsChecked1, isChecked1, isChecked3, setIsChecked3}) => {
 
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()
@@ -84,6 +84,34 @@ const CreationForm2 = ({setIsChecked1, isChecked1}) => {
             onChange={e => dispatch(setIsPublic(e.target.checked))}
           />
         </Box>
+        <Box
+          className="jwhenl"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start'
+          }}
+        >
+          <Typography>Solo/Team</Typography>
+          <Switch
+            checked={isChecked3}
+            onChange={e => setIsChecked3(e.target.checked)}
+          />
+        </Box>
+        {isChecked3 ? (
+          <Box sx={{ pl: '50px' }}>
+            <TextField
+              sx={{ maxWidth: '100px' }}
+              type="number"
+              label="User Id"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Box>
+        ) : (
+          <> </>
+        )}
       </Stack>
     </Box>
   );
