@@ -5,7 +5,7 @@ const loadBackgroundMessages = async () => {
   try {
     const notificationList = await get('notificationList');
     if (notificationList) {
-      await del('notificationList');
+      del('notificationList');
     }
     return notificationList;
   } catch (error) {

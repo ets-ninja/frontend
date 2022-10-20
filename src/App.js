@@ -46,6 +46,7 @@ const App = () => {
   );
 
   const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
+  const [isMessageLoaded, setIsMessageLoaded] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -66,7 +67,7 @@ const App = () => {
       removeSeenNofitication();
     };
 
-    if (isLoggedIn && isFCMSupported && notificationToken) {
+    if (isLoggedIn && isFCMSupported && notificationToken && !isMessageLoaded) {
       const firstLoadMessages = async () => {
         let messages;
 
@@ -75,18 +76,23 @@ const App = () => {
         } catch (error) {
           Sentry.captureException(error);
         }
+
         if (messages) {
+          console.log('Hello');
           dispatch(addMultipleNotification(messages));
         }
+        setIsMessageLoaded(true);
       };
-
       firstLoadMessages();
+
       channel.addEventListener('message', handleBackgroudMessage);
+
+      return () => {
+        channel.removeEventListener('message', handleBackgroudMessage);
+      };
     }
 
-    return () => {
-      channel.removeEventListener('message', handleBackgroudMessage);
-    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     dispatch,
     isFCMSupported,

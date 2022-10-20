@@ -57,6 +57,7 @@ messaging.onBackgroundMessage(payload => {
   const updateDB = async () => {
     try {
       const notificationList = await idbKeyval.get('notificationList');
+      console.log(notificationList);
       if (notificationList) {
         notificationList.unshift(payload);
         idbKeyval.set('notificationList', notificationList);
