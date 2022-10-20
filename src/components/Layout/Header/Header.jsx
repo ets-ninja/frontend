@@ -2,38 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  addNotificationToken,
-  getUserDetails,
-} from '../../../redux/user/userActions';
-import { logout } from '../../../redux/auth/authActions';
+import { addNotificationToken, getUserDetails } from '@redux/user/userActions';
+import { logout } from '@redux/auth/authActions';
 import { notificationChannel } from '../../../utils/notification/notificationChannel';
 import removeSeenNofitication from '../../../utils/notification/removeSeenNotification';
 
 import { styled } from '@mui/system';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Divider,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+  ListItemIcon,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Divider from '@mui/material/Divider';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import ResponsiveContainer from '../../styled/ResponsiveContainer';
+import ResponsiveContainer from '@components/styled/ResponsiveContainer';
 import Notification from './Notification';
 import {
   addMultipleNotification,
   addNotification,
   clearNotificationsList,
-} from '../../../redux/notifications/notificationSlice';
+} from '@redux/notifications/notificationSlice';
 import loadBackgroundMessages from '../../../utils/notification/loadBackgroundMessages';
 
 const pages = [
@@ -52,6 +51,17 @@ const pages = [
   {
     name: 'Public jars',
     link: '/public',
+  },
+];
+
+const loggedOutPages = [
+  {
+    name: 'Login',
+    link: '/login',
+  },
+  {
+    name: 'Sign up',
+    link: '/register',
   },
 ];
 
@@ -139,8 +149,8 @@ const Header = () => {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/dashboard"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -153,54 +163,50 @@ const Header = () => {
           >
             HoneyMoney
           </Typography>
-
-          {isLoggedIn && (
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-                sx={{ ml: -2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                {pages.map(page => (
-                  <MenuLink to={page.link} key={page.name}>
-                    <MenuItem onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page.name}</Typography>
-                    </MenuItem>
-                  </MenuLink>
-                ))}
-              </Menu>
-            </Box>
-          )}
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              {(isLoggedIn ? pages : loggedOutPages).map(page => (
+                <MenuLink to={page.link} key={page.name}>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                </MenuLink>
+              ))}
+            </Menu>
+          </Box>
           <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href=""
+            component={Link}
+            to="/dashboard"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -215,20 +221,18 @@ const Header = () => {
           >
             HoneyMoney
           </Typography>
-          {isLoggedIn && (
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map(page => (
-                <MenuLink to={page.link} key={page.name}>
-                  <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {page.name}
-                  </Button>
-                </MenuLink>
-              ))}
-            </Box>
-          )}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {(isLoggedIn ? pages : loggedOutPages).map(page => (
+              <MenuLink to={page.link} key={page.name}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page.name}
+                </Button>
+              </MenuLink>
+            ))}
+          </Box>
           {isLoggedIn && <Notification />}
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
