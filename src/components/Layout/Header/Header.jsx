@@ -118,6 +118,7 @@ const Header = () => {
     } else {
       if (isFCMSupported !== null && !isFCMSupported && socket) {
         socket.emit('leave');
+        setIsInRoom(false);
       }
       dispatch(clearNotificationsList());
     }

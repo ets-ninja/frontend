@@ -75,17 +75,32 @@ const Notifications = () => {
         >
           {notificationList.length > 0 ? (
             <>
-              <ListItem>
+              <ListItem
+                sx={{
+                  width: '100%',
+                }}
+              >
                 <ListItemButton
                   onClick={() => {
                     dispatch(clearNotificationsList());
+                  }}
+                  sx={{
+                    dipsplay: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   Remove all notifications
                 </ListItemButton>
               </ListItem>
               {notificationList.map(notification => (
-                <ListItem key={notification.messageId} disablePadding>
+                <ListItem
+                  key={notification.messageId}
+                  disablePadding
+                  sx={{
+                    width: '100%',
+                  }}
+                >
                   <ListItemButton
                     onClick={() => {
                       handleClickOnNotification(notification);
