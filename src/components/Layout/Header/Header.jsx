@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
+import * as Sentry from '@sentry/react';
 
-import {
-  addNotificationToken,
-  getUserDetails,
-} from '../../../redux/user/userActions';
-import { logout } from '../../../redux/auth/authActions';
+import { addNotificationToken, getUserDetails } from '@redux/user/userActions';
+import { logout } from '@redux/auth/authActions';
 import {
   addNotification,
   clearNotificationsList,
-} from '../../../redux/notifications/notificationSlice';
+} from '@redux/notifications/notificationSlice';
 
 import ResponsiveContainer from '../../styled/ResponsiveContainer';
-import Notification from './Notification';
+import Notifications from './Notifications';
 
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
@@ -33,6 +31,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import showNotification from '@utils/notification/notificationApi';
 
 const pages = [
   {
@@ -72,6 +71,7 @@ const Header = () => {
   const [isTokenSet, setIsTokenSet] = useState(false);
   const [isInRoom, setIsInRoom] = useState(false);
   const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
+  const [permission, setPermission] = useState(false);
 
   const { userInfo } = useSelector(state => state.user);
   const { isLoggedIn } = useSelector(state => state.auth);
@@ -80,16 +80,26 @@ const Header = () => {
   );
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isFCMSupported !== null && !isFCMSupported) {
       setSocket(io(process.env.REACT_APP_API_URL));
+      const reqPerm = async () => {
+        let permission = await Notification.requestPermission();
+        setPermission(permission);
+      };
+      reqPerm();
     }
   }, [isFCMSupported]);
 
   useEffect(() => {
     if (socket && !isMessageListenerOn) {
       socket.on('message', data => {
+        if (document.hidden && permission) {
+          showNotification(data, navigate);
+        }
+
         dispatch(addNotification(data));
       });
       setIsMessageListenerOn(true);
@@ -111,8 +121,7 @@ const Header = () => {
       }
       dispatch(clearNotificationsList());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, isLoggedIn]);
+  }, [dispatch, isFCMSupported, isLoggedIn, socket]);
 
   useEffect(() => {
     if (isFCMSupported !== null && !isFCMSupported && socket) {
@@ -135,7 +144,9 @@ const Header = () => {
       try {
         dispatch(addNotificationToken());
         setIsTokenSet(true);
-      } catch (err) {}
+      } catch (err) {
+        Sentry.captureException(err);
+      }
     }
   }, [
     dispatch,
@@ -256,7 +267,7 @@ const Header = () => {
               </MenuLink>
             ))}
           </Box>
-          {isLoggedIn && <Notification />}
+          {isLoggedIn && <Notifications />}
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">

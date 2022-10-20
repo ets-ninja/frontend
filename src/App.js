@@ -7,10 +7,10 @@ import { fetchToken, onMessageListener } from './firebase';
 import {
   addMultipleNotification,
   addNotification,
-} from './redux/notifications/notificationSlice';
-import removeSeenNofitication from './utils/notification/removeSeenNotification';
-import loadBackgroundMessages from './utils/notification/loadBackgroundMessages';
-import notificationChannel from './utils/notification/notificationChannel';
+} from '@redux/notifications/notificationSlice';
+import removeSeenNofitication from '@utils/notification/removeSeenNotification';
+import loadBackgroundMessages from '@utils/notification/loadBackgroundMessages';
+import notificationChannel from '@utils/notification/notificationChannel';
 
 import './App.scss';
 
@@ -69,9 +69,12 @@ const App = () => {
     if (isLoggedIn && isFCMSupported && notificationToken) {
       const firstLoadMessages = async () => {
         let messages;
+
         try {
           messages = await loadBackgroundMessages();
-        } catch (error) {}
+        } catch (error) {
+          Sentry.captureException(error);
+        }
         if (messages) {
           dispatch(addMultipleNotification(messages));
         }
@@ -111,7 +114,7 @@ const App = () => {
           exect
           element={<ProtectedRoute component={Dashboard} />}
           path="/dashboard"
-          />
+        />
         <Route
           exect
           element={<StripeStatusContainer />}
@@ -119,12 +122,12 @@ const App = () => {
         />
         <Route
           exect
-          element={<MoneyStatusContainer type={'donate'}/>}
+          element={<MoneyStatusContainer type={'donate'} />}
           path="/donate-status"
         />
         <Route
           exect
-          element={<MoneyStatusContainer type={'receive'}/>}
+          element={<MoneyStatusContainer type={'receive'} />}
           path="/receive-status"
         />
         <Route

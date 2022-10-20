@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
   clearNotificationsList,
   removeNotification,
-} from '../../../redux/notifications/notificationSlice';
+} from '@redux/notifications/notificationSlice';
 
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
@@ -20,10 +21,12 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 
-const Notification = () => {
+const Notifications = () => {
   const { notificationList } = useSelector(state => state.notification);
 
   const [anchorElNotif, setAnchorElNotif] = useState(null);
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -32,12 +35,12 @@ const Notification = () => {
   const handleOpenNotifMenu = e => {
     setAnchorElNotif(e.currentTarget);
   };
-
   const handleCloseNotifMenu = () => {
     setAnchorElNotif(null);
   };
 
   const handleClickOnNotification = notification => {
+    navigate(notification.data.clickAction);
     dispatch(removeNotification(notification));
   };
 
@@ -134,4 +137,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default Notifications;

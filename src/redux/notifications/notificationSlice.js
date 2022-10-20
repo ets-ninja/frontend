@@ -18,7 +18,6 @@ const notificationSlice = createSlice({
       state.notificationToken = payload;
     },
     addNotification: (state, { payload }) => {
-      console.log(payload);
       state.notificationList.unshift(payload);
       state.newNotification = payload;
     },
