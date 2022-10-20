@@ -2,38 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  addNotificationToken,
-  getUserDetails,
-} from '../../../redux/user/userActions';
-import { logout } from '../../../redux/auth/authActions';
+import { addNotificationToken, getUserDetails } from '@redux/user/userActions';
+import { logout } from '@redux/auth/authActions';
 import { notificationChannel } from '../../../utils/notification/notificationChannel';
 import removeSeenNofitication from '../../../utils/notification/removeSeenNotification';
 
 import { styled } from '@mui/system';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Divider,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+  ListItemIcon,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Divider from '@mui/material/Divider';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import ResponsiveContainer from '../../styled/ResponsiveContainer';
+import ResponsiveContainer from '@components/styled/ResponsiveContainer';
 import Notification from './Notification';
 import {
   addMultipleNotification,
   addNotification,
   clearNotificationsList,
-} from '../../../redux/notifications/notificationSlice';
+} from '@redux/notifications/notificationSlice';
 import loadBackgroundMessages from '../../../utils/notification/loadBackgroundMessages';
 
 const pages = [
@@ -150,8 +149,8 @@ const Header = () => {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/dashboard"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -206,8 +205,8 @@ const Header = () => {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href=""
+            component={Link}
+            to="/dashboard"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
