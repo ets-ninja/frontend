@@ -43,14 +43,20 @@ const UpdatePhotoModal = () => {
   const modal = useModal();
 
   function onSelectFile(e) {
-    if (e.target.files && e.target.files.length > 0) {
-      setCrop(undefined);
-      const reader = new FileReader();
-      reader.addEventListener('load', () =>
-        setImgSrc(reader.result.toString() || ''),
-      );
-      reader.readAsDataURL(e.target.files[0]);
-    }
+    const file = e.target.files[0];
+
+    Compress.imageFileResizer(
+      file,
+      400,
+      400,
+      'JPEG',
+      100,
+      0,
+      uri => {
+        setImgSrc(uri || '');
+      },
+      'base64',
+    );
   }
 
   function onImageLoad(e) {
@@ -84,18 +90,20 @@ const UpdatePhotoModal = () => {
   const saveUserPhoto = () => {
     switch (data.path) {
       case 'updateUserPhoto':
-        dispatch(updateUserPhoto({
-          userPhoto: `${previewCanvasRef.current.toDataURL()}`,
-        }),)
+        dispatch(
+          updateUserPhoto({
+            userPhoto: `${previewCanvasRef.current.toDataURL()}`,
+          }),
+        );
         break;
       case 'changeBasketTag':
-        dispatch(setPhotoTag(`${previewCanvasRef.current.toDataURL()}`))
+        dispatch(setPhotoTag(`${previewCanvasRef.current.toDataURL()}`));
         break;
 
       default:
         break;
     }
-      modal.close();
+    modal.close();
   };
 
   return (
@@ -122,7 +130,7 @@ const UpdatePhotoModal = () => {
               aspect={aspect}
             >
               <img
-                alt=''
+                alt=""
                 ref={imgRef}
                 src={imgSrc}
                 style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
