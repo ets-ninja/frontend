@@ -21,6 +21,8 @@ import Register from './pages/Register/Register';
 import LostPassword from './pages/LostPassword';
 import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
+import CreateWishlistItem from './pages/CreateWishlistItem';
+import WishlistItem from './pages/WishlistItem';
 import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
 import CreationPage from './pages/CreationPage';
@@ -33,6 +35,7 @@ import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import MoneyStatusContainer from './pages/MoneyStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+import DeleteWishlistItemModal from './modal/DeleteWishlistItemModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
 import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
@@ -149,6 +152,12 @@ const App = () => {
         />
         <Route
           exect
+          element={<ProtectedRoute component={CreateWishlistItem} />}
+          path="/wishlist-create-item"
+        />
+        <Route exect element={<WishlistItem />} path="/wishlist/:id" />
+        <Route
+          exect
           element={<ProtectedRoute component={SavingsSchemes} />}
           path="/savingsschemes"
         />
@@ -169,6 +178,10 @@ const App = () => {
             <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
             <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
             <Route path="/modal/intro-page" element={<IntroSwiper />} />
+            <Route
+              path="/modal/confirm-delete-wishlist-item"
+              element={<DeleteWishlistItemModal />}
+            />
           </Route>
         </Routes>
       )}
