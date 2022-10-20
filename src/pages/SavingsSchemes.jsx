@@ -19,7 +19,7 @@ const SavingsSchemes = () => {
     wishes: 0,
   },{
     id: 3,
-    image: 'https://www.meme-arsenal.com/memes/eeaf6a6108f459abcc1945220cdf2e3c.jpg',
+    image: 'https://kniga.biz.ua/images/author/1556_1118191243.jpg',
     creator: 'By El Bisnesmanelo',
     free: 30,
     saving: 70,
