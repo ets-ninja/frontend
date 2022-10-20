@@ -6,10 +6,10 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 
 import { Box } from '@mui/system';
 import { useState } from 'react';
-import { Tooltip, Typography } from '@mui/material';
+import { Collapse, Tooltip, Typography } from '@mui/material';
 import { useEffect } from 'react';
 
-export default function SettingsBar({ setSortOrder }) {
+export default function SettingsBar({ setSortOrder, setPage }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSortAsc, setisSortAsc] = useState(false);
   const [sortBy, setSortBy] = useState({
@@ -20,8 +20,9 @@ export default function SettingsBar({ setSortOrder }) {
   });
 
   useEffect(() => {
+    setPage(1);
     setSortOrder(sortBy.type + (isSortAsc ? ' asc' : ' desc'));
-  }, [isSortAsc, setSortOrder, sortBy.type]);
+  }, [isSortAsc, setPage, setSortOrder, sortBy.type]);
 
   const handleToggleOpen = () => {
     setIsOpen(!isOpen);
@@ -61,7 +62,7 @@ export default function SettingsBar({ setSortOrder }) {
   };
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      {isOpen && (
+      <Collapse orientation="horizontal" in={isOpen}>
         <Box
           sx={{
             position: 'relative',
@@ -138,7 +139,7 @@ export default function SettingsBar({ setSortOrder }) {
             />
           </Tooltip>
         </Box>
-      )}
+      </Collapse>
       <SettingsIcon
         onClick={handleToggleOpen}
         sx={{

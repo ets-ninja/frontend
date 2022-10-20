@@ -15,8 +15,8 @@ import {
 } from '../redux/public/publicActions';
 
 import { Box } from '@mui/system';
-import { Pagination } from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Collapse, Pagination } from '@mui/material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import useModal from '../hooks/useModal';
 import { useDebounceEffect } from '../hooks/useDebounceEffect';
@@ -50,8 +50,12 @@ export default function PublicPage() {
   const status = useSelector(getPublicStatus);
 
   useEffect(() => {
-    if (!isFilter && !isUserJars)
+    if (!isFilter && !isUserJars) {
       dispatch(fetchPublicJars({ page, sortOrder, jarsPerPage }));
+    }
+  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, sortOrder]);
+
+  useEffect(() => {
     if (!isFilter && isUserJars) {
       dispatch(
         fetchUserJars({
@@ -72,11 +76,12 @@ export default function PublicPage() {
         return;
       }
       if (isUserJars) setIsUserJars(false);
+
       dispatch(
         fetchFilteredJars({ filterQuery, page, sortOrder, jarsPerPage }),
       );
     },
-    250,
+    500,
     [filterQuery, page, jarsPerPage],
   );
 
@@ -84,17 +89,15 @@ export default function PublicPage() {
     if (users?.length === 1 && users[0]?._id === user._id) {
       return;
     }
-    const userToFind = user._id;
     setIsUserJars(true);
     reset({ filterQuery: null });
     dispatch(publicSlice.actions.setUsers(user));
-    dispatch(fetchUserJars({ userToFind, page, sortOrder, jarsPerPage }));
   };
 
   const handleBackClick = () => {
     setIsUserJars(false);
-    reset({ filterQuery: null });
     setIsFilter(false);
+    reset({ filterQuery: null });
   };
 
   function handleOpenModal(e, data) {
@@ -103,16 +106,23 @@ export default function PublicPage() {
       e.target.parentElement.getAttribute('data-clickable')
     )
       return;
-    modal.open('public-jar/10', data);
+
+    modal.open('public-jar/' + data._id, data);
   }
 
   return (
     <ResponsiveContainer>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        {(isFilter || isUserJars) && (
-          <ArrowBackIosIcon
+        <Collapse orientation="horizontal" in={isFilter || isUserJars}>
+          <ArrowBackIosNewIcon
             onClick={handleBackClick}
             sx={{
+              display: 'flex',
+              alignItems: 'center',
+              mr: 1,
+              p: '4px',
+              background: '#ebebeb',
+              borderRadius: '10%',
               height: '40px',
               width: '40px',
               fill: 'rgba(0,0,0,0.67)',
@@ -121,14 +131,19 @@ export default function PublicPage() {
               '&:hover': theme => theme.icon.hover,
             }}
           />
-        )}
+        </Collapse>
+
         <FilterForm register={register} />
-        <SettingsBar setSortOrder={setSortOrder} />
+        <SettingsBar setSortOrder={setSortOrder} setPage={setPage} />
       </Box>
       {users && (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 1 }}>
           {users.map(el => (
-            <UserCard user={el} handleUserClick={handleUserClick} />
+            <UserCard
+              key={el._id}
+              user={el}
+              handleUserClick={handleUserClick}
+            />
           ))}
         </Box>
       )}
@@ -141,10 +156,11 @@ export default function PublicPage() {
             mb: { smd: '-15px', md: '-20px', xl: '-30px' },
           }}
         >
-          {jars.map(jar => (
+          {jars.map((jar, idx) => (
             <JarCard
               key={jar._id}
-              bank={jar}
+              idx={idx}
+              jar={jar}
               handleOpenModal={handleOpenModal}
               handleUserClick={handleUserClick}
             />

@@ -34,6 +34,9 @@ export default function ModalWindow() {
             right: '10px',
             zIndex: '10',
             pointerEvents: 'all',
+            '&:hover': {
+              cursor: 'pointer',
+            },
           }}
         />
         <Outlet />
