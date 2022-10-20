@@ -11,26 +11,19 @@ const initialState = {
   loading: false,
   items: [],
   singleItemInfo: {},
-  sortingOptions: { field: 'createdAt', order: '-1' },
   pageCount: 0,
   totalItemsQuantity: null,
-  activePage: 0,
   itemToDelete: { id: null, from: '' },
   newWishliItemPhoto: '',
   error: null,
-  success: false,
+  success: { state: false, from: '' },
+  successInfo: '',
 };
 
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState,
   reducers: {
-    setSortingOptions: (state, { payload }) => {
-      state.sortingOptions = payload;
-    },
-    setWishlistPage: (state, { payload }) => {
-      state.activePage = payload;
-    },
     setItemToDelete: (state, { payload }) => {
       state.itemToDelete = payload;
     },
@@ -80,7 +73,8 @@ const wishlistSlice = createSlice({
     },
     [deleteWishlistItem.fulfilled]: (state, { payload }) => {
       state.loading = true;
-      state.success = true;
+      state.success = { state: true, from: 'delete' };
+      state.successInfo = 'Your wish has been deleted';
     },
     [deleteWishlistItem.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -93,6 +87,7 @@ const wishlistSlice = createSlice({
     },
     [updateWishlistItem.fulfilled]: (state, { payload }) => {
       state.loading = false;
+      state.successInfo = 'Your wish has been updated';
       state.singleItemInfo = payload.updatedItem;
     },
     [updateWishlistItem.rejected]: (state, { payload }) => {
@@ -106,7 +101,8 @@ const wishlistSlice = createSlice({
     },
     [createWishlistItem.fulfilled]: (state, { payload }) => {
       state.loading = true;
-      state.success = true;
+      state.success = { state: true, from: 'create' };
+      state.successInfo = 'Your wish has been saved';
     },
     [createWishlistItem.rejected]: (state, { payload }) => {
       state.loading = false;
