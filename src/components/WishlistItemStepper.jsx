@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Box,
   Stack,
@@ -18,7 +19,8 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import LoadingSpinner from '@components/UIElements/LoadingSpinner';
-import { Controller, useForm } from 'react-hook-form';
+import noImage from '@assets/noImage.png';
+
 import useModal from '@hooks/useModal';
 
 import { createWishlistItem } from '@redux/wishlist/wishlistActions';
@@ -27,6 +29,7 @@ import {
   setSuccess,
   setLoading,
 } from '@redux/wishlist/wishlistSlice';
+import { setError } from '@redux/snackbar/snackbarSlice';
 
 const steps = ['Name and Goal', 'Image', 'Check and create'];
 
@@ -56,7 +59,7 @@ const WishlistItemStepper = () => {
 
   useEffect(() => {
     dispatch(setWishitemPhoto(''));
-    dispatch(setSuccess(false));
+    dispatch(setSuccess({ state: false, from: '' }));
   }, []);
 
   const isStepOptional = step => {
@@ -84,9 +87,7 @@ const WishlistItemStepper = () => {
 
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
+      dispatch(setError("You can't skip a step that isn't optional."));
     }
 
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -113,13 +114,13 @@ const WishlistItemStepper = () => {
 
   const resetStateStatusesAndRedirect = () => {
     dispatch(setWishitemPhoto(''));
-    dispatch(setSuccess(false));
+    dispatch(setSuccess({ state: false, from: '' }));
     dispatch(setLoading(true));
     navigate('/wishlist');
   };
 
   useEffect(() => {
-    if (success) {
+    if (success.from === 'create') {
       resetStateStatusesAndRedirect();
     }
   }, [success]);
@@ -301,10 +302,7 @@ const WishlistItemStepper = () => {
                       height: { sm: 280, md: 205, lg: 275, xl: 340 },
                       width: { sm: '100%' },
                     }}
-                    image={
-                      image ||
-                      'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
-                    }
+                    image={image || noImage}
                     alt="Your photo"
                   />
                   <Button
@@ -362,10 +360,7 @@ const WishlistItemStepper = () => {
                         height: { sm: 280, md: 205, lg: 275, xl: 340 },
                         width: { xs: '100%', md: '50%' },
                       }}
-                      image={
-                        image ||
-                        'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
-                      }
+                      image={image || noImage}
                       alt="Your photo"
                     />
                     <Box>

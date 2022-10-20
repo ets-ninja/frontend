@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+import { Link } from 'react-router-dom';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  Divider,
+} from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CheckIcon from '@mui/icons-material/Check';
 import ResponsiveContainer from '@components/styled/ResponsiveContainer';
@@ -20,12 +22,7 @@ import {
   getSortedWishlistItems,
   deleteWishlistItem,
 } from '@redux/wishlist/wishlistActions';
-import {
-  setSortingOptions,
-  setWishlistPage,
-  setItemToDelete,
-  setLoading,
-} from '@redux/wishlist/wishlistSlice';
+import { setItemToDelete, setLoading } from '@redux/wishlist/wishlistSlice';
 
 const sortFields = [
   { name: 'Date created', dbName: 'createdAt' },
@@ -38,20 +35,16 @@ const sortOrderValues = [
 
 const Wishlist = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [sortField, setSortField] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
+  const [sortField, setSortField] = useState('createdAt');
+  const [sortOrder, setSortOrder] = useState('-1');
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
-
-  const navigate = useNavigate();
 
   const {
     loading,
     items: wishlistItems,
     totalItemsQuantity,
-    sortingOptions,
     pageCount: pages,
-    activePage,
     itemToDelete,
   } = useSelector(state => state.wishlist);
 
@@ -63,11 +56,8 @@ const Wishlist = () => {
   }, []);
 
   useEffect(() => {
-    setSortField(sortingOptions.field);
-    setSortOrder(sortingOptions.order);
-    setPage(activePage);
     setPageCount(pages);
-  }, [dispatch, activePage, pages]);
+  }, [pages]);
 
   const handleOpenSortMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -87,12 +77,6 @@ const Wishlist = () => {
 
   const updateItems = async () => {
     if (sortField) {
-      dispatch(
-        setSortingOptions({
-          field: sortField,
-          order: sortOrder,
-        }),
-      );
       await sortItems();
     }
   };
@@ -103,11 +87,11 @@ const Wishlist = () => {
 
   const handleChangePage = page => {
     setPage(page);
-    dispatch(setWishlistPage(page));
   };
 
   const removeItem = async () => {
     await dispatch(deleteWishlistItem({ id: itemToDelete.id, v: 'wishlist' }));
+    dispatch(setItemToDelete({ id: null, from: '' }));
     if (wishlistItems.length === 1 && pageCount !== 1) {
       handleChangePage(page - 1);
       setPageCount(pageCount - 1);
@@ -118,7 +102,6 @@ const Wishlist = () => {
   useEffect(() => {
     if (itemToDelete.from === 'modal') {
       removeItem();
-      dispatch(setItemToDelete({ id: null, from: '' }));
     }
   }, [itemToDelete]);
 
@@ -229,10 +212,11 @@ const Wishlist = () => {
                 <Button
                   variant="contained"
                   color="secondary"
+                  component={Link}
+                  to="/wishlist-create-item"
                   sx={{
                     color: theme => theme.colors.dark,
                   }}
-                  onClick={() => navigate('/wishlist-create-item')}
                 >
                   Create new
                 </Button>

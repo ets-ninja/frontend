@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ResponsiveContainer from '@components/styled/ResponsiveContainer';
 import LoadingSpinner from '@components/UIElements/LoadingSpinner';
+import noImage from '@assets/noImage.png';
 import {
   Box,
   Button,
@@ -62,7 +63,7 @@ const WishlistItem = () => {
 
   useEffect(() => {
     dispatch(setItemToDelete({ id: null, from: '' }));
-    dispatch(setSuccess(false));
+    dispatch(setSuccess({ state: false, from: '' }));
   }, []);
 
   useEffect(() => {
@@ -85,6 +86,10 @@ const WishlistItem = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const handleDeletePhoto = async () => {
+    await dispatch(updateWishlistItem({ id, data: { image: '' } }));
+  };
+
   const submitForm = async data => {
     setEditMode(false);
     await dispatch(updateWishlistItem({ id, data }));
@@ -95,13 +100,13 @@ const WishlistItem = () => {
   };
 
   const resetStateStatusAndRedirect = () => {
-    dispatch(setSuccess(false));
+    dispatch(setSuccess({ state: false, from: '' }));
     dispatch(setLoading(true));
     navigate('/wishlist');
   };
 
   useEffect(() => {
-    if (success) {
+    if (success.from === 'delete') {
       resetStateStatusAndRedirect();
     }
   }, [success]);
@@ -165,10 +170,7 @@ const WishlistItem = () => {
                       height: { sm: 280, md: 205, lg: 275, xl: 340 },
                       width: { sm: '100%' },
                     }}
-                    image={
-                      itemInfo.image ||
-                      'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
-                    }
+                    image={itemInfo.image || noImage}
                     alt={`${itemInfo.name} photo`}
                   />
                   <Button
@@ -194,6 +196,22 @@ const WishlistItem = () => {
                     }
                   >
                     Change photo
+                  </Button>
+                  <Button
+                    variant="text"
+                    color="danger"
+                    sx={{
+                      color: theme => theme.colors.dark,
+                      boxShadow:
+                        '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);',
+                      '&:hover': {
+                        boxShadow:
+                          '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);',
+                      },
+                    }}
+                    onClick={handleDeletePhoto}
+                  >
+                    Delete photo
                   </Button>
                 </Box>
                 <Box
@@ -380,10 +398,7 @@ const WishlistItem = () => {
                     width: { xs: 310, sm: '100%', md: '45%' },
                     maxWidth: { xs: 500, md: 'initial' },
                   }}
-                  image={
-                    itemInfo.image ||
-                    'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
-                  }
+                  image={itemInfo.image || noImage}
                   alt={`${itemInfo.name} photo`}
                 />
                 <Box

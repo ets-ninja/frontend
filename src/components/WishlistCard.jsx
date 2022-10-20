@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import { Typography, Box } from '@mui/material';
+import { Button, Card, CardMedia, Typography, Box } from '@mui/material';
+import noImage from '@assets/noImage.png';
 
 import useModal from '@hooks/useModal';
 
@@ -66,10 +64,7 @@ const WishlistCard = ({
           sx={{
             height: 133,
           }}
-          image={
-            image ||
-            'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png'
-          }
+          image={image || noImage}
           alt={`${name} photo`}
         />
         <Typography

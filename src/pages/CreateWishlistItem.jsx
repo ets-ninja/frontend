@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import ResponsiveContainer from '../components/styled/ResponsiveContainer';
-import WishlistItemStepper from '../components/WishlistItemStepper';
+import ResponsiveContainer from '@components/styled/ResponsiveContainer';
+import WishlistItemStepper from '@components/WishlistItemStepper';
 
 const CreateWishlistItem = () => {
   return (
