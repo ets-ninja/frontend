@@ -4,11 +4,12 @@ import { useDebounceEffect } from '../../hooks/useDebounceEffect';
 import { canvasPreview } from './canvasPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
+import { updateWishlistItem } from '../../redux/wishlist/wishlistActions';
+import { setWishitemPhoto } from '../../redux/wishlist/wishlistSlice';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
 import { setPhotoTag } from '../../redux/basket/createBasketSlice';
-import imageCompression from 'browser-image-compression';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -43,17 +44,15 @@ const UpdatePhotoModal = () => {
   const dispatch = useDispatch();
   const modal = useModal();
 
-  async function onSelectFile(e) {
-    const option = {
-      maxSizeMB: 0.1,
-      maxWidthOrHeight: 400,
-      useWebWorker: true,
-    };
-    const file = e.target.files[0];
-    const compressFile = await imageCompression(file, option);
-    imageCompression
-      .getDataUrlFromFile(compressFile)
-      .then(res => setImgSrc(res));
+  function onSelectFile(e) {
+    if (e.target.files && e.target.files.length > 0) {
+      setCrop(undefined);
+      const reader = new FileReader();
+      reader.addEventListener('load', () =>
+        setImgSrc(reader.result.toString() || ''),
+      );
+      reader.readAsDataURL(e.target.files[0]);
+    }
   }
 
   function onImageLoad(e) {
@@ -96,7 +95,17 @@ const UpdatePhotoModal = () => {
       case 'changeBasketTag':
         dispatch(setPhotoTag(`${previewCanvasRef.current.toDataURL()}`));
         break;
-
+      case 'updateWishItemPhoto':
+        dispatch(
+          updateWishlistItem({
+            id: data.wishItemId,
+            data: { image: `${previewCanvasRef.current.toDataURL()}` },
+          }),
+        );
+        break;
+      case 'setWishitemPhoto':
+        dispatch(setWishitemPhoto(`${previewCanvasRef.current.toDataURL()}`));
+        break;
       default:
         break;
     }
