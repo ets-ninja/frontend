@@ -12,11 +12,15 @@ const ConnectedAccountIndex = () => {
   const { loading, sendRequest } = request();
 
   async function getLink() {
-    const accountLink = await sendRequest(
-      'api/payment/create_conn_account',
-      'POST',
-    );
-    setAccountLink(accountLink);
+    try{
+        const accountLink = await sendRequest(
+          'api/payment/create_conn_account',
+          'POST',
+        );
+        setAccountLink(accountLink);
+    }catch(err){
+        return;
+    }
   }
 
   if (loading) {

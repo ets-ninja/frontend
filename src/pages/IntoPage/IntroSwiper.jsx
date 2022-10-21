@@ -1,31 +1,38 @@
-import React, { useRef } from 'react'
-import { Swiper, SwiperSlide } from "swiper/react";
-import kartinka1 from '../../assets/tempImages/swiperPic1.png'
-import kartinka2 from '../../assets/tempImages/swiperPic2.png'
-import kartinka3 from '../../assets/tempImages/swiperPic3.png'
-import kartinka5 from '../../assets/tempImages/swiperPic5.png'
+import React, { useRef } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import kartinka1 from '../../assets/tempImages/swiperPic1.png';
+import kartinka2 from '../../assets/tempImages/swiperPic2.png';
+import kartinka3 from '../../assets/tempImages/swiperPic3.png';
+import kartinka5 from '../../assets/tempImages/swiperPic5.png';
+import useModal from '../../hooks/useModal';
+import { useNavigate } from 'react-router-dom';
+import { Pagination } from 'swiper';
+import { Box, Button, Card, Typography } from '@mui/material';
 
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-
-// import required modules
-import { Pagination } from "swiper";
-import { Box, Button, Card, Typography } from '@mui/material';
-import useModal from '../../hooks/useModal';
-
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const IntroSwiper = () => {
 
-    const modal = useModal()
+  const navigate = useNavigate('')
+  const modal = useModal();
 
-    const swiperRef = useRef();
+  const swiperRef = useRef();
 
-    const onSignUpClick = () => {
-        modal.close('intro-page')
-    }
+  const onSignUpClick = () => {
+    modal.close('intro-page');
+    navigate('/login')
+  };
 
-    return (
+  return (
+    <Box
+      sx={{
+        maxWidth: { sm: '500px', md: '500px' },
+        minWidth: { sm: '500px', md: '' },
+        maxHeight: { sm: '90vh' },
+      }}
+    >
       <Swiper
         spaceBetween={100}
         onSwiper={swiper => {
@@ -382,7 +389,8 @@ const IntroSwiper = () => {
           </Card>
         </SwiperSlide>
       </Swiper>
-    );
-}
+    </Box>
+  );
+};
 
-export default IntroSwiper
+export default IntroSwiper;

@@ -5,7 +5,7 @@ export default function CardSkeleton({ quantity }) {
   return (
     <Box
       sx={{
-        display: { md: 'flex' },
+        display: { smd: 'flex' },
         flexWrap: 'wrap',
       }}
     >
