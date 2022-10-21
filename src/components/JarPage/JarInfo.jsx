@@ -28,21 +28,18 @@ const JarInfo = () => {
   const dispatch = useDispatch();
   const { loading, error, success } = useSelector(state => state.basket);
   const { 
-      name, 
       ownerId: { firstName }, 
-      description, 
-      goal, 
-      value, 
+      goal = 0, 
+      value = 0, 
       expirationDate, 
-      isPublic, 
+      isPublic = false, 
       creationDate, 
-      image 
   } = useSelector(state => state.basket.basket);
 
   const [editExpirationDateState, setEditExpirationDateState] = useState(false);
 
   const [editGoalState, setEditGoalState] = useState(false);
-  const [editedGoal, setEditedGoal] = useState(null);
+  const [editedGoal, setEditedGoal] = useState(0);
 
   const handleEditedGoalChange = (event) => {
     setEditedGoal(event.target.value);
@@ -135,7 +132,7 @@ const JarInfo = () => {
                 </IconButton>
                 <IconButton
                   sx={{ height: 44, width: 44, mt: -1.5, display: editGoalState === true ? 'inline' : 'none' }}
-                  onClick={!loading ?? handleOnSave}
+                  onClick={handleOnSave}
                 >
                   <SaveIcon sx={{ fontSize: 30 }} />
                 </IconButton>

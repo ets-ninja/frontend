@@ -19,19 +19,11 @@ const JarInfoHeader = () => {
     const dispatch = useDispatch();
     const { loading, error, success } = useSelector(state => state.basket);
     const { 
-        name, 
-        ownerId: { firstName }, 
-        description, 
-        goal, 
-        value, 
-        expirationDate, 
-        isPublic, 
-        createdAt, 
-        image 
+        name = 'name', 
     } = useSelector(state => state.basket.basket);
 
     const [editNameState, setEditNameState] = useState(false);
-    const [editedName, setEditedName] = useState(name);
+    const [editedName, setEditedName] = useState('');
 
     const handleEditedNameChange = (event) => {
       setEditedName(event.target.value);
@@ -85,7 +77,7 @@ const JarInfoHeader = () => {
             {!loading && <IconButton sx={{ display: editNameState === true ? 'inline' : 'none', height: 45, width: 45 }} onClick={handleOnSave}>
               <SaveIcon sx={{ fontSize: 32 }} />
             </IconButton>}
-            {loading && <CircularProgress thickness='5' sx={{ height: 45, width: 45 }} />}
+            {loading && <CircularProgress thickness={5} sx={{ height: 45, width: 45 }} />}
         </Box>
     )
 }

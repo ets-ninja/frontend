@@ -143,7 +143,7 @@ const JarDashboardHeader = () => {
                 >
                   {option}
                 </MenuItem>
-                : <Divider variant="middle" />
+                : <Divider variant="middle" key={option} />
               ))}
             </Select>
           </FormControl>

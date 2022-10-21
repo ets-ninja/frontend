@@ -7,10 +7,12 @@ import JarTransactionList from '../components/Charts/JarTransactionList';
 import { useDispatch } from 'react-redux';
 import { get_basket_by_id } from '../redux/basket/basketActions';
 import { useParams } from 'react-router-dom';
-import JarInfo from '../components/JarPage/JarInfo'
-import JarInfoHeader from '../components/JarPage/JarInfoHeader'
-import JarDescription from '../components/JarPage/JarDescription'
-import JarProgress from '../components/JarPage/JarProgress'
+import JarInfo from '../components/JarPage/JarInfo';
+import JarInfoHeader from '../components/JarPage/JarInfoHeader';
+import JarDescription from '../components/JarPage/JarDescription';
+import JarProgress from '../components/JarPage/JarProgress';
+import DonateIndex from '../components/Stripe/DonateLogic/DonateIndex';
+import ReceiveIndex from '../components/Stripe/ReceiveLogic/ReceiveIndex';
 
 const JarPage = () => {
   const params = useParams();
@@ -40,21 +42,10 @@ const JarPage = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: { lg: '360px' } }}>
           <JarInfoHeader />
           <JarInfo />
-          <Button
-            sx={{
-              width: '100%',
-              fontSize: 35,
-              mt: 3,
-              mb: 3,
-              borderRadius: 3,
-              backgroundColor: '#58D68D',
-              boxShadow: 5,
-              color: 'black',
-              '&:hover': { backgroundColor: '#358255', color: 'white' },
-            }}
-          >
-            Donate
-          </Button>
+          <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}> 
+            <DonateIndex />
+            <ReceiveIndex />
+        </Box>
         </Box>
         <Box
           sx={{

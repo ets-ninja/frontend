@@ -34,28 +34,30 @@ const JarProgress = () => {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', width: "100%", pr: 6 }}>
-            <Box sx={{ position: 'relative', width: '100%', mr: 1 }}>
-                <BorderLinearProgress
-                variant="determinate"
-                value={Math.max(0, Math.min(100, value * 100 / goal))}
-                sx={{
-                    width: "100%",
-                    height: '45px',
-                }}
-                />
-                <Typography
-                variant="h5"
-                component="p"
-                sx={{
-                    position: 'absolute',   
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                }}>
-                {value}$
-            </Typography>
+            <Box sx={{ flexGrow: 1  }}>
+                <Box sx={{ position: 'relative', width: '100%', mr: 1 }}>
+                    <BorderLinearProgress
+                    variant="determinate"
+                    value={Math.max(0, Math.min(100, value * 100 / goal))}
+                    sx={{
+                        width: "100%",
+                        height: '45px',
+                    }}
+                    />
+                    <Typography
+                    variant="h5"
+                    component="p"
+                    sx={{
+                        position: 'absolute',   
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}>
+                    {value}$
+                </Typography>
+                </Box>
             </Box>
-            <Box sx={{ minWidth: 35 }}>
+            <Box sx={{ minWidth: 35, ml: 1 }}>
                 <Typography
                 variant="h5"
                 component="p">

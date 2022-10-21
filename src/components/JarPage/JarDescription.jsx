@@ -18,22 +18,14 @@ const JarDescription = () => {
   const { basketID } = useParams(); 
   const modal = useModal();
   const { 
-      name, 
-      ownerId: { firstName }, 
       description, 
-      goal, 
-      value, 
-      expirationDate, 
-      isPublic, 
-      createdAt, 
       image 
   } = useSelector(state => state.basket.basket);
-  let errors = null;
 
-  const { loading, error, success } = useSelector(state => state.basket);
+  const { loading } = useSelector(state => state.basket);
 
   const [editDescState, setEditDescState] = useState(false);
-  const [editedDesc, setEditedDesc] = useState(null);
+  const [editedDesc, setEditedDesc] = useState('');
 
   const handleEditedDescChange = (event) => {
     setEditedDesc(event.target.value);
@@ -83,14 +75,16 @@ const JarDescription = () => {
           <Box sx={{ p: 2 }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
               <IconButton
+                onClick={() => { setEditDescState(!editDescState) }}
                 sx={{ height: 32, width: 32, mr: 1, mt: -0.3, display: editDescState === false ? 'inline-flex' : 'none' }}
               >
-                <EditIcon sx={{ fontSize: 25 }} onClick={() => { setEditDescState(!editDescState) }} />
+                <EditIcon sx={{ fontSize: 25 }} />
               </IconButton>
               <IconButton
+                onClick={handleOnSave}
                 sx={{ height: 32, width: 32, mr: 1, mt: -0.3, display: editDescState === true ? 'inline-flex' : 'none' }}
               >
-                <SaveIcon sx={{ fontSize: 25 }} onClick={handleOnSave} />
+                <SaveIcon sx={{ fontSize: 25 }} />
               </IconButton>
               <Typography variant="h3">Description</Typography>
             </Box>
@@ -132,10 +126,10 @@ const JarDescription = () => {
               }}>
 
             </Box>
-            {!loading && <IconButton sx={{ position: 'absolute', right: 14, top: 14, height: 40, width: 40, backgroundColor: 'white' }}>
-              <CameraAltIcon sx={{ fontSize: 28 }} onClick={handleModalPhoto} />
+            {!loading && <IconButton onClick={handleModalPhoto} sx={{ position: 'absolute', right: 14, top: 14, height: 40, width: 40, backgroundColor: 'white' }}>
+              <CameraAltIcon sx={{ fontSize: 28 }} />
             </IconButton> }
-            {loading && <CircularProgress thickness='5' sx={{ position: 'absolute', right: 14, top: 14, height: 32, width: 32 }} />}
+            {loading && <CircularProgress thickness={5} sx={{ position: 'absolute', right: 14, top: 14, height: 32, width: 32 }} />}
         </Box>
       </Card>
   )

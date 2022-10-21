@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+import { Link } from 'react-router-dom';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  Divider,
+} from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CheckIcon from '@mui/icons-material/Check';
-import ResponsiveContainer from '../components/styled/ResponsiveContainer';
-import StyledDropDownMenu from '../components/styled/StyledDropDownMenu';
-import LoadingSpinner from '../components/UIElements/LoadingSpinner';
+import ResponsiveContainer from '@components/styled/ResponsiveContainer';
+import StyledDropDownMenu from '@components/styled/StyledDropDownMenu';
+import LoadingSpinner from '@components/UIElements/LoadingSpinner';
 
-import WishlistCard from '../components/WishlistCard';
-import BasicPagination from '../components/BasicPagination';
+import WishlistCard from '@components/WishlistCard';
+import BasicPagination from '@components/BasicPagination';
 
-import { getSortedWishlistItems } from '../redux/wishlist/wishlistActions';
 import {
-  setSortedWishlistItems,
-  setWishlistPage,
-} from '../redux/wishlist/wishlistSlice';
+  getSortedWishlistItems,
+  deleteWishlistItem,
+} from '@redux/wishlist/wishlistActions';
+import { setItemToDelete, setLoading } from '@redux/wishlist/wishlistSlice';
 
 const sortFields = [
   { name: 'Date created', dbName: 'createdAt' },
@@ -32,28 +35,29 @@ const sortOrderValues = [
 
 const Wishlist = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [sortField, setSortField] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
+  const [sortField, setSortField] = useState('createdAt');
+  const [sortOrder, setSortOrder] = useState('-1');
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
 
   const {
     loading,
-    error,
     items: wishlistItems,
-    sorting,
+    totalItemsQuantity,
     pageCount: pages,
-    activePage,
+    itemToDelete,
   } = useSelector(state => state.wishlist);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setSortField(sorting.field);
-    setSortOrder(sorting.order);
-    setPage(activePage);
-    setPageCount(pages);
+    dispatch(setItemToDelete({ id: null, from: '' }));
+    dispatch(setLoading(true));
   }, []);
+
+  useEffect(() => {
+    setPageCount(pages);
+  }, [pages]);
 
   const handleOpenSortMenu = e => {
     setAnchorElNav(e.currentTarget);
@@ -63,8 +67,8 @@ const Wishlist = () => {
     setAnchorElNav(null);
   };
 
-  const sortItems = () => {
-    dispatch(
+  const sortItems = async () => {
+    await dispatch(
       getSortedWishlistItems({
         options: { page, field: sortField, order: sortOrder },
       }),
@@ -72,21 +76,28 @@ const Wishlist = () => {
   };
 
   useEffect(() => {
-    if (sortField) {
-      sortItems();
-      dispatch(
-        setSortedWishlistItems({
-          field: sortField,
-          order: sortOrder,
-        }),
-      );
-    }
+    sortItems();
   }, [sortField, sortOrder, page]);
 
   const handleChangePage = page => {
     setPage(page);
-    dispatch(setWishlistPage(page));
   };
+
+  const removeItem = async () => {
+    await dispatch(deleteWishlistItem({ id: itemToDelete.id }));
+    dispatch(setItemToDelete({ id: null, from: '' }));
+    if (wishlistItems.length === 1 && pageCount !== 1) {
+      handleChangePage(page - 1);
+      setPageCount(pageCount - 1);
+    }
+    await sortItems();
+  };
+
+  useEffect(() => {
+    if (itemToDelete.from === 'modal') {
+      removeItem();
+    }
+  }, [itemToDelete]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -195,34 +206,50 @@ const Wishlist = () => {
                 <Button
                   variant="contained"
                   color="secondary"
+                  component={Link}
+                  to="/wishlist-create-item"
                   sx={{
                     color: theme => theme.colors.dark,
                   }}
-                  onClick={() => console.log('create')}
                 >
                   Create new
                 </Button>
               </Box>
             </Toolbar>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: 20,
+                color: theme => theme.colors.dark,
+              }}
+            >
+              Total: {totalItemsQuantity || 0} items
+            </Typography>
           </AppBar>
         </Box>
         <Box
           sx={{
             display: 'flex',
             flexWrap: 'wrap',
-            rowGap: { xs: 2, md: 3 },
-            columnGap: { lg: '2.66%', md: '5%', sm: '10%' },
-            justifyContent: 'flex-start',
+            columnGap: { xs: '0' },
+            justifyContent: { xs: 'center', sm: 'flex-start' },
             bgcolor: 'white',
-            boxShadow: 1,
             borderRadius: 3,
             py: 3,
-            px: 3,
-            borderColor: 'black',
+            boxShadow: 0,
+            borderWidthTop: '1px',
+            borderWidthLeft: '1px',
+            borderColor: 'rgba(0, 0, 0, 0.3)',
           }}
         >
           {wishlistItems.map(item => {
-            return <WishlistCard key={item._id} itemInfo={item} />;
+            return (
+              <WishlistCard
+                key={item._id}
+                itemInfo={item}
+                removeItem={removeItem}
+              />
+            );
           })}
           {wishlistItems.length === 0 && (
             <Typography

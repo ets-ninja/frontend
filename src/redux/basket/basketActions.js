@@ -18,7 +18,10 @@ export const get_owner_baskets = createAsyncThunk(
         return rejectWithValue({ message: "There is an error with recieving jars" });
       }
 
-      return {basketData: req.data.basketData, paginationData: req.data.paginationData};
+      return {
+        basketData: req.data.basketData,
+        paginationData: req.data.paginationData,
+      };
     } catch (error) {
       if (error?.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -28,7 +31,6 @@ export const get_owner_baskets = createAsyncThunk(
     }
   },
 );
-
 
 export const get_coowner_baskets = createAsyncThunk(
     'jar/get_coowner_jars',
@@ -49,13 +51,13 @@ export const get_coowner_baskets = createAsyncThunk(
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
     } catch (error) {
-        if (error?.response.data.message) {
-          return rejectWithValue(error.response.data.message);
-        } else {
-          return rejectWithValue(error.message);
-        }
+      if (error?.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
-    },
+  },
 );
 
 export const get_public_baskets = createAsyncThunk(
@@ -77,13 +79,13 @@ export const get_public_baskets = createAsyncThunk(
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
     } catch (error) {
-        if (error?.response.data.message) {
-          return rejectWithValue(error.response.data.message);
-        } else {
-          return rejectWithValue(error.message);
-        }
+      if (error?.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
-    },
+  },
 );
 
 export const get_private_baskets = createAsyncThunk(
@@ -105,15 +107,14 @@ export const get_private_baskets = createAsyncThunk(
   
         return {basketData: req.data.basketData, paginationData: req.data.paginationData};
     } catch (error) {
-        if (error?.response.data.message) {
-          return rejectWithValue(error.response.data.message);
-        } else {
-          return rejectWithValue(error.message);
-        }
+      if (error?.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
-    },
+  },
 );
-
 
 export const get_basket_by_id = createAsyncThunk(
   'jar/get_jar_by_id',
@@ -132,7 +133,35 @@ export const get_basket_by_id = createAsyncThunk(
         return rejectWithValue({ message: `There are no jar with ${id} id` });
       }
 
-      return { basket: req.data.basket};
+      return { basket: req.data.basket };
+    } catch (error) {
+      if (error?.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const get_jar_finance_by_id = createAsyncThunk(
+  'jar/get_jar_finance_by_id',
+   async(  
+    { id },
+    { rejectWithValue }
+    ) => {
+    
+    try {
+      const req = await axios.get(
+        'api/jar/get_jar_finance_by_id', 
+        { params: { id }} 
+        );
+
+      if(!req.data.basket){
+        return rejectWithValue({ message: `There are no jar with ${id} id` });
+      }
+
+      return { basket: req.data.basket };
     } catch (error) {
       if (error?.response.data.message) {
         return rejectWithValue(error.response.data.message);

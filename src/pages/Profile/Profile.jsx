@@ -19,6 +19,7 @@ import {
 import style from './Profile.module.css';
 import useModal from '../../hooks/useModal';
 import StripeIndex from '../../components/Stripe/StripeIndex';
+import ConnectedAccountIndex from '../../components/Stripe/ConnectedAccount/ConnectedAccountIndex';
 
 const Profile = memo(() => {
   const { userInfo, successInfo } = useSelector(state => state.user);
@@ -60,7 +61,7 @@ const Profile = memo(() => {
                     height: 250,
                     aspect: 1,
                     canvasBorderRadius: 50,
-                    path: 'updateUserPhoto'
+                    path: 'updateUserPhoto',
                   })
                 }
               >
@@ -103,6 +104,7 @@ const Profile = memo(() => {
           <ProfileFormUpdateInfo />
           <ProfileFormUpdatePassword />
           <StripeIndex />
+          <ConnectedAccountIndex />
         </Card>
       </div>
     </div>
