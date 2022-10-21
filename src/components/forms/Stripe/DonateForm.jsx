@@ -10,9 +10,9 @@ import Button from '@mui/material/Button';
 
 import LoadingSpinner from '../../UIElements/LoadingSpinner';
 
-const DonateForm = props => {
+const DonateForm = ({ id }) => {
   const { loading, sendRequest } = request();
-  let { basketID } = useParams();
+  let { basketID = id } = useParams();
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm();
