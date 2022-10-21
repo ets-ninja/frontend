@@ -44,11 +44,7 @@ export default function PublicPage() {
     control,
     name: 'filterQuery',
   });
-  const [isUserJars, setIsUserJars] = useState(false);
-  const [isFilter, setIsFilter] = useState(false);
-  const [page, setPage] = useState(1);
-  const [jarsPerPage, setJarsPerPage] = useState(9);
-  const [sortOrder, setSortOrder] = useState('date desc');
+
   const { pageCount } = useSelector(getPublicPagination);
   const modalData = useSelector(getModalData);
   const modalIsLoading = useSelector(getModalIsLoading);
@@ -56,6 +52,12 @@ export default function PublicPage() {
   const jars = useSelector(getPublicData);
   const users = useSelector(getPublicUsers);
   const status = useSelector(getPublicStatus);
+
+  const [isUserJars, setIsUserJars] = useState(false);
+  const [isFilter, setIsFilter] = useState(false);
+  const [page, setPage] = useState(1);
+  const [jarsPerPage, setJarsPerPage] = useState(9);
+  const [sortOrder, setSortOrder] = useState('date desc');
 
   useEffect(() => {
     if (!modalData && modalIsLoading && !modalIsOpen) {
