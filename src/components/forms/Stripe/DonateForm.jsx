@@ -44,7 +44,7 @@ const DonateForm = props => {
       return;
     }
 
-    if (payment.status === 'success') {
+    if (payment) {
       navigate(`/donate-status`);
     }
   };
