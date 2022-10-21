@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
 // Scripts for firebase and firebase messaging
 importScripts(
@@ -17,6 +18,11 @@ const firebaseConfig = {
   messagingSenderId: '706857741672',
   appId: '1:706857741672:web:b22cb85d9e97fa89c1fadd',
 };
+
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close();
+  clients.openWindow(event.notification.data.FCM_MSG.data.clickActionBack);
+});
 
 // Retrieve firebase messaging
 firebase.initializeApp(firebaseConfig);
@@ -51,6 +57,7 @@ messaging.onBackgroundMessage(payload => {
   const updateDB = async () => {
     try {
       const notificationList = await idbKeyval.get('notificationList');
+      console.log(notificationList);
       if (notificationList) {
         notificationList.unshift(payload);
         idbKeyval.set('notificationList', notificationList);
@@ -65,4 +72,6 @@ messaging.onBackgroundMessage(payload => {
   const channel = notificationChannel.getInstance();
 
   channel.postMessage(payload);
+
+  return;
 });

@@ -8,8 +8,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import jarPicture4 from '../JarCard/images/JarStep4.png'
 
-const CreationForm2 = ({setIsChecked1, isChecked1, isChecked2, setIsChecked2}) => {
+const CreationForm2 = ({setIsChecked1, isChecked1, setIsChecked2, isChecked2 }) => {
 
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()
@@ -38,12 +39,12 @@ const CreationForm2 = ({setIsChecked1, isChecked1, isChecked2, setIsChecked2}) =
       }}
     >
       {window.innerWidth > 840 ? (
-        <Card sx={{ ml: '100px' }}>
+        <Card sx={{ ml: '100px', boxShadow: 'none' }}>
           <CardMedia
             style={{ filter: 'grayscale(50%)' }}
             component="img"
             sx={{ width: 300, height: 420 }}
-            image="https://img.freepik.com/free-photo/wicker-basket-isolated_2829-18051.jpg?w=360"
+            image={jarPicture4}
             alt="Live from space album cover"
           />
         </Card>

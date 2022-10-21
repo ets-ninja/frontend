@@ -4,21 +4,24 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import * as React from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import CreationForm from '../components/forms/CreationForm';
 import CreationForm2 from '../components/forms/CreationForm2';
 import CreationForm3 from '../components/forms/CreationForm3';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBasket, cancelCreation, createBasket} from '../redux/basket/createBasketSlice'
+import {
+  selectBasket,
+  cancelCreation,
+  createBasket,
+} from '../redux/basket/createBasketSlice';
+import { deleteWishlistItem } from '../redux/wishlist/wishlistActions';
+import { setItemToDelete } from '../redux/wishlist/wishlistSlice';
 import CreationResult from '../components/CreationResult';
 import { setError } from '../redux/snackbar/snackbarSlice';
 import ReactGA from "react-ga4";
 
-
-
-
-const steps = ['TextInfo', 'AdditionSettings', 'Finishing!'];
+const steps = ['TextInfo', 'AdditionalSettings', 'Finishing!'];
 
 const CreationPage = () => {
   ReactGA.send("pageview");
@@ -29,29 +32,30 @@ const CreationPage = () => {
   const [isChecked2, setIsChecked2] = useState(false);
   const [isChecked3, setIsChecked3] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const basket = useSelector(selectBasket);
-  const dispatch = useDispatch()
-
+  const { itemToDelete: wishlistItemToDelete } = useSelector(
+    state => state.wishlist,
+  );
+  const dispatch = useDispatch();
 
   const isStepSkipped = step => {
     return skipped.has(step);
   };
 
   const handleNext = () => {
-
-    if (!basket.basketName || !basket.moneyGoal){
-      dispatch(setError('Basket name and money goal are required'))
-      return
-    } 
-    if (isChecked1 && !basket.expirationDate){
-      dispatch(setError('If you set time limited you need to set expire date'))
-      return
+    if (!basket.basketName || !basket.moneyGoal) {
+      dispatch(setError('Basket name and money goal are required'));
+      return;
     }
-    if (basket.moneyGoal <= 0){
-      dispatch(setError('zero? -_-'))
-      return
+    if (isChecked1 && !basket.expirationDate) {
+      dispatch(setError('If you set time limited you need to set expire date'));
+      return;
+    }
+    if (basket.moneyGoal <= 0) {
+      dispatch(setError('zero? -_-'));
+      return;
     }
 
     let newSkipped = skipped;
@@ -64,39 +68,41 @@ const CreationPage = () => {
     setSkipped(newSkipped);
 
     if (activeStep === steps.length - 1) {
-      dispatch(createBasket())
-      setIsChecked1(false)
-      setIsChecked3(false)
+      dispatch(createBasket());
+      if (wishlistItemToDelete.from === 'transformation') {
+        dispatch(deleteWishlistItem({ id: wishlistItemToDelete.id }));
+        dispatch(setItemToDelete({ id: null, from: '' }));
+      }
+      setIsChecked1(false);
+      setIsChecked3(false);
       ReactGA.event({
         category: "Jar",
         action: "Jar Creation",
         label: "User created a jar", // optional
         value: 99, // optional, must be a number
       });
-     }
+    }
   };
 
   const handleBack = () => {
-    if (isChecked1 && !basket.expirationDate){
-      setIsChecked1(false)
-
+    if (isChecked1 && !basket.expirationDate) {
+      setIsChecked1(false);
     }
     if (activeStep === 0) {
-      dispatch(cancelCreation())
-      setIsChecked1(false)
-      setIsChecked3(false)
-      navigate('/')
-      return
+      dispatch(cancelCreation());
+      setIsChecked1(false);
+      setIsChecked3(false);
+      navigate('/dashboard');
+      return;
     }
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
   const handleReset = () => {
     setActiveStep(0);
-    navigate('/')
+    navigate('/dashboard');
   };
 
- 
   return (
     <Box sx={{ maxWidth: '1200px', margin: '0 auto' }}>
       <Stepper activeStep={activeStep} sx={{ mb: '50px', mx: '10px' }}>
@@ -177,6 +183,5 @@ const CreationPage = () => {
     </Box>
   );
 };
-
 
 export default CreationPage;

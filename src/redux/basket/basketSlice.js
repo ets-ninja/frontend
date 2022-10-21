@@ -1,11 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { get_owner_baskets, get_coowner_baskets, get_public_baskets, get_private_baskets, get_basket_by_id } from './basketActions';
+import {
+  get_owner_baskets,
+  get_coowner_baskets,
+  get_public_baskets,
+  get_private_baskets,
+  get_basket_by_id,
+} from './basketActions';
 
 const initialState = {
   loading: true,
-  basket: { ownerId: {  } },
+  basket: { ownerId: {} },
   baskets: [],
-  paginationData: { page: 1, maxPageAmount: 1, currentType: "Created by me", currentOrder: "Newest to oldest" },
+  paginationData: {
+    page: 1,
+    maxPageAmount: 1,
+    currentType: 'Created by me',
+    currentOrder: 'Newest to oldest',
+  },
   error: null,
   success: false,
 };
@@ -19,7 +30,12 @@ const basketSlice = createSlice({
       state.error = null;
       state.basket = {};
       state.baskets = [];
-      state.paginationData = { page: 1, maxPageAmount: 1, currentType: "Created by me", currentOrder: "Newest to oldest" }
+      state.paginationData = {
+        page: 1,
+        maxPageAmount: 1,
+        currentType: 'Created by me',
+        currentOrder: 'Newest to oldest',
+      };
     },
     changePage: (state, { payload }) => {
       state.paginationData.page = payload.value;
@@ -29,7 +45,7 @@ const basketSlice = createSlice({
     },
     changeOrder: (state, { payload }) => {
       state.paginationData.currentOrder = payload.value;
-    }
+    },
   },
   extraReducers: {
     //get_owner_baskets
@@ -47,7 +63,7 @@ const basketSlice = createSlice({
       state.loading = false;
       state.baskets = [];
       state.paginationData.maxPageAmount = 1;
-      state.error = payload;
+      //state.error = payload;
     },
     //get_coowner_baskets
     [get_coowner_baskets.pending]: state => {
@@ -112,7 +128,7 @@ const basketSlice = createSlice({
     },
     [get_basket_by_id.rejected]: (state, { payload }) => {
       state.loading = false;
-      state.basket = { ownerId: {  } };
+      state.basket = { ownerId: {} };
       state.error = payload;
     },
   },

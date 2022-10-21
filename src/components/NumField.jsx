@@ -7,7 +7,7 @@ function MyCustomNumberFormat(props) {
     if (numStr === "") return "";
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "UAH",
+      currency: "USD",
       maximumFractionDigits: 0
     }).format(numStr);
   };
@@ -23,7 +23,7 @@ export default function NumField({label, value, setValue}) {
           valueIsNumericString={true}
           customInput={TextField}
           value={value}
-          onValueChange={(e) => setValue(e.value)} //! value without target ( e is object in this case)
+          onValueChange={(e) => setValue(e.value)}
         />
       </>      
   );

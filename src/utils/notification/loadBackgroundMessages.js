@@ -1,4 +1,5 @@
 import { get, del } from 'idb-keyval';
+import * as Sentry from '@sentry/react';
 
 const loadBackgroundMessages = async () => {
   try {
@@ -8,6 +9,7 @@ const loadBackgroundMessages = async () => {
     }
     return notificationList;
   } catch (error) {
+    Sentry.captureException(error);
     return null;
   }
 };
