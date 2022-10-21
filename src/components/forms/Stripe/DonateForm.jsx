@@ -68,6 +68,7 @@ const DonateForm = props => {
             })}
             label="Amount"
             autoComplete=""
+            onWheel={(e) => e.target.blur()} 
           />
           <TextField
             type="text"
@@ -83,6 +84,7 @@ const DonateForm = props => {
               minLength: 4,
             })}
             label="Card last 4 numbers"
+            onWheel={(e) => e.target.blur()} 
           />
           <Button type="submit" variant="contained">
             Submit donation
