@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Card, CardMedia, Typography, Box } from '@mui/material';
+import { Button, Card, CardMedia, Typography, Box, Zoom } from '@mui/material';
 import noImage from '@assets/noImage.png';
 
 import useModal from '@hooks/useModal';
 
 const WishlistCard = ({
   itemInfo: { _id, name, image, finalGoal, createdAt },
+  index,
 }) => {
   const modal = useModal();
 
@@ -38,7 +39,7 @@ const WishlistCard = ({
   };
 
   return (
-    <>
+    <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }}>
       <Card
         sx={{
           width: {
@@ -141,7 +142,7 @@ const WishlistCard = ({
           </Typography>
         </Box>
       </Card>
-    </>
+    </Zoom>
   );
 };
 
