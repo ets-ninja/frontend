@@ -8,7 +8,10 @@ import {
 } from 'firebase/messaging';
 
 import { store } from './redux/store';
-import { addToken } from './redux/notifications/notificationSlice';
+import {
+  addToken,
+  setFCMSupport,
+} from './redux/notifications/notificationSlice';
 import { addNotification } from './redux/notifications/notificationSlice';
 
 const firebaseConfig = {
@@ -26,9 +29,11 @@ const messaging = (async () => {
   try {
     const isSupportedBrowser = await isSupported();
     if (isSupportedBrowser) {
+      store.dispatch(setFCMSupport(true));
       return getMessaging(app);
     }
     console.log('Firebase not supported this browser');
+    store.dispatch(setFCMSupport(false));
     return null;
   } catch (err) {
     return null;

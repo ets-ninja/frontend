@@ -4,6 +4,8 @@ import { useDebounceEffect } from '../../hooks/useDebounceEffect';
 import { canvasPreview } from './canvasPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
+import { updateWishlistItem } from '../../redux/wishlist/wishlistActions';
+import { setWishitemPhoto } from '../../redux/wishlist/wishlistSlice';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
@@ -84,18 +86,30 @@ const UpdatePhotoModal = () => {
   const saveUserPhoto = () => {
     switch (data.path) {
       case 'updateUserPhoto':
-        dispatch(updateUserPhoto({
-          userPhoto: `${previewCanvasRef.current.toDataURL()}`,
-        }),)
+        dispatch(
+          updateUserPhoto({
+            userPhoto: `${previewCanvasRef.current.toDataURL()}`,
+          }),
+        );
         break;
       case 'changeBasketTag':
-        dispatch(setPhotoTag(`${previewCanvasRef.current.toDataURL()}`))
+        dispatch(setPhotoTag(`${previewCanvasRef.current.toDataURL()}`));
         break;
-
+      case 'updateWishItemPhoto':
+        dispatch(
+          updateWishlistItem({
+            id: data.wishItemId,
+            data: { image: `${previewCanvasRef.current.toDataURL()}` },
+          }),
+        );
+        break;
+      case 'setWishitemPhoto':
+        dispatch(setWishitemPhoto(`${previewCanvasRef.current.toDataURL()}`));
+        break;
       default:
         break;
     }
-      modal.close();
+    modal.close();
   };
 
   return (
@@ -122,7 +136,7 @@ const UpdatePhotoModal = () => {
               aspect={aspect}
             >
               <img
-                alt=''
+                alt=""
                 ref={imgRef}
                 src={imgSrc}
                 style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}

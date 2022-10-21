@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { removeNotification } from '@redux/notifications/notificationSlice';
 
 import Snackbar from '@mui/material/Snackbar';
 import Fade from '@mui/material/Fade';
@@ -9,6 +12,8 @@ import Box from '@mui/material/Box';
 const NotificationToast = () => {
   const { newNotification } = useSelector(state => state.notification);
 
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     open: false,
     Transition: Fade,
@@ -16,9 +21,17 @@ const NotificationToast = () => {
     horizontal: 'right',
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setState(prevValue => ({ ...prevValue, open: true }));
   }, [newNotification]);
+
+  const handleClick = () => {
+    navigate(newNotification.data.clickAction);
+    dispatch(removeNotification(newNotification));
+    handleClose();
+  };
 
   const handleClose = () => {
     setState({ ...state, open: false });
@@ -37,6 +50,8 @@ const NotificationToast = () => {
           TransitionComponent={state.Transition}
           key={state.Transition.name}
           onClose={handleClose}
+          onClick={handleClick}
+          sx={{ cursor: 'pointer' }}
         >
           <Box
             onClose={handleClose}
