@@ -8,6 +8,7 @@ import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
 import { setPhotoTag } from '../../redux/basket/createBasketSlice';
+import imageCompression from 'browser-image-compression';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -42,21 +43,17 @@ const UpdatePhotoModal = () => {
   const dispatch = useDispatch();
   const modal = useModal();
 
-  function onSelectFile(e) {
+  async function onSelectFile(e) {
+    const option = {
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 400,
+      useWebWorker: true,
+    };
     const file = e.target.files[0];
-
-    Compress.imageFileResizer(
-      file,
-      400,
-      400,
-      'JPEG',
-      100,
-      0,
-      uri => {
-        setImgSrc(uri || '');
-      },
-      'base64',
-    );
+    const compressFile = await imageCompression(file, option);
+    imageCompression
+      .getDataUrlFromFile(compressFile)
+      .then(res => setImgSrc(res));
   }
 
   function onImageLoad(e) {
