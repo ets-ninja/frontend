@@ -1,16 +1,17 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { getModalData } from '../redux/modal/modalSelectors';
-import { Avatar, Box, Button, Typography } from '@mui/material';
-import { jarStepHandler } from '../components/JarCard/utils';
-import SumLinearProgress from '../components/SumLinearProgress';
+import { getModalData } from '../../redux/modal/modalSelectors';
+import { Avatar, Box, Button, Fade, Modal, Typography } from '@mui/material';
+import { jarStepHandler } from '../../components/JarCard/utils';
+import SumLinearProgress from '../../components/SumLinearProgress';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import DonateForm from '../components/forms/Stripe/DonateForm';
+import DonateForm from '../../components/forms/Stripe/DonateForm';
 
 export default function PublicJarModal() {
-  const [showDonateMenu, setShowDonateMenu] = useState(null);
+  const [showDonateMenu, setShowDonateMenu] = useState(false);
   const data = useSelector(getModalData);
+
   return (
     data?.user && (
       <Box
@@ -167,15 +168,32 @@ export default function PublicJarModal() {
             }}
           />
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+        <Modal
+          open={showDonateMenu}
+          onClose={() => {
+            setShowDonateMenu(false);
           }}
         >
-          {showDonateMenu && <DonateForm />}
-        </Box>
+          <Fade timeout={500} in={showDonateMenu}>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                overflowY: 'auto',
+                transform: 'translate(-50%, -50%)',
+                bgcolor: '#ffffff',
+                border: '1px solid transparent',
+                outline: '1px solid transparent',
+                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                borderRadius: 2,
+                p: 3,
+              }}
+            >
+              <DonateForm id={data._id} />
+            </Box>
+          </Fade>
+        </Modal>
       </Box>
     )
   );
