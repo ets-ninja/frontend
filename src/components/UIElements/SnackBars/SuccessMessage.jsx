@@ -46,7 +46,7 @@ const SuccessMessage = () => {
     } else {
       setState(prevValue => ({ ...prevValue, open: false }));
     }
-  }, [wishlist.successInfo]);
+  }, [wishlist.successInfo, snackbar.success]);
 
   const handleClose = () => {
     setState({ ...state, open: false });
