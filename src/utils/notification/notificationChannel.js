@@ -5,7 +5,7 @@ const getChannel = () => {
   return channel;
 };
 
-export const notificationChannel = {
+const notificationChannel = {
   getInstance: () => {
     if (!channel) {
       channel = getChannel();
@@ -13,3 +13,5 @@ export const notificationChannel = {
     return channel;
   },
 };
+
+export default notificationChannel;

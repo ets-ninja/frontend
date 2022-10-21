@@ -13,6 +13,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const SuccessMessage = () => {
   const user = useSelector(state => state.user);
   const creationBasket = useSelector(state => state.creationBasket);
+  const wishlist = useSelector(state => state.wishlist);
   const snackbar = useSelector(state => state.snackbar);
   const dispatch = useDispatch();
 
@@ -39,6 +40,14 @@ const SuccessMessage = () => {
     }
   }, [creationBasket.successInfo, snackbar.success]);
 
+  useEffect(() => {
+    if (wishlist.successInfo) {
+      setState(prevValue => ({ ...prevValue, open: true }));
+    } else {
+      setState(prevValue => ({ ...prevValue, open: false }));
+    }
+  }, [wishlist.successInfo]);
+
   const handleClose = () => {
     setState({ ...state, open: false });
 
@@ -61,7 +70,10 @@ const SuccessMessage = () => {
         onClose={handleClose}
       >
         <Alert severity="success" onClose={handleClose} sx={{ width: '100%' }}>
-          {user.successInfo?.message || creationBasket.successInfo ||snackbar.success}
+          {user.successInfo?.message ||
+            creationBasket.successInfo ||
+            wishlist.successInfo ||
+            snackbar.success}
         </Alert>
       </Snackbar>
     </>

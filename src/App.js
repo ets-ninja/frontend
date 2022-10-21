@@ -1,8 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as Sentry from '@sentry/react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { fetchToken, onMessageListener } from './firebase';
+import {
+  addMultipleNotification,
+  addNotification,
+} from '@redux/notifications/notificationSlice';
+import removeSeenNofitication from '@utils/notification/removeSeenNotification';
+import loadBackgroundMessages from '@utils/notification/loadBackgroundMessages';
+import notificationChannel from '@utils/notification/notificationChannel';
 
 import './App.scss';
 
@@ -13,6 +21,8 @@ import Register from './pages/Register/Register';
 import LostPassword from './pages/LostPassword';
 import MyJars from './pages/MyJars';
 import Wishlist from './pages/Wishlist';
+import CreateWishlistItem from './pages/CreateWishlistItem';
+import WishlistItem from './pages/WishlistItem';
 import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
 import CreationPage from './pages/CreationPage';
@@ -25,6 +35,7 @@ import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import MoneyStatusContainer from './pages/MoneyStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+import DeleteWishlistItemModal from './modal/DeleteWishlistItemModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
 import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
@@ -36,7 +47,11 @@ const App = () => {
   const dispatch = useDispatch();
 
   const { isLoggedIn } = useSelector(state => state.auth);
-  const { notificationToken } = useSelector(state => state.notification);
+  const { notificationToken, isFCMSupported } = useSelector(
+    state => state.notification,
+  );
+
+  const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
 
   useEffect(() => {
     if (!location.pathname.includes('public-jar')) return;
@@ -56,16 +71,52 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn && !notificationToken) {
+    if (isLoggedIn && isFCMSupported && !notificationToken) {
       fetchToken();
     }
-  }, [dispatch, isLoggedIn, notificationToken]);
 
-  useEffect(() => {
-    if (notificationToken) {
+    if (notificationToken && !isMessageListenerOn) {
       onMessageListener();
+      setIsMessageListenerOn(true);
     }
-  }, [notificationToken]);
+
+    const channel = notificationChannel.getInstance();
+
+    const handleBackgroudMessage = event => {
+      dispatch(addNotification(event.data));
+      removeSeenNofitication();
+    };
+
+    if (isLoggedIn && isFCMSupported && notificationToken) {
+      const firstLoadMessages = async () => {
+        let messages;
+
+        try {
+          messages = await loadBackgroundMessages();
+        } catch (error) {
+          Sentry.captureException(error);
+        }
+
+        if (messages) {
+          console.log('Hello');
+          dispatch(addMultipleNotification(messages));
+        }
+      };
+      firstLoadMessages();
+
+      channel.addEventListener('message', handleBackgroudMessage);
+
+      return () => {
+        channel.removeEventListener('message', handleBackgroudMessage);
+      };
+    }
+  }, [
+    dispatch,
+    isFCMSupported,
+    isLoggedIn,
+    isMessageListenerOn,
+    notificationToken,
+  ]);
 
   return (
     <div className="App">
@@ -119,6 +170,12 @@ const App = () => {
         />
         <Route
           exect
+          element={<ProtectedRoute component={CreateWishlistItem} />}
+          path="/wishlist-create-item"
+        />
+        <Route exect element={<WishlistItem />} path="/wishlist/:id" />
+        <Route
+          exect
           element={<ProtectedRoute component={SavingsSchemes} />}
           path="/savingsschemes"
         />
@@ -139,6 +196,10 @@ const App = () => {
             <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
             <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
             <Route path="/modal/intro-page" element={<IntroSwiper />} />
+            <Route
+              path="/modal/confirm-delete-wishlist-item"
+              element={<DeleteWishlistItemModal />}
+            />
           </Route>
         </Routes>
       )}
