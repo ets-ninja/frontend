@@ -38,7 +38,7 @@ export default function JarCard({
   const navigate = useNavigate();
   return (
     <Box
-      onClick={e => isMyJar ? navigate('/basket/' + _id) : handleOpenModal(e, bank)}
+      onClick={e => isMyJar ? navigate('/jar/' + _id) : handleOpenModal(e, bank)}
       sx={{
         color: theme => theme.colors.darkBlue,
         background: theme => theme.colors.white,

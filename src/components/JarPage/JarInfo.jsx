@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import SaveIcon from '@mui/icons-material/Save';
 import { update_jar } from '../../redux/basket/basketActions';
 import { useParams } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const getDaysBetweenDates = (date1, date2) => {
     const differenceInTime = date1 - date2;
@@ -25,6 +26,7 @@ const getDaysBetweenDates = (date1, date2) => {
 const JarInfo = () => {
   const { basketID } = useParams(); 
   const dispatch = useDispatch();
+  const { loading, error, success } = useSelector(state => state.basket);
   const { 
       name, 
       ownerId: { firstName }, 
@@ -49,6 +51,16 @@ const JarInfo = () => {
   useEffect(() => {
     setEditedGoal(goal);
   }, [goal])
+
+  const handleOnSave = () => {
+    if(editedGoal > 0) {
+      setEditGoalState(!editGoalState); 
+      
+      if(editedGoal !== goal){
+        dispatch(update_jar({ id: basketID, goal: editedGoal }));
+      }
+    }
+  }
 
     return (
         <Card
@@ -88,8 +100,8 @@ const JarInfo = () => {
                     renderInput={params => <TextField sx={{ display: editExpirationDateState === true ? 'inline' : 'none', pr: 2 }} {...params} />}
                   />
                 </LocalizationProvider>
-                <IconButton variant="edit" onClick={() => { setEditExpirationDateState(!editExpirationDateState) }} sx={{ height: 32, width: 32, mt: -0.3 }} >
-                  <EditIcon sx={{ fontSize: 25 }} />
+                <IconButton variant="edit" onClick={() => { if(!loading) { setEditExpirationDateState(!editExpirationDateState) } }} sx={{ height: 44, width: 44 }} >
+                  <EditIcon sx={{ fontSize: 30 }} />
                 </IconButton>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
@@ -105,26 +117,27 @@ const JarInfo = () => {
               <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
                 <Typography sx={{ display: editGoalState === false ? 'inline' : 'none', flexGrow: 1 }} variant="h3">Goal: {goal}$</Typography>
                 <TextField
-                  sx={{ display: editGoalState === true ? 'inline' : 'none', flexGrow: 1 }}
+                  sx={{ display: editGoalState === true ? 'inline' : 'none', flexGrow: 1, pr: 2 }}
                   inputProps={{ style: { height: 16 } }}
+                  error={editedGoal <= 0}
                   id="outlined-goal"
+                  helperText="Goal cannot be negative"
                   label="Goal"
-                  //variant="filled"
                   value={editedGoal}
                   onChange={handleEditedGoalChange}
-                  onBlur={() => { setEditGoalState(!editGoalState); dispatch(update_jar({ id: basketID, goal: editedGoal }));} }
+                  onBlur={handleOnSave}
                 />
                 <IconButton
-                  sx={{ height: 32, width: 32, mt: -0.3, display: editGoalState === false ? 'inline' : 'none' }}
-                  onClick={() => { setEditGoalState(!editGoalState) }}
+                  sx={{ height: 44, width: 44, mt: -1.5, display: editGoalState === false ? 'inline' : 'none' }}
+                  onClick={() => { if(!loading) { setEditGoalState(!editGoalState) } }}
                 >
-                  <EditIcon sx={{ fontSize: 25 }} />
+                  <EditIcon sx={{ fontSize: 30 }} />
                 </IconButton>
                 <IconButton
-                  sx={{ height: 32, width: 32, mt: -0.3, display: editGoalState === true ? 'inline' : 'none' }}
-                  onClick={() => { setEditGoalState(!editGoalState); dispatch(update_jar({ id: basketID, goal: editedGoal })); }}
+                  sx={{ height: 44, width: 44, mt: -1.5, display: editGoalState === true ? 'inline' : 'none' }}
+                  onClick={!loading ?? handleOnSave}
                 >
-                  <SaveIcon sx={{ fontSize: 25 }} />
+                  <SaveIcon sx={{ fontSize: 30 }} />
                 </IconButton>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>

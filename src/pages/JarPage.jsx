@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import ResponsiveContainer from '../components/styled/ResponsiveContainer'
 import Button from '@mui/material/Button';
 import BasketChart from '../components/Charts/BasketChart';
+import JarTransactionList from '../components/Charts/JarTransactionList';
 import { useDispatch } from 'react-redux';
 import { get_basket_by_id } from '../redux/basket/basketActions';
 import { useParams } from 'react-router-dom';
@@ -31,11 +32,12 @@ const JarPage = () => {
         sx={{
         display: 'flex',
         width: '100%',
+        mb: 2,
         flexDirection: { xs: 'column', sm: 'column', md: 'row' },
         flexWrap: 'nowrap',
         alignItems: { xs: 'center', sm: 'center', md: 'start' }
         }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: { xs: '100%', sm: '100%', md: 'auto' }}}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: { lg: '360px' } }}>
           <JarInfoHeader />
           <JarInfo />
           <Button
@@ -60,7 +62,7 @@ const JarPage = () => {
             flexDirection: 'column',
             flexGrow: 1,
             ml: { xs: 0, sm: 0, md: 4 },
-            width: { xs: '100%', sm: '100%', md: 'auto' },
+            width: '100%',
             maxWidth: 1350,
             flexWrap: 'wrap',
           }}
@@ -69,6 +71,7 @@ const JarPage = () => {
           <JarDescription />
         </Box>
       </Box>
+      <JarTransactionList sx={{ width: "100%" }} />
       <BasketChart sx={{ width: "100%" }} />
     </ResponsiveContainer>
   );

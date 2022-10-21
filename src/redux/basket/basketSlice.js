@@ -116,7 +116,7 @@ const basketSlice = createSlice({
     [get_basket_by_id.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
-      state.basket = payload.basket;
+      state.basket = payload.basket[0];
     },
     [get_basket_by_id.rejected]: (state, { payload }) => {
       state.loading = false;

@@ -50,8 +50,12 @@ const App = () => {
   return (
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/basket/:basketID" element={<JarPage />} />
+        <Route exect element={<Dashboard />} path="/"/>
+        <Route 
+        exect 
+        element={<ProtectedRoute component={JarPage} />} 
+        path="/jar/:basketID"
+          />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<ConfirmEmail />} path="/confirm-email" />

@@ -53,11 +53,14 @@ const JarDescription = () => {
       path: 'updateJarImage'})
   }
 
-  const handleOnBlur = () => {
+  const handleOnSave = () => {
     if(editedDesc?.length <= 1000)
     { 
       setEditDescState(!editDescState); 
-      dispatch(update_jar({ id: basketID, description: editedDesc })) 
+
+      if(editedDesc !== description){
+        dispatch(update_jar({ id: basketID, description: editedDesc })) 
+      }
     }
   }
 
@@ -65,60 +68,67 @@ const JarDescription = () => {
       <Card
         fontSize="large"
         sx={{
-          width: { xs: '100%', sm: '100%', md: 'auto' },
+          width: '100%',
           borderRadius: 4,
           boxShadow: 4,
           maxWidth: 1000,
           mt: 2,
           display: 'flex',
-          flexDirection: { xs: 'column', sm: 'column', md: 'row' },
+          flexDirection: { xs: 'column', sm: 'column', md: 'column', lg: 'column' },
           alignItems: 'flex-start',
           justifyContent: 'space-between',
         }}
       >
-        <Box sx={{ p: 2, maxWidth: { xs: '100%', sm: '100%', md: 500 }, minWidth: 350, position: 'relative' }} noValidate autoComplete="off">
-          <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-            <IconButton
-              sx={{ height: 32, width: 32, mr: 1, mt: -0.3, display: editDescState === false ? 'inline-flex' : 'none' }}
-            >
-              <EditIcon sx={{ fontSize: 25 }} onClick={() => { setEditDescState(!editDescState) }} />
-            </IconButton>
-            <IconButton
-              sx={{ height: 32, width: 32, mr: 1, mt: -0.3, display: editDescState === true ? 'inline-flex' : 'none' }}
-            >
-              <SaveIcon sx={{ fontSize: 25 }} onClick={handleOnBlur} />
-            </IconButton>
-            <Typography variant="h3">Description</Typography>
-          </Box>
-          <Typography variant="body1" sx={{ width: { xs: '100%', sm: '100%', md: 450 }, textAlign: 'justify', display: editDescState === false ? 'inline-flex' : 'none', whiteSpace: 'pre-wrap' }}>{description}</Typography>
-          <TextField
-              id="outlined-description"
-              multiline
-              error={editedDesc?.length > 1000}
-              helperText="Description should be below 1000 letters"
-              label="Description"
-              variant="filled"
-              value={editedDesc}
-              onChange={handleEditedDescChange}
-              onBlur={handleOnBlur}
-              sx={{ width: { xs: '100%', sm: '100%', md: 450 }, display: editDescState === true ? 'inline-flex' : 'none' }}
-              inputProps={{ min: 0, width: '100%', style: { textAlign: 'justify', fontSize: 14 } }}
-              fullWidth
-            />
+        <Box sx={{ width: '100%', position: 'relative' }} noValidate autoComplete="off">
+          <Box sx={{ p: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+              <IconButton
+                sx={{ height: 32, width: 32, mr: 1, mt: -0.3, display: editDescState === false ? 'inline-flex' : 'none' }}
+              >
+                <EditIcon sx={{ fontSize: 25 }} onClick={() => { setEditDescState(!editDescState) }} />
+              </IconButton>
+              <IconButton
+                sx={{ height: 32, width: 32, mr: 1, mt: -0.3, display: editDescState === true ? 'inline-flex' : 'none' }}
+              >
+                <SaveIcon sx={{ fontSize: 25 }} onClick={handleOnSave} />
+              </IconButton>
+              <Typography variant="h3">Description</Typography>
+            </Box>
+            <Typography variant="body1" sx={{ width: '100%', textAlign: 'justify', display: editDescState === false ? 'inline-flex' : 'none', whiteSpace: 'pre-wrap' }}>{description}</Typography>
+            <TextField
+                id="outlined-description"
+                multiline
+                error={editedDesc?.length > 1000}
+                helperText="Description should be below 1000 letters"
+                label="Description"
+                variant="filled"
+                value={editedDesc}
+                onChange={handleEditedDescChange}
+                onBlur={handleOnSave}
+                sx={{ width: '100%', display: editDescState === true ? 'inline-flex' : 'none' }}
+                inputProps={{ min: 0, width: '100%', style: { textAlign: 'justify', fontSize: 14 } }}
+                fullWidth
+              />
+            </Box>
         </Box>
 
-        <Box sx={{ position: 'relative', maxWidth: { xs: '100%', sm: '100%', md: 500 }, heigth: 'auto' }}>
+        <Box
+          sx={{
+            width: '100%',
+            overflow: 'hidden',
+            margin: 0,
+            paddingTop: '56.25%',
+            position: 'relative',
+          }}>
             <Box
               component="img" 
               src={image || "https://img.freepik.com/free-photo/wicker-basket-isolated_2829-18051.jpg?w=360"} 
-              sx={{ 
-                  minWidth: 200, 
-                  minHeight: 200, 
-                  maxWidth: { xs: '100%', sm: '100%', md: 500 },
-                  objectFit: 'contain',
-                  backgroundColor: 'red',
-                  borderRadius: { xs: '0', sm: '0', md: '0px 23px 0px 23px' },
-                  backgroundColor: 'white' 
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                width: '100%',
+                transform: 'translate(-50%, -50%)',
               }}>
 
             </Box>
