@@ -14,8 +14,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 const IntroSwiper = () => {
-  const modal = useModal();
-
   const navigate = useNavigate('');
   const modal = useModal();
 
