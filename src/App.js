@@ -40,6 +40,7 @@ import ConfirmEmail from './pages/Register/ConfirmEmail';
 import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import { fetchModalJar } from './redux/modal/modalActions';
+import modalSlice from './redux/modal/modalSlice';
 
 const App = () => {
   const location = useLocation();
@@ -55,17 +56,16 @@ const App = () => {
 
   useEffect(() => {
     if (!location.pathname.includes('public-jar')) return;
+    const modalId = location.pathname.substring(
+      location.pathname.lastIndexOf('/') + 1,
+    );
     if (isLoggedIn) {
-      dispatch(
-        fetchModalJar({
-          jarToFind: location.pathname.substring(
-            location.pathname.lastIndexOf('/') + 1,
-          ),
-        }),
-      );
+      dispatch(modalSlice.actions.setModalId(modalId));
+      dispatch(fetchModalJar({ jarToFind: modalId }));
       navigate('/public');
     } else {
-      //navigate to share modal
+      window.location.href =
+        `${process.env.REACT_APP_API_URL}/basket/share-bank/` + modalId;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
