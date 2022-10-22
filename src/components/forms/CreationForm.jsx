@@ -2,7 +2,7 @@ import { Card, CardMedia, TextareaAutosize, TextField } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBasket, setBasketName, setDescription, setMoneyGoal } from '../../redux/basket/createBasketSlice'
+import { selectBasket, setBasketName, setDescription, setMoneyGoal } from '../../redux/jar/createBasketSlice'
 import NumField from '../NumField';
 import jarPicture1 from '../JarCard/images/JarStep1.png'
 

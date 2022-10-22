@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { 
-  get_owner_baskets, 
-  get_coowner_baskets, 
-  get_public_baskets, 
-  get_private_baskets, 
+import {
+  get_owner_baskets,
+  get_coowner_baskets,
+  get_public_baskets,
+  get_private_baskets,
   get_basket_by_id,
   get_jar_finance_by_id,
   update_jar,
-  update_jar_image 
+  update_jar_image,
 } from './basketActions';
 
 const initialState = {
@@ -165,7 +165,7 @@ const basketSlice = createSlice({
     },
     [update_jar.rejected]: (state, { payload }) => {
       state.loading = false;
-      state.basket = { ownerId: {  } };
+      state.basket = { ownerId: {} };
       state.error = payload;
     },
     //update_jar_image
@@ -180,7 +180,7 @@ const basketSlice = createSlice({
     },
     [update_jar_image.rejected]: (state, { payload }) => {
       state.loading = false;
-      state.basket = { ownerId: {  } };
+      state.basket = { ownerId: {} };
       state.error = payload;
     },
     //update_jar
@@ -198,7 +198,7 @@ const basketSlice = createSlice({
     },
     [update_jar.rejected]: (state, { payload }) => {
       state.loading = false;
-      state.basket = { ownerId: {  } };
+      state.basket = { ownerId: {} };
       state.error = payload;
     },
     //update_jar_image
@@ -213,7 +213,7 @@ const basketSlice = createSlice({
     },
     [update_jar_image.rejected]: (state, { payload }) => {
       state.loading = false;
-      state.basket = { ownerId: {  } };
+      state.basket = { ownerId: {} };
       state.error = payload;
     },
   },

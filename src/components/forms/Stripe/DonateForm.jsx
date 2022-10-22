@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import LoadingSpinner from '../../UIElements/LoadingSpinner';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { get_jar_finance_by_id } from '../../../redux/basket/basketActions';
+import { get_jar_finance_by_id } from '../../../redux/jar/basketActions';
 
 const DonateForm = props => {
   const { loading, sendRequest } = request();

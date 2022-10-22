@@ -130,7 +130,9 @@ const Layout = props => {
           <SuccessMessage />
           <InfoMessage />
           <Header />
-          <main style={{ backgroundColor: 'white' }}>{props.children}</main>
+          <main style={{ backgroundColor: 'white', flex: '1 0 auto' }}>
+            {props.children}
+          </main>
           <Footer />
         </ThemeProvider>
       </Router>

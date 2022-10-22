@@ -14,7 +14,7 @@ import {
   selectBasket,
   cancelCreation,
   createBasket,
-} from '../redux/basket/createBasketSlice';
+} from '../redux/jar/createBasketSlice';
 import { deleteWishlistItem } from '../redux/wishlist/wishlistActions';
 import { setItemToDelete } from '../redux/wishlist/wishlistSlice';
 import CreationResult from '../components/CreationResult';

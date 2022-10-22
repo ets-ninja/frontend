@@ -16,9 +16,9 @@ import authReducer from './auth/authSlice';
 import userReducer from './user/userSlice';
 import snackbarReducer from './snackbar/snackbarSlice';
 import wishlistReducer from './wishlist/wishlistSlice';
-import basketReducer from './basket/basketSlice';
+import basketReducer from './jar/basketSlice';
 
-import creationBasketReducer from './basket/createBasketSlice';
+import creationBasketReducer from './jar/createBasketSlice';
 import modalSlice from './modal/modalSlice';
 import modalConfig from './modal/modalConfig';
 import publicSlice from './public/publicSlice';

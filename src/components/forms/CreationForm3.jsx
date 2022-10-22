@@ -2,7 +2,7 @@ import { Card, CardMedia, Switch, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectBasket } from '../../redux/basket/createBasketSlice';
+import { selectBasket } from '../../redux/jar/createBasketSlice';
 import defaultImage from '../../assets/swinka.png';
 import useModal from '../../hooks/useModal';
 import jarPicture5 from '../JarCard/images/JarStep5.png'
