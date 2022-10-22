@@ -8,6 +8,8 @@ import {
   addMultipleNotification,
   addNotification,
 } from '@redux/notifications/notificationSlice';
+import { getNotifCosExp } from '@redux/notifications/notificationActions';
+
 import removeSeenNofitication from '@utils/notification/removeSeenNotification';
 import loadBackgroundMessages from '@utils/notification/loadBackgroundMessages';
 import notificationChannel from '@utils/notification/notificationChannel';
@@ -44,7 +46,7 @@ const App = () => {
   const location = useLocation();
 
   const { isLoggedIn } = useSelector(state => state.auth);
-  const { notificationToken, isFCMSupported } = useSelector(
+  const { notificationToken, isFCMSupported, areMessagesLoaded } = useSelector(
     state => state.notification,
   );
 
@@ -60,6 +62,7 @@ const App = () => {
     if (notificationToken && !isMessageListenerOn) {
       onMessageListener();
       setIsMessageListenerOn(true);
+      dispatch(getNotifCosExp());
     }
 
     const channel = notificationChannel.getInstance();
@@ -69,7 +72,12 @@ const App = () => {
       removeSeenNofitication();
     };
 
-    if (isLoggedIn && isFCMSupported && notificationToken) {
+    if (
+      isLoggedIn &&
+      isFCMSupported &&
+      notificationToken &&
+      !areMessagesLoaded
+    ) {
       const firstLoadMessages = async () => {
         let messages;
 
@@ -80,7 +88,6 @@ const App = () => {
         }
 
         if (messages) {
-          console.log('Hello');
           dispatch(addMultipleNotification(messages));
         }
       };
@@ -93,6 +100,7 @@ const App = () => {
       };
     }
   }, [
+    areMessagesLoaded,
     dispatch,
     isFCMSupported,
     isLoggedIn,

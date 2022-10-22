@@ -76,7 +76,9 @@ const NotificationToast = () => {
               }}
             />
             <Box>
-              <Typography variant="h6">{`New donate from ${newNotification.notification.title}`}</Typography>
+              <Typography variant="h6">
+                {newNotification.notification.title}
+              </Typography>
               <Typography variant="p">
                 {newNotification.notification.body}
               </Typography>
