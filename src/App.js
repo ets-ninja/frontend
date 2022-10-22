@@ -41,6 +41,7 @@ import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import { fetchModalJar } from './redux/modal/modalActions';
 import modalSlice from './redux/modal/modalSlice';
+import NotFound from './components/NotFound';
 
 const App = () => {
   const location = useLocation();
@@ -122,6 +123,7 @@ const App = () => {
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
         <Route path="/" element={<IntroChecker />} />
+        <Route path="/*" element={<NotFound />} />
         <Route path="/basket/:basketID" element={<Basket />} />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
