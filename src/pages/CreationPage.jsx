@@ -130,11 +130,11 @@ const CreationPage = () => {
             <CreationForm2
               setIsChecked1={setIsChecked1}
               isChecked1={isChecked1}
+              setIsChecked3={setIsChecked3}
+              isChecked3={isChecked3}
             />
           ) : (
             <CreationForm3
-              setIsChecked3={setIsChecked3}
-              isChecked3={isChecked3}
             />
           )}
 

@@ -40,6 +40,7 @@ import DeleteWishlistItemModal from './modal/DeleteWishlistItemModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
 import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
+import NotFound from './components/NotFound';
 
 const App = () => {
   const location = useLocation();
@@ -104,12 +105,13 @@ const App = () => {
   return (
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
-        <Route exect element={<Dashboard />} path="/"/>
+        <Route path="/" element={<IntroChecker />} />
+        <Route path="/*" element={<NotFound />} />
         <Route 
-        exect 
-        element={<ProtectedRoute component={JarPage} />} 
-        path="/jar/:basketID"
-          />
+          exect 
+          element={<ProtectedRoute component={JarPage} />} 
+          path="/jar/:basketID"
+        />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<ConfirmEmail />} path="/confirm-email" />

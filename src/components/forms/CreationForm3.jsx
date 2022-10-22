@@ -1,16 +1,18 @@
 import { Card, CardMedia, Switch, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectBasket } from '../../redux/jar/createBasketSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectBasket,
+  setPhotoTag,
+} from '../../redux/basket/createBasketSlice';
 import defaultImage from '../../assets/swinka.png';
 import useModal from '../../hooks/useModal';
-import jarPicture5 from '../JarCard/images/JarStep5.png'
+import jarPicture5 from '../JarCard/images/JarStep5.png';
 
-const CreationForm3 = ({isChecked3, setIsChecked3}) => {
-
+const CreationForm3 = () => {
   const basket = useSelector(selectBasket);
-
+  const dispatch = useDispatch();
   const modal = useModal();
 
   const handleModalPhoto = () => {
@@ -46,33 +48,6 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
       )}
 
       <Stack spacing={3} sx={{ display: 'flex' }}>
-        <Box
-          className="jwhenl"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Typography>Solo/Team</Typography>
-          <Switch
-            checked={isChecked3}
-            onChange={e => setIsChecked3(e.target.checked)}
-          />
-        </Box>
-        {isChecked3 ? (
-          <Box sx={{ pl: '50px' }}>
-            <TextField
-              sx={{ maxWidth: '100px' }}
-              type="number"
-              label="User Id"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Box>
-        ) : (
-          <> </>
-        )}
         <Box sx={{ position: 'relative' }}>
           <Typography sx={{ mb: '30px' }}>Banka tag:</Typography>
           <img
@@ -101,6 +76,14 @@ const CreationForm3 = ({isChecked3, setIsChecked3}) => {
             }}
             image={basket.photoTag ? basket.photoTag : defaultImage}
             alt="Live from space album cover"
+          />
+          <Typography>or</Typography>
+          <TextField
+            type="text"
+            label="Image URL (16/9)"
+            sx={{ ml: '30px', width: '252px', mb: '23px' }}
+            value={basket.photoTag}
+            onChange={e => dispatch(setPhotoTag(e.target.value))}
           />
         </Box>
       </Stack>
