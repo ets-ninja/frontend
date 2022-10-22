@@ -32,6 +32,7 @@ import {
 } from '../components/publicPage';
 import {
   getModalData,
+  getModalId,
   getModalIsLoading,
   getModalIsOpen,
 } from '../redux/modal/modalSelectors';
@@ -49,6 +50,7 @@ export default function PublicPage() {
   const modalData = useSelector(getModalData);
   const modalIsLoading = useSelector(getModalIsLoading);
   const modalIsOpen = useSelector(getModalIsOpen);
+  const modalId = useSelector(getModalId);
   const jars = useSelector(getPublicData);
   const users = useSelector(getPublicUsers);
   const status = useSelector(getPublicStatus);
@@ -61,7 +63,7 @@ export default function PublicPage() {
 
   useEffect(() => {
     if (!modalData && modalIsLoading && !modalIsOpen) {
-      modal.open('public-jar/0');
+      modal.open('public-jar/' + modalId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalData]);

@@ -3,12 +3,22 @@ import { fetchModalJar } from './modalActions';
 
 const modalSlice = createSlice({
   name: 'modal',
-  initialState: { data: null, isLoading: false, error: null, isOpen: false },
+  initialState: {
+    data: null,
+    modalId: null,
+    isLoading: false,
+    error: null,
+    isOpen: false,
+  },
   reducers: {
     setModalData: (state, { payload }) => ({
       ...state,
       ...payload,
       isOpen: true,
+    }),
+    setModalId: (state, { payload }) => ({
+      ...state,
+      modalId: payload,
     }),
     closeModal: state => ({
       ...state,
