@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate, Link as RouterLink, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,7 +27,16 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm();
 
+  const { basketId } = useParams();
+  localStorage.setItem('redirectToBank', basketId)
+
   useEffect(() => {
+    const redirectToBank = localStorage.getItem('redirectToBank')
+
+    if(redirectToBank && isLoggedIn) {
+      navigate('/public')
+    }
+
     if (isLoggedIn && userInfo?.status === 'active') {
       navigate('/wishlist');
     } else if (!isLoggedIn && userInfo?.status === 'pending') {
