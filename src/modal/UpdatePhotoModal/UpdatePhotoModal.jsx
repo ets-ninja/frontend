@@ -204,6 +204,7 @@ const UpdatePhotoModal = () => {
             md={6}
             gap="10px"
             justifyContent="center"
+            pb={2}
           >
             <Grid item>
               <Button variant="contained" component="label">
