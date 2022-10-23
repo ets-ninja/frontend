@@ -22,29 +22,54 @@ const SuccessMessage = () => {
     Transition: Fade,
     vertical: 'top',
     horizontal: 'right',
+    value: '',
   });
 
   useEffect(() => {
-    if (user.successInfo.message) {
-      setState(prevValue => ({ ...prevValue, open: true }));
+    if (snackbar.success) {
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: snackbar.success,
+      }));
     } else {
-      setState(prevValue => ({ ...prevValue, open: false }));
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
+    }
+  }, [user.successInfo, snackbar.success]);
+
+  useEffect(() => {
+    if (user.successInfo.message) {
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: user.successInfo?.message,
+      }));
+    } else {
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
     }
   }, [user.successInfo, snackbar.success]);
 
   useEffect(() => {
     if (creationBasket.successInfo) {
-      setState(prevValue => ({ ...prevValue, open: true }));
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: creationBasket.successInfo,
+      }));
     } else {
-      setState(prevValue => ({ ...prevValue, open: false }));
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
     }
   }, [creationBasket.successInfo, snackbar.success]);
 
   useEffect(() => {
     if (wishlist.successInfo) {
-      setState(prevValue => ({ ...prevValue, open: true }));
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: wishlist.successInfo,
+      }));
     } else {
-      setState(prevValue => ({ ...prevValue, open: false }));
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
     }
   }, [wishlist.successInfo]);
 
@@ -70,10 +95,7 @@ const SuccessMessage = () => {
         onClose={handleClose}
       >
         <Alert severity="success" onClose={handleClose} sx={{ width: '100%' }}>
-          {user.successInfo?.message ||
-            creationBasket.successInfo ||
-            wishlist.successInfo ||
-            snackbar.success}
+          {state.value}
         </Alert>
       </Snackbar>
     </>

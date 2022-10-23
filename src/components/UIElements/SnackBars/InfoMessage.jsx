@@ -19,13 +19,18 @@ const InfoMessage = () => {
     Transition: Fade,
     vertical: 'top',
     horizontal: 'right',
+    value: '',
   });
 
   useEffect(() => {
     if (snackbar.info) {
-      setState(prevValue => ({ ...prevValue, open: true }));
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: snackbar.info,
+      }));
     } else {
-      setState(prevValue => ({ ...prevValue, open: false }));
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
     }
   }, [snackbar.info]);
 
@@ -50,7 +55,7 @@ const InfoMessage = () => {
         onClose={handleClose}
       >
         <Alert severity="info" onClose={handleClose} sx={{ width: '100%' }}>
-          {snackbar.info}
+          {state.value}
         </Alert>
       </Snackbar>
     </>
