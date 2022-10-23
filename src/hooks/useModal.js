@@ -14,7 +14,6 @@ export default function useModal() {
     if (data)
       dispatch(
         modalSlice.actions.setModalData({
-          path,
           data,
         }),
       );
