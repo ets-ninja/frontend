@@ -74,7 +74,7 @@ const ErrorMessage = () => {
   }, [creationBasket.errorInfo]);
 
   const handleClose = () => {
-    setState({ ...state, open: false });
+    setState({ ...state, open: false, value: '' });
     if (snackbar.error) {
       dispatch(clearError());
     }

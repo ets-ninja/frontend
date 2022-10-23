@@ -35,7 +35,7 @@ const InfoMessage = () => {
   }, [snackbar.info]);
 
   const handleClose = () => {
-    setState({ ...state, open: false });
+    setState({ ...state, open: false, value: '' });
     if (snackbar.info) {
       dispatch(clearInfo());
     }

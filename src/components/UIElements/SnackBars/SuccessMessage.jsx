@@ -74,7 +74,7 @@ const SuccessMessage = () => {
   }, [wishlist.successInfo]);
 
   const handleClose = () => {
-    setState({ ...state, open: false });
+    setState({ ...state, open: false, value: '' });
 
     if (snackbar.success) {
       dispatch(clearSuccess());
