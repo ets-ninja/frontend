@@ -160,6 +160,7 @@ export default function JarCard({
                       smd: '181px',
                       md: '222px',
                       lg: '197px',
+                      xl: '236px',
                     },
                   }}
                 >
