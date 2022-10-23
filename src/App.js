@@ -108,6 +108,7 @@ const App = () => {
         <Route path="/*" element={<NotFound />} />
         <Route path="/basket/:basketID" element={<Basket />} />
         <Route exect element={<Login />} path="/login/:basketId" />
+        <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<ConfirmEmail />} path="/confirm-email" />
         <Route exect element={<LostPassword />} path="/lost-password" />

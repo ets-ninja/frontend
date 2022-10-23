@@ -28,13 +28,10 @@ const LoginForm = () => {
   } = useForm();
 
   const { basketId } = useParams();
-  localStorage.setItem('redirectToBank', basketId)
-
   useEffect(() => {
-    const redirectToBank = localStorage.getItem('redirectToBank')
-
-    if(redirectToBank && isLoggedIn) {
-      navigate('/public')
+    if (basketId && isLoggedIn) {
+      localStorage.setItem('redirectToBank', basketId);
+      navigate('/public');
     }
 
     if (isLoggedIn && userInfo?.status === 'active') {
