@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { getNotifCosExp } from './notificationActions';
+
 const initialState = {
   isFCMSupported: null,
   areMessagesLoaded: false,
   notificationToken: null,
   newNotification: false,
   notificationList: [],
+  loading: false,
+  error: false,
 };
 
 const notificationSlice = createSlice({
@@ -41,7 +45,19 @@ const notificationSlice = createSlice({
       state.newNotification = false;
     },
   },
-  extraReducers: {},
+  extraReducers: {
+    [getNotifCosExp.pending]: state => {
+      state.loading = true;
+      state.error = false;
+    },
+    [getNotifCosExp.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+    },
+    [getNotifCosExp.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+  },
 });
 
 export const {

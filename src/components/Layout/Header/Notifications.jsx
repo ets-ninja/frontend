@@ -113,26 +113,16 @@ const Notifications = () => {
                       />
                     </ListItemAvatar>
                     <ListItemText
-                      primary="You have new donation!"
+                      primary={notification.notification?.title}
                       secondary={
-                        <React.Fragment>
-                          <Typography
-                            component="span"
-                            variant="body1"
-                            color="text.primary"
-                            display="block"
-                          >
-                            {notification.notification?.title}
-                          </Typography>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                            display="block"
-                          >
-                            {notification.notification?.body}
-                          </Typography>
-                        </React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                          display="block"
+                        >
+                          {notification.notification?.body}
+                        </Typography>
                       }
                     />
                   </ListItemButton>

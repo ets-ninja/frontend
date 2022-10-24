@@ -138,8 +138,6 @@ const userSlice = createSlice({
     },
     [addNotificationToken.fulfilled]: (state, { payload }) => {
       state.loading = false;
-      state.success = true;
-      state.successInfo = payload;
     },
     [addNotificationToken.rejected]: (state, { payload }) => {
       state.loading = false;
