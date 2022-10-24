@@ -13,9 +13,9 @@ import LoadingSpinner from '../../UIElements/LoadingSpinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_jar_finance_by_id } from '../../../redux/jar/basketActions';
 
-const DonateForm = props => {
+const DonateForm = ({ id }) => {
   const { loading, sendRequest } = request();
-  let { basketID } = useParams();
+  let { basketID = id } = useParams();
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm();
@@ -48,7 +48,7 @@ const DonateForm = props => {
     } catch (err) {
       return;
     }
-    
+
     // it will be better if this won't be there in future
     // dispatch(get_jar_finance_by_id({ id: basketID }));
 
@@ -76,7 +76,7 @@ const DonateForm = props => {
             })}
             label="Amount"
             autoComplete=""
-            onWheel={(e) => e.target.blur()} 
+            onWheel={e => e.target.blur()}
           />
           <TextField
             type="text"
@@ -92,7 +92,7 @@ const DonateForm = props => {
               minLength: 4,
             })}
             label="Card last 4 numbers"
-            onWheel={(e) => e.target.blur()} 
+            onWheel={e => e.target.blur()}
           />
           <Button type="submit" variant="contained">
             Submit donation

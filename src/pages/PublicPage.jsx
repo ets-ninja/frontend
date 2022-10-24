@@ -15,8 +15,8 @@ import {
 } from '../redux/public/publicActions';
 
 import { Box } from '@mui/system';
-import { Pagination } from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Collapse, Pagination } from '@mui/material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import useModal from '../hooks/useModal';
 import { useDebounceEffect } from '../hooks/useDebounceEffect';
@@ -30,7 +30,12 @@ import {
   CardSkeleton,
   SettingsBar,
 } from '../components/publicPage';
-import { get_basket_by_id } from '../redux/basket/basketActions';
+import {
+  getModalData,
+  getModalId,
+  getModalIsLoading,
+  getModalIsOpen,
+} from '../redux/modal/modalSelectors';
 
 export default function PublicPage() {
   const modal = useModal();
@@ -40,40 +45,36 @@ export default function PublicPage() {
     control,
     name: 'filterQuery',
   });
+
+  const { pageCount } = useSelector(getPublicPagination);
+  const modalData = useSelector(getModalData);
+  const modalIsLoading = useSelector(getModalIsLoading);
+  const modalIsOpen = useSelector(getModalIsOpen);
+  const modalId = useSelector(getModalId);
+  const jars = useSelector(getPublicData);
+  const users = useSelector(getPublicUsers);
+  const status = useSelector(getPublicStatus);
+
   const [isUserJars, setIsUserJars] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
   const [page, setPage] = useState(1);
   const [jarsPerPage, setJarsPerPage] = useState(9);
   const [sortOrder, setSortOrder] = useState('date desc');
-  const { pageCount } = useSelector(getPublicPagination);
-  const jars = useSelector(getPublicData);
-  const users = useSelector(getPublicUsers);
-  const status = useSelector(getPublicStatus);
-  const { basket } = useSelector(state => state.basket);
 
   useEffect(() => {
-    const redirectToBank = localStorage.getItem('redirectToBank');
-
-    if (redirectToBank) {
-      dispatch(get_basket_by_id({ id: redirectToBank }));
+    if (!modalData && modalIsLoading && !modalIsOpen) {
+      modal.open('public-jar/' + modalId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalData]);
 
-    if (redirectToBank && basket._id) {
-      modal.open(`public-jar/${redirectToBank}`, {
-        user: basket.ownerId,
-        createdAt: basket.creationData,
-        name: basket.name,
-        image: basket.image,
-        expirationDate: basket.expirationDate,
-        goal: basket.goal,
-        value: basket.value,
-        description: basket.description,
-      });
-      localStorage.removeItem('redirectToBank');
-    }
-
-    if (!isFilter && !isUserJars)
+  useEffect(() => {
+    if (!isFilter && !isUserJars) {
       dispatch(fetchPublicJars({ page, sortOrder, jarsPerPage }));
+    }
+  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, sortOrder]);
+
+  useEffect(() => {
     if (!isFilter && isUserJars) {
       dispatch(
         fetchUserJars({
@@ -84,16 +85,7 @@ export default function PublicPage() {
         }),
       );
     }
-  }, [
-    dispatch,
-    isFilter,
-    isUserJars,
-    jarsPerPage,
-    page,
-    sortOrder,
-    users,
-    basket,
-  ]);
+  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, sortOrder, users]);
 
   useDebounceEffect(
     () => {
@@ -107,7 +99,7 @@ export default function PublicPage() {
         fetchFilteredJars({ filterQuery, page, sortOrder, jarsPerPage }),
       );
     },
-    250,
+    500,
     [filterQuery, page, jarsPerPage],
   );
 
@@ -115,17 +107,15 @@ export default function PublicPage() {
     if (users?.length === 1 && users[0]?._id === user._id) {
       return;
     }
-    const userToFind = user._id;
     setIsUserJars(true);
     reset({ filterQuery: null });
     dispatch(publicSlice.actions.setUsers(user));
-    dispatch(fetchUserJars({ userToFind, page, sortOrder, jarsPerPage }));
   };
 
   const handleBackClick = () => {
     setIsUserJars(false);
-    reset({ filterQuery: null });
     setIsFilter(false);
+    reset({ filterQuery: null });
   };
 
   function handleOpenModal(e, data) {
@@ -141,10 +131,16 @@ export default function PublicPage() {
   return (
     <ResponsiveContainer>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        {(isFilter || isUserJars) && (
-          <ArrowBackIosIcon
+        <Collapse orientation="horizontal" in={isFilter || isUserJars}>
+          <ArrowBackIosNewIcon
             onClick={handleBackClick}
             sx={{
+              display: 'flex',
+              alignItems: 'center',
+              mr: 1,
+              p: '4px',
+              background: '#ebebeb',
+              borderRadius: '10%',
               height: '40px',
               width: '40px',
               fill: 'rgba(0,0,0,0.67)',
@@ -153,14 +149,19 @@ export default function PublicPage() {
               '&:hover': theme => theme.icon.hover,
             }}
           />
-        )}
+        </Collapse>
+
         <FilterForm register={register} />
-        <SettingsBar setSortOrder={setSortOrder} />
+        <SettingsBar setSortOrder={setSortOrder} setPage={setPage} />
       </Box>
       {users && (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 1 }}>
           {users.map(el => (
-            <UserCard user={el} handleUserClick={handleUserClick} />
+            <UserCard
+              key={el._id}
+              user={el}
+              handleUserClick={handleUserClick}
+            />
           ))}
         </Box>
       )}
@@ -173,10 +174,11 @@ export default function PublicPage() {
             mb: { smd: '-15px', md: '-20px', xl: '-30px' },
           }}
         >
-          {jars.map(jar => (
+          {jars.map((jar, idx) => (
             <JarCard
               key={jar._id}
-              bank={jar}
+              idx={idx}
+              jar={jar}
               handleOpenModal={handleOpenModal}
               handleUserClick={handleUserClick}
               isMyJar={false}

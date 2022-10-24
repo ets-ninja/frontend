@@ -14,15 +14,14 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 const IntroSwiper = () => {
-
-  const navigate = useNavigate('')
+  const navigate = useNavigate('');
   const modal = useModal();
 
   const swiperRef = useRef();
 
   const onSignUpClick = () => {
     modal.close('intro-page');
-    navigate('/login')
+    navigate('/login');
   };
 
   return (

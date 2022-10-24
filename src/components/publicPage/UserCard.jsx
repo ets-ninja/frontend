@@ -4,7 +4,6 @@ import { Box } from '@mui/system';
 export default function UserCard({ user, handleUserClick }) {
   return (
     <Box
-      key={user._id}
       onClick={() => handleUserClick(user)}
       sx={{
         display: 'flex',
@@ -14,6 +13,7 @@ export default function UserCard({ user, handleUserClick }) {
         p: '2px',
         pr: 2,
         mr: 1,
+        mb: 1,
         '&:hover': {
           cursor: 'pointer',
         },

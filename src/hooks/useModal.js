@@ -14,13 +14,13 @@ export default function useModal() {
     if (data)
       dispatch(
         modalSlice.actions.setModalData({
-          path,
           data,
         }),
       );
   };
 
   const close = () => {
+    dispatch(modalSlice.actions.closeModal());
     navigate(location.state === null ? '/' : -1);
   };
 

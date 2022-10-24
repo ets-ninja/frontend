@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as Sentry from '@sentry/react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchToken, onMessageListener } from './firebase';
@@ -37,15 +37,18 @@ import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import MoneyStatusContainer from './pages/MoneyStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
-import UpdateJarModal from './modal/UpdateJarModal'
 import DeleteWishlistItemModal from './modal/DeleteWishlistItemModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
 import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
+import { fetchModalJar } from './redux/modal/modalActions';
+import modalSlice from './redux/modal/modalSlice';
 import NotFound from './components/NotFound';
 
 const App = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { isLoggedIn } = useSelector(state => state.auth);
   const { notificationToken, isFCMSupported, areMessagesLoaded } = useSelector(
@@ -54,7 +57,25 @@ const App = () => {
 
   const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (
+      !location.pathname.includes('public-jar') &&
+      !location.pathname.includes('share-bank')
+    )
+      return;
+    const modalId = location.pathname.substring(
+      location.pathname.lastIndexOf('/') + 1,
+    );
+    if (isLoggedIn) {
+      dispatch(modalSlice.actions.setModalId(modalId));
+      dispatch(fetchModalJar({ jarToFind: modalId }));
+      navigate('/public');
+    } else {
+      window.location.href =
+        `${process.env.REACT_APP_API_URL}/basket/share-bank/` + modalId;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn && isFCMSupported && !notificationToken) {
@@ -116,9 +137,9 @@ const App = () => {
         <Route path="/" element={<IntroChecker />} />
         <Route path="/*" element={<NotFound />} />
         <Route exect element={<Login />} path="/login/:basketId" />
-        <Route 
-          exect 
-          element={<ProtectedRoute component={JarPage} />} 
+        <Route
+          exect
+          element={<ProtectedRoute component={JarPage} />}
           path="/jar/:basketID"
         />
         <Route exect element={<Login />} path="/login" />
@@ -193,7 +214,6 @@ const App = () => {
           <Route path="modal" element={<ModalWindow />}>
             <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
             <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
-            <Route path="/modal/update-jar" element={<UpdateJarModal />} />
             <Route path="/modal/intro-page" element={<IntroSwiper />} />
             <Route
               path="/modal/confirm-delete-wishlist-item"

@@ -1,28 +1,22 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import getModalData from '../redux/modal/modalSelectors';
-import { Avatar, Box, Button, Typography } from '@mui/material';
-import { jarStepHandler } from '../components/JarCard/utils';
-import SumLinearProgress from '../components/SumLinearProgress';
+import { useDispatch } from 'react-redux';
+import { getModalData } from '../../redux/modal/modalSelectors';
+import { setInfo } from '../../redux/snackbar/snackbarSlice';
+import { Avatar, Box, Button, Fade, Modal, Typography } from '@mui/material';
+import { jarStepHandler } from '../../components/JarCard/utils';
+import SumLinearProgress from '../../components/SumLinearProgress';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import DonateForm from '../components/forms/Stripe/DonateForm';
+import DonateForm from '../../components/forms/Stripe/DonateForm';
 
 export default function PublicJarModal() {
-  const [showDonateMenu, setShowDonateMenu] = useState(null);
-  const {
-    user,
-    createdAt = new Date(Date.now()),
-    name,
-    image = null,
-    expirationDate = null,
-    value,
-    goal,
-    description,
-  } = useSelector(getModalData);
+  const [showDonateMenu, setShowDonateMenu] = useState(false);
+  const data = useSelector(getModalData);
+  const dispatch = useDispatch();
 
   return (
-    user && (
+    data?.user && (
       <Box
         sx={{
           overflowY: 'auto',
@@ -49,16 +43,16 @@ export default function PublicJarModal() {
             }}
           >
             <Avatar
-              alt={user.publicName || 'Rick Astley'}
-              src={user?.userPhoto}
+              alt={data.user.publicName || 'Rick Astley'}
+              src={data.user.userPhoto}
               sx={{ width: 64, height: 64 }}
             />
             <Typography variant="h3" component="p" sx={{ ml: 2 }}>
-              {user.publicName || 'Rick Astley'}
+              {data.user.publicName || 'Rick Astley'}
             </Typography>
           </Box>
           <Typography component="p" sx={{ fontWeight: '500' }}>
-            {new Date(createdAt).toLocaleDateString('en-US', {
+            {new Date(data.creationDate).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
             })}
@@ -66,10 +60,10 @@ export default function PublicJarModal() {
         </Box>
         <Box sx={{ pl: 3, pr: 3, mt: 2 }}>
           <Box sx={{ mb: 2 }}>
-            {image ? (
+            {data.image ? (
               <img
-                src={image}
-                alt={name}
+                src={data.image}
+                alt={data.name}
                 style={{ width: '100%', borderRadius: '10px' }}
               />
             ) : (
@@ -81,8 +75,8 @@ export default function PublicJarModal() {
                 }}
               >
                 <img
-                  src={jarStepHandler(value, goal)}
-                  alt={`${name}`}
+                  src={jarStepHandler(data.value, data.goal)}
+                  alt={`${data.name}`}
                   style={{
                     height: '280px',
                     zIndex: '2',
@@ -92,12 +86,12 @@ export default function PublicJarModal() {
             )}
           </Box>
           <Typography variant="h5" component="p">
-            {name}
+            {data.name}
           </Typography>
           <Typography variant="h6" component="p">
-            Goal: {goal}$
+            Goal: {data.goal}$
           </Typography>
-          {expirationDate && (
+          {data.expirationDate && (
             <Box
               sx={{
                 display: 'flex',
@@ -110,33 +104,16 @@ export default function PublicJarModal() {
               <Typography variant="h6" component="p" sx={{ fontWeight: '500' }}>
                 Time Left:
                 {` ${Math.floor(
-                  new Date(new Date(expirationDate) - Date.now()) /
+                  new Date(new Date(data.expirationDate) - Date.now()) /
                     (24 * 60 * 60 * 1000),
                 )} days`}
               </Typography>
             </Box>
           )}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              flexDirection: 'row-reverse',
-            }}
-          >
-            <TimerOutlinedIcon />
-            <Typography variant="h6" component="p" sx={{ fontWeight: '500' }}>
-              Time Left:
-              {` ${Math.floor(
-                new Date(new Date(expirationDate) - Date.now()) /
-                  (24 * 60 * 60 * 1000),
-              )} days`}
-            </Typography>
-          </Box>
           <Box sx={{ width: '100%', position: 'relative' }}>
             <SumLinearProgress
               variant="determinate"
-              value={(value * 100) / goal}
+              value={(data.value * 100) / data.goal}
               sx={{
                 height: '45px',
                 mt: 2,
@@ -153,10 +130,10 @@ export default function PublicJarModal() {
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              {value}$
+              {data.value}$
             </Typography>
           </Box>
-          <Typography>{description}</Typography>
+          <Typography>{data.description}</Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Button
@@ -182,6 +159,11 @@ export default function PublicJarModal() {
           </Button>
           <ShareOutlinedIcon
             data-clickable={true}
+            onClick={() => {
+              const urlLink = `${process.env.REACT_APP_SELF_URL}/basket/share-bank/${data._id}`;
+              navigator.clipboard.writeText(urlLink);
+              dispatch(setInfo('Link copied to clipboard'));
+            }}
             sx={{
               width: '46px',
               height: '46px',
@@ -194,15 +176,32 @@ export default function PublicJarModal() {
             }}
           />
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+        <Modal
+          open={showDonateMenu}
+          onClose={() => {
+            setShowDonateMenu(false);
           }}
         >
-          {showDonateMenu && <DonateForm />}
-        </Box>
+          <Fade timeout={500} in={showDonateMenu}>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                overflowY: 'auto',
+                transform: 'translate(-50%, -50%)',
+                bgcolor: '#ffffff',
+                border: '1px solid transparent',
+                outline: '1px solid transparent',
+                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                borderRadius: 2,
+                p: 3,
+              }}
+            >
+              <DonateForm id={data._id} />
+            </Box>
+          </Fade>
+        </Modal>
       </Box>
     )
   );

@@ -12,12 +12,15 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import SaveIcon from '@mui/icons-material/Save';
 import useModal from '../../hooks/useModal';
 import CircularProgress from '@mui/material/CircularProgress';
+import { jarStepHandler } from '../JarCard/utils';
 
 const JarDescription = () => {
   const dispatch = useDispatch();
   const { basketID } = useParams();
   const modal = useModal();
-  const { description, image } = useSelector(state => state.basket.basket);
+  const { name, description, image, value, goal } = useSelector(
+    state => state.basket.basket,
+  );
 
   const { loading } = useSelector(state => state.basket);
 
@@ -148,24 +151,44 @@ const JarDescription = () => {
           width: '100%',
           overflow: 'hidden',
           margin: 0,
-          paddingTop: '56.25%',
+          paddingTop: image ? '56.25%' : '0',
           position: 'relative',
         }}
       >
-        <Box
-          component="img"
-          src={
-            image ||
-            'https://img.freepik.com/free-photo/wicker-basket-isolated_2829-18051.jpg?w=360'
-          }
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '100%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        ></Box>
+        {image ? (
+          <Box
+            component="img"
+            src={
+              image ||
+              'https://img.freepik.com/free-photo/wicker-basket-isolated_2829-18051.jpg?w=360'
+            }
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '100%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          ></Box>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              backgroundColor: '#EBEBEB',
+              height: '400px',
+              width: '100%',
+            }}
+          >
+            <img
+              src={jarStepHandler(value, goal)}
+              alt={`${name}`}
+              style={{
+                height: 'auto',
+              }}
+            />
+          </Box>
+        )}
         {!loading && (
           <IconButton
             onClick={handleModalPhoto}

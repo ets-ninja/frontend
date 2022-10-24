@@ -63,8 +63,8 @@ const JarDashboard = () => {
             mt: 1,
           }}
         >
-          {baskets.map(jar => (
-            <JarCard key={jar._id} bank={jar} isMyJar={true} />
+          {baskets.map((jar, idx) => (
+            <JarCard key={jar._id} idx={idx} jar={jar} isMyJar={true} />
           ))}
         </Box>
       )}
