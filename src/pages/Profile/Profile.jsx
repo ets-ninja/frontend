@@ -7,8 +7,10 @@ import ProfileFormUpdatePassword from '../../components/forms/ProfileForm/Profil
 
 import {
   Avatar,
+  Box,
   Button,
   Card,
+  CircularProgress,
   Divider,
   Grid,
   List,
@@ -22,7 +24,7 @@ import StripeIndex from '../../components/Stripe/StripeIndex';
 import ConnectedAccountIndex from '../../components/Stripe/ConnectedAccount/ConnectedAccountIndex';
 
 const Profile = memo(() => {
-  const { userInfo, successInfo } = useSelector(state => state.user);
+  const { userInfo, successInfo, loading } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,7 +45,7 @@ const Profile = memo(() => {
               gap={'15px'}
               xs={12}
               md={3}
-              sx={{ p: '2rem' }}
+              sx={{ p: '1rem'}}
               justifyContent="center"
             >
               <Avatar
@@ -55,6 +57,7 @@ const Profile = memo(() => {
               <Button
                 sx={{ m: '10px' }}
                 variant="contained"
+                disabled={loading}
                 onClick={() =>
                   modal.open('update-photo', {
                     width: 250,
@@ -66,6 +69,11 @@ const Profile = memo(() => {
                 }
               >
                 Change photo
+                {loading && (
+                  <Box sx={{ display: 'flex', paddingLeft: '10px'}}>
+                    <CircularProgress size={'25px'} />
+                  </Box>
+                )}
               </Button>
             </Grid>
             <Divider

@@ -10,6 +10,7 @@ import { setWishitemPhoto } from '../../redux/wishlist/wishlistSlice';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
+import imageCompression from 'browser-image-compression';
 import { setPhotoTag } from '../../redux/jar/createBasketSlice';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
@@ -45,14 +46,19 @@ const UpdatePhotoModal = () => {
   const dispatch = useDispatch();
   const modal = useModal();
 
-  function onSelectFile(e) {
+  async function onSelectFile(e) {
     if (e.target.files && e.target.files.length > 0) {
       setCrop(undefined);
-      const reader = new FileReader();
-      reader.addEventListener('load', () =>
-        setImgSrc(reader.result.toString() || ''),
-      );
-      reader.readAsDataURL(e.target.files[0]);
+      const file = e.target.files[0];
+      const option = {
+        maxSizeMB: 0.1,
+        maxWidthOrHeight: 400,
+        useWebWorker: true,
+      };
+      const compressFile = await imageCompression(file, option);
+      imageCompression
+        .getDataUrlFromFile(compressFile)
+        .then(res => setImgSrc(res || ''));
     }
   }
 
