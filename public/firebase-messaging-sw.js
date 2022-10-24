@@ -11,12 +11,12 @@ importScripts('https://cdn.jsdelivr.net/npm/idb-keyval@6/dist/umd.js');
 
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  apiKey: 'AIzaSyABYrT1VKB72YWBQmlwWayr7G6Uvwak9w8',
+  authDomain: 'honeymoneyworker.firebaseapp.com',
+  projectId: 'honeymoneyworker',
+  storageBucket: 'honeymoneyworker.appspot.com',
+  messagingSenderId: '706857741672',
+  appId: '1:706857741672:web:b22cb85d9e97fa89c1fadd',
 };
 
 self.addEventListener('notificationclick', function (event) {
