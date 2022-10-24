@@ -70,6 +70,7 @@ const wishlistSlice = createSlice({
     [deleteWishlistItem.pending]: state => {
       state.loading = true;
       state.error = null;
+      state.successInfo = '';
     },
     [deleteWishlistItem.fulfilled]: (state, { payload }) => {
       state.loading = true;
@@ -83,6 +84,7 @@ const wishlistSlice = createSlice({
     [updateWishlistItem.pending]: state => {
       state.loading = true;
       state.error = null;
+      state.successInfo = '';
     },
     [updateWishlistItem.fulfilled]: (state, { payload }) => {
       state.loading = false;
@@ -97,6 +99,7 @@ const wishlistSlice = createSlice({
     [createWishlistItem.pending]: state => {
       state.loading = true;
       state.error = null;
+      state.successInfo = '';
     },
     [createWishlistItem.fulfilled]: (state, { payload }) => {
       state.loading = true;

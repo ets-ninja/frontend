@@ -48,11 +48,11 @@ const DonateForm = props => {
     } catch (err) {
       return;
     }
-
+    
     // it will be better if this won't be there in future
-    dispatch(get_jar_finance_by_id({ id: basketID }));
+    // dispatch(get_jar_finance_by_id({ id: basketID }));
 
-    if (payment.status === 'success') {
+    if (payment) {
       navigate(`/donate-status`);
     }
   };
@@ -76,6 +76,7 @@ const DonateForm = props => {
             })}
             label="Amount"
             autoComplete=""
+            onWheel={(e) => e.target.blur()} 
           />
           <TextField
             type="text"
@@ -91,6 +92,7 @@ const DonateForm = props => {
               minLength: 4,
             })}
             label="Card last 4 numbers"
+            onWheel={(e) => e.target.blur()} 
           />
           <Button type="submit" variant="contained">
             Submit donation
