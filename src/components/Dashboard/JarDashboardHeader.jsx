@@ -90,13 +90,32 @@ const JarDashboardHeader = () => {
     dispatch(changePage({ value: 1 }));
   };
 
+  const reqOrder = () => {
+    switch (currentOrder) {
+      case 'Newest to oldest':
+        return 'creation asc';
+      case 'Oldest to newest':
+        return 'creation desc';
+      case 'Expensive to cheap':
+        return 'goal desc';
+      case 'Cheap to expensive':
+        return 'goal asc';
+      case 'Soon to expire':
+        return 'expiration asc';
+      case 'Far to expire':
+        return 'expiration desc';
+      default:
+        return 'creation asc';
+    }
+  };
+
   const executeButtonDispatch = () => {
     if (currentType === buttonOptions[0]) {
       dispatch(
         get_owner_baskets({
           archived: archivedBasketsState,
           page: page,
-          order: currentOrder,
+          order: reqOrder(),
         }),
       );
     }
@@ -105,7 +124,7 @@ const JarDashboardHeader = () => {
         get_coowner_baskets({
           archived: archivedBasketsState,
           page: page,
-          order: currentOrder,
+          order: reqOrder(),
         }),
       );
     }
@@ -114,7 +133,7 @@ const JarDashboardHeader = () => {
         get_public_baskets({
           archived: archivedBasketsState,
           page: page,
-          order: currentOrder,
+          order: reqOrder(),
         }),
       );
     }
@@ -123,7 +142,7 @@ const JarDashboardHeader = () => {
         get_private_baskets({
           archived: archivedBasketsState,
           page: page,
-          order: currentOrder,
+          order: reqOrder(),
         }),
       );
     }
