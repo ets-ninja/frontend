@@ -15,7 +15,7 @@ export const createBasket = createAsyncThunk(
       photoTag: basketState.photoTag,
     };
     try {
-      await axios.post('/api/basket/create_basket', newBasket);
+      await axios.post('/api/jar/create_basket', newBasket);
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -47,15 +47,15 @@ const basketSlice = createSlice({
   initialState,
   reducers: {
     setBasketName: (state, action) => {
-      if (action.payload.length > 35) return  
+      if (action.payload.length > 35) return;
       state.basketName = action.payload;
     },
     setDescription: (state, action) => {
-      if (action.payload.length > 1000) return  
+      if (action.payload.length > 1000) return;
       state.description = action.payload;
     },
     setMoneyGoal: (state, action) => {
-      if (action.payload.length > 99) return  
+      if (action.payload.length > 99) return;
       state.moneyGoal = action.payload;
     },
     setExpirationDate: (state, action) => {
