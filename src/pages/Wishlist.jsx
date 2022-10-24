@@ -242,13 +242,9 @@ const Wishlist = () => {
             borderColor: 'rgba(0, 0, 0, 0.3)',
           }}
         >
-          {wishlistItems.map(item => {
+          {wishlistItems.map((item, index) => {
             return (
-              <WishlistCard
-                key={item._id}
-                itemInfo={item}
-                removeItem={removeItem}
-              />
+              <WishlistCard key={item._id} itemInfo={item} index={index} />
             );
           })}
           {wishlistItems.length === 0 && (

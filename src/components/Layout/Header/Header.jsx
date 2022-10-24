@@ -7,6 +7,8 @@ import * as Sentry from '@sentry/react';
 import { addNotificationToken, getUserDetails } from '@redux/user/userActions';
 import { logout } from '@redux/auth/authActions';
 
+import showNotification from '@utils/notification/notificationApi';
+
 import {
   addNotification,
   clearNotificationsList,
@@ -35,12 +37,10 @@ import HiveIcon from '@mui/icons-material/Hive';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 
-import showNotification from '@utils/notification/notificationApi';
-
 const pages = [
   {
     name: 'My jars',
-    link: '/myjars',
+    link: '/',
   },
   {
     name: 'Wishlist',
@@ -126,6 +126,7 @@ const Header = () => {
       }
       dispatch(clearNotificationsList());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isFCMSupported, isLoggedIn, socket]);
 
   useEffect(() => {
