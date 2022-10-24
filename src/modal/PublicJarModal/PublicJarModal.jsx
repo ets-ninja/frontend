@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { getModalData } from '../../redux/modal/modalSelectors';
+import { setInfo } from '../../redux/snackbar/snackbarSlice';
 import { Avatar, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import { jarStepHandler } from '../../components/JarCard/utils';
 import SumLinearProgress from '../../components/SumLinearProgress';
@@ -11,6 +13,7 @@ import DonateForm from '../../components/forms/Stripe/DonateForm';
 export default function PublicJarModal() {
   const [showDonateMenu, setShowDonateMenu] = useState(false);
   const data = useSelector(getModalData);
+  const dispatch = useDispatch();
 
   return (
     data?.user && (
@@ -156,6 +159,11 @@ export default function PublicJarModal() {
           </Button>
           <ShareOutlinedIcon
             data-clickable={true}
+            onClick={() => {
+              const urlLink = `${process.env.REACT_APP_SELF_URL}/basket/share-bank/${data._id}`;
+              navigator.clipboard.writeText(urlLink);
+              dispatch(setInfo('Link copied to clipboard'));
+            }}
             sx={{
               width: '46px',
               height: '46px',

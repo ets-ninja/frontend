@@ -58,7 +58,11 @@ const App = () => {
   const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
 
   useEffect(() => {
-    if (!location.pathname.includes('public-jar')) return;
+    if (
+      !location.pathname.includes('public-jar') &&
+      !location.pathname.includes('share-bank')
+    )
+      return;
     const modalId = location.pathname.substring(
       location.pathname.lastIndexOf('/') + 1,
     );

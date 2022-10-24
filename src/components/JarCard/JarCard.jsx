@@ -1,22 +1,15 @@
 import MediaQuery from 'react-responsive';
-import {
-  Avatar,
-  Badge,
-  Button,
-  Fade,
-  Modal,
-  Typography,
-  Zoom,
-} from '@mui/material';
+import { Avatar, Button, Fade, Modal, Typography, Zoom } from '@mui/material';
 import { Box } from '@mui/system';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
-import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { jarStepHandler, transformTransactionTime } from './utils';
 import { useNavigate } from 'react-router-dom';
 import SumLinearProgress from '../SumLinearProgress';
 import DonateForm from '../forms/Stripe/DonateForm';
 import { useState } from 'react';
+import { setInfo } from '../../redux/snackbar/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 export default function JarCard({
   jar,
@@ -28,6 +21,8 @@ export default function JarCard({
   const [showDonateMenu, setShowDonateMenu] = useState(false);
   const { userPhoto = null, publicName = null } = jar.user;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const {
     _id,
     name,
@@ -340,33 +335,13 @@ export default function JarCard({
               >
                 Donate
               </Button>
-              <Badge
-                badgeContent={12}
-                overlap="circular"
-                color="secondary"
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                data-clickable={true}
-                sx={{
-                  ml: 1,
-                  '&:hover svg': theme => theme.icon.hover,
-                }}
-              >
-                <TextsmsOutlinedIcon
-                  sx={{
-                    width: '40px',
-                    height: '40px',
-                    px: '5px',
-                    scale: '1',
-                    transition: theme => theme.icon.hover.transition,
-                    fill: theme => theme.colors.darkBlue,
-                  }}
-                />
-              </Badge>
               <ShareOutlinedIcon
                 data-clickable={true}
+                onClick={() => {
+                  const urlLink = `${process.env.REACT_APP_SELF_URL}/basket/share-bank/${_id}`;
+                  navigator.clipboard.writeText(urlLink);
+                  dispatch(setInfo('Link copied to clipboard'));
+                }}
                 sx={{
                   width: '40px',
                   height: '40px',
