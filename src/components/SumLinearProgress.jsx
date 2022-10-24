@@ -10,7 +10,7 @@ const SumLinearProgress = styled(LinearProgress)(({ theme }) => ({
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 20,
     background:
-      'linear-gradient(270.27deg, #FBB13C 1.94%, rgba(251, 177, 60, 51) 99.95%);',
+      'linear-gradient(90deg, rgba(255,199,110,1) 0%, rgba(255,156,0,1) 100%);',
   },
 }));
 

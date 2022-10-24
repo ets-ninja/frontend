@@ -4,12 +4,13 @@ import { useDebounceEffect } from '../../hooks/useDebounceEffect';
 import { canvasPreview } from './canvasPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPhoto } from '../../redux/user/userActions';
+import { update_jar_image } from '../../redux/jar/basketActions';
 import { updateWishlistItem } from '../../redux/wishlist/wishlistActions';
 import { setWishitemPhoto } from '../../redux/wishlist/wishlistSlice';
 import useModal from '../../hooks/useModal';
 import { Box, Button, Grid, Slider, Typography } from '@mui/material';
 import 'react-image-crop/src/ReactCrop.scss';
-import { setPhotoTag } from '../../redux/basket/createBasketSlice';
+import { setPhotoTag } from '../../redux/jar/createBasketSlice';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -106,6 +107,10 @@ const UpdatePhotoModal = () => {
       case 'setWishitemPhoto':
         dispatch(setWishitemPhoto(`${previewCanvasRef.current.toDataURL()}`));
         break;
+      case 'updateJarImage':
+        dispatch(update_jar_image({ id: data.basketId, image: `${previewCanvasRef.current.toDataURL()}` }))
+        break;
+
       default:
         break;
     }

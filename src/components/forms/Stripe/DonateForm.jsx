@@ -10,12 +10,17 @@ import Button from '@mui/material/Button';
 
 import LoadingSpinner from '../../UIElements/LoadingSpinner';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { get_jar_finance_by_id } from '../../../redux/jar/basketActions';
+
 const DonateForm = props => {
   const { loading, sendRequest } = request();
   let { basketID } = useParams();
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm();
+
+  const dispatch = useDispatch();
 
   let paymentSecret;
   const submitForm = async data => {
@@ -43,6 +48,9 @@ const DonateForm = props => {
     } catch (err) {
       return;
     }
+    
+    // it will be better if this won't be there in future
+    // dispatch(get_jar_finance_by_id({ id: basketID }));
 
     if (payment) {
       navigate(`/donate-status`);

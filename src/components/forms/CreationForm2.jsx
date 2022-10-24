@@ -2,7 +2,7 @@ import { Card, CardMedia, Switch, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBasket, setExpirationDate, setIsPublic} from '../../redux/basket/createBasketSlice'
+import { selectBasket, setExpirationDate, setIsPublic} from '../../redux/jar/createBasketSlice'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';

@@ -40,7 +40,7 @@ import showNotification from '@utils/notification/notificationApi';
 const pages = [
   {
     name: 'My jars',
-    link: '/myjars',
+    link: '/',
   },
   {
     name: 'Wishlist',

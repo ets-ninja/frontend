@@ -10,7 +10,7 @@ const DonateIndex = () => {
     <>
       <Button
         sx={{
-          width: 330,
+          width: '100%',
           fontSize: 35,
           mt: 3,
           mb: 3,

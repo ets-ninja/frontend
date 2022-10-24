@@ -31,7 +31,7 @@ import {
   setDescription,
   setMoneyGoal,
   setPhotoTag,
-} from '@redux/basket/createBasketSlice';
+} from '@redux/jar/createBasketSlice';
 
 import useModal from '@hooks/useModal';
 

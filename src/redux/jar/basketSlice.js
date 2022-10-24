@@ -5,6 +5,9 @@ import {
   get_public_baskets,
   get_private_baskets,
   get_basket_by_id,
+  get_jar_finance_by_id,
+  update_jar,
+  update_jar_image,
 } from './basketActions';
 
 const initialState = {
@@ -124,9 +127,91 @@ const basketSlice = createSlice({
     [get_basket_by_id.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
-      state.basket = payload.basket;
+      state.basket = payload.basket[0];
     },
     [get_basket_by_id.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.basket = { ownerId: {} };
+      state.error = payload;
+    },
+    //get_jar_finance_by_id
+    [get_jar_finance_by_id.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [get_jar_finance_by_id.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.basket.value = payload.basket[0].value;
+      state.basket.transactions = payload.basket[0].transactions;
+    },
+    [get_jar_finance_by_id.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.basket = { ownerId: {} };
+      state.error = payload;
+    },
+    //update_jar
+    [update_jar.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [update_jar.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.basket.name = payload.jar.name;
+      state.basket.description = payload.jar.description;
+      state.basket.goal = payload.jar.goal;
+      state.basket.expirationDate = payload.jar.expirationDate;
+    },
+    [update_jar.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.basket = { ownerId: {} };
+      state.error = payload;
+    },
+    //update_jar_image
+    [update_jar_image.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [update_jar_image.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.basket.image = payload.jar.image;
+    },
+    [update_jar_image.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.basket = { ownerId: {} };
+      state.error = payload;
+    },
+    //update_jar
+    [update_jar.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [update_jar.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.basket.name = payload.jar.name;
+      state.basket.description = payload.jar.description;
+      state.basket.goal = payload.jar.goal;
+      state.basket.expirationDate = payload.jar.expirationDate;
+    },
+    [update_jar.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.basket = { ownerId: {} };
+      state.error = payload;
+    },
+    //update_jar_image
+    [update_jar_image.pending]: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    [update_jar_image.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.basket.image = payload.jar.image;
+    },
+    [update_jar_image.rejected]: (state, { payload }) => {
       state.loading = false;
       state.basket = { ownerId: {} };
       state.error = payload;
