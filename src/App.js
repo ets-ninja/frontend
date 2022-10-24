@@ -44,18 +44,43 @@ import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import { fetchModalJar } from './redux/modal/modalActions';
 import modalSlice from './redux/modal/modalSlice';
 import NotFound from './components/NotFound';
+import { get_basket_by_id } from './redux/jar/basketActions';
+import useModal from './hooks/useModal';
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const modal = useModal();
   const { isLoggedIn } = useSelector(state => state.auth);
   const { notificationToken, isFCMSupported, areMessagesLoaded } = useSelector(
     state => state.notification,
   );
+  const { basket } = useSelector(state => state.basket);
 
   const [isMessageListenerOn, setIsMessageListenerOn] = useState(false);
+
+  useEffect(() => {
+    const redirectToBank = localStorage.getItem('redirectToBank');
+
+    if (redirectToBank) {
+      dispatch(get_basket_by_id({ id: redirectToBank }));
+    }
+
+    if (redirectToBank && basket._id) {
+      modal.open(`public-jar/${redirectToBank}`, {
+        user: basket.user[0],
+        createdAt: basket.creationData,
+        name: basket.name,
+        image: basket.image,
+        expirationDate: basket.expirationDate,
+        goal: basket.goal,
+        value: basket.value,
+        description: basket.description,
+      });
+      localStorage.removeItem('redirectToBank');
+    }
+  }, [basket, isLoggedIn]);
 
   useEffect(() => {
     if (
@@ -137,6 +162,7 @@ const App = () => {
         <Route path="/" element={<IntroChecker />} />
         <Route path="/*" element={<NotFound />} />
         <Route exect element={<Login />} path="/login/:basketId" />
+        <Route exect element={<Register />} path="/register/:basketId" />
         <Route
           exect
           element={<ProtectedRoute component={JarPage} />}
