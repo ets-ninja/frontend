@@ -36,6 +36,7 @@ const messaging = (async () => {
     store.dispatch(setFCMSupport(false));
     return null;
   } catch (err) {
+    store.dispatch(setFCMSupport(false));
     return null;
   }
 })();
