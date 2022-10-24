@@ -85,7 +85,15 @@ export default function PublicPage() {
         }),
       );
     }
-  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, sortOrder, users]);
+  }, [
+    dispatch,
+    isFilter,
+    isUserJars,
+    jarsPerPage,
+    page,
+    sortOrder,
+    users,
+  ]);
 
   useDebounceEffect(
     () => {
