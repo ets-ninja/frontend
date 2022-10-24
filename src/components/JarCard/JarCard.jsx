@@ -27,12 +27,14 @@ export default function JarCard({
 }) {
   const [showDonateMenu, setShowDonateMenu] = useState(false);
   const { userPhoto = null, publicName = null } = jar.user;
+  const navigate = useNavigate();
   const {
     _id,
     name,
     image = null,
     value,
     goal,
+    isPublic,
     creationDate = new Date(Date.now()),
     expirationDate = null,
     description,
@@ -48,12 +50,19 @@ export default function JarCard({
         style={{ transitionDelay: `${Math.round(10 * (1.618 * idx))}ms` }}
       >
         <Box
-          onClick={e => handleOpenModal(e, jar)}
+          onClick={e =>
+            isMyJar ? navigate('/jar/' + _id) : handleOpenModal(e, jar)
+          }
           sx={{
             color: theme => theme.colors.darkBlue,
             background: theme => theme.colors.white,
             boxSizing: 'border-box',
             border: '1px solid #86868666',
+            outline: isMyJar
+              ? isPublic
+                ? '3px solid #52B02A'
+                : '3px solid #EB3D2B'
+              : '',
             boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
             borderRadius: '5px',
             cursor: 'pointer',
@@ -92,38 +101,53 @@ export default function JarCard({
               }}
               data-clickable={true}
             >
-              <Box
-                onClick={() => handleUserClick(jar.user)}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  scale: '1',
-                  cursor: 'pointer',
-                  '&:hover p': {
-                    transition: theme => theme.icon.hover.transition,
-                    scale: '1.1',
-                  },
-                }}
-                data-clickable={true}
-              >
-                <Avatar
-                  alt={`${publicName} avatar`}
-                  src={userPhoto}
-                  sx={{ width: 56, height: 56 }}
-                  data-clickable={true}
-                />
+              {isMyJar === true && (
                 <Typography
                   variant="h3"
                   component="p"
                   sx={{
-                    ml: 1,
-                    transition: theme => theme.icon.hover.transition,
+                    maxWidth: '75%',
+                    fontWeight: '500',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  {isPublic ? 'Public' : 'Private'}
+                </Typography>
+              )}
+              {isMyJar === false && (
+                <Box
+                  onClick={() => handleUserClick(jar.user)}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    scale: '1',
+                    cursor: 'pointer',
+                    '&:hover p': {
+                      transition: theme => theme.icon.hover.transition,
+                      scale: '1.1',
+                    },
                   }}
                   data-clickable={true}
                 >
-                  {publicName}
-                </Typography>
-              </Box>
+                  <Avatar
+                    alt={`${publicName} avatar`}
+                    src={userPhoto}
+                    sx={{ width: 56, height: 56 }}
+                    data-clickable={true}
+                  />
+                  <Typography
+                    variant="h3"
+                    component="p"
+                    sx={{
+                      ml: 1,
+                      transition: theme => theme.icon.hover.transition,
+                    }}
+                    data-clickable={true}
+                  >
+                    {publicName}
+                  </Typography>
+                </Box>
+              )}
               <Typography component="p" sx={{ fontWeight: '500' }}>
                 {new Date(creationDate).toLocaleDateString('en-US', {
                   month: 'short',

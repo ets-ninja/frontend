@@ -37,7 +37,6 @@ import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import MoneyStatusContainer from './pages/MoneyStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
-import UpdateJarModal from './modal/UpdateJarModal'
 import DeleteWishlistItemModal from './modal/DeleteWishlistItemModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
 import IntroChecker from './components/IntroChecker/IntroChecker';
@@ -134,9 +133,9 @@ const App = () => {
         <Route path="/" element={<IntroChecker />} />
         <Route path="/*" element={<NotFound />} />
         <Route exect element={<Login />} path="/login/:basketId" />
-        <Route 
-          exect 
-          element={<ProtectedRoute component={JarPage} />} 
+        <Route
+          exect
+          element={<ProtectedRoute component={JarPage} />}
           path="/jar/:basketID"
         />
         <Route exect element={<Login />} path="/login" />
@@ -211,7 +210,6 @@ const App = () => {
           <Route path="modal" element={<ModalWindow />}>
             <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
             <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
-            <Route path="/modal/update-jar" element={<UpdateJarModal />} />
             <Route path="/modal/intro-page" element={<IntroSwiper />} />
             <Route
               path="/modal/confirm-delete-wishlist-item"
