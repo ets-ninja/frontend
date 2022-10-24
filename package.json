@@ -3,18 +3,46 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^7.0.0-alpha.8",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.6",
     "@mui/styled-engine-sc": "^5.10.6",
+    "@mui/x-data-grid": "^5.17.8",
+    "@mui/x-date-pickers": "latest",
+    "@reduxjs/toolkit": "^1.8.5",
     "@sentry/react": "^7.13.0",
     "@sentry/tracing": "^7.13.0",
+    "@stripe/react-stripe-js": "^1.12.0",
+    "@stripe/stripe-js": "^1.38.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.27.2",
+    "browser-image-compression": "^2.0.0",
+    "chart.js": "^3.9.1",
+    "date-fns": "latest",
+    "dayjs": "latest",
+    "firebase": "^9.10.0",
+    "husky": "^8.0.1",
+    "idb-keyval": "^6.2.0",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
     "react": "^18.2.0",
+    "react-chartjs-2": "^4.3.1",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.36.0",
+    "react-image-crop": "^10.0.7",
+    "react-number-format": "^5.0.1",
+    "react-redux": "^8.0.2",
+    "react-responsive": "^9.0.0",
+    "react-router-dom": "^6.4.1",
+    "reduxjs-toolkit-persist": "^7.2.1",
+    "sass": "^1.55.0",
+    "socket.io-client": "^4.5.3",
     "styled-components": "^5.3.5",
+    "swiper": "^8.4.2",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
@@ -31,12 +59,22 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "CI=false && craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "eslintConfig": {
     "extends": [
