@@ -14,6 +14,7 @@ import {
   TextField,
   InputAdornment,
   Input,
+  Fade,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
@@ -30,7 +31,7 @@ import {
   setDescription,
   setMoneyGoal,
   setPhotoTag,
-} from '@redux/basket/createBasketSlice';
+} from '@redux/jar/createBasketSlice';
 
 import useModal from '@hooks/useModal';
 
@@ -356,7 +357,7 @@ const WishlistItem = () => {
             </Stack>
           </form>
         ) : (
-          <>
+          <Fade in={true} style={{ transitionDelay: `100ms` }}>
             <Box
               sx={{
                 display: { xs: 'flex' },
@@ -490,7 +491,7 @@ const WishlistItem = () => {
                 Make your wish a real goal!
               </Button>
             </Box>
-          </>
+          </Fade>
         )}
       </ResponsiveContainer>
     </>

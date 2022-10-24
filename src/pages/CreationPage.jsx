@@ -14,7 +14,7 @@ import {
   selectBasket,
   cancelCreation,
   createBasket,
-} from '../redux/basket/createBasketSlice';
+} from '../redux/jar/createBasketSlice';
 import { deleteWishlistItem } from '../redux/wishlist/wishlistActions';
 import { setItemToDelete } from '../redux/wishlist/wishlistSlice';
 import CreationResult from '../components/CreationResult';
@@ -79,7 +79,7 @@ const CreationPage = () => {
         category: "Jar",
         action: "Jar Creation",
         label: "User created a jar", // optional
-        value: 99, // optional, must be a number
+        value: 1, // optional, must be a number
       });
     }
   };
@@ -141,11 +141,11 @@ const CreationPage = () => {
               isChecked1={isChecked1}
               setIsChecked2={setIsChecked2}
               isChecked2={isChecked2}
+              setIsChecked3={setIsChecked3}
+              isChecked3={isChecked3}
             />
           ) : (
             <CreationForm3
-              setIsChecked3={setIsChecked3}
-              isChecked3={isChecked3}
             />
           )}
 

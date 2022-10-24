@@ -31,6 +31,7 @@ import {
   CardSkeleton,
   SettingsBar,
 } from '../components/publicPage';
+import { get_basket_by_id } from '../redux/jar/basketActions';
 
 export default function PublicPage() {
   ReactGA.send("pageview");
@@ -50,8 +51,29 @@ export default function PublicPage() {
   const jars = useSelector(getPublicData);
   const users = useSelector(getPublicUsers);
   const status = useSelector(getPublicStatus);
+  const { basket } = useSelector(state => state.basket);
 
   useEffect(() => {
+    const redirectToBank = localStorage.getItem('redirectToBank');
+
+    if (redirectToBank) {
+      dispatch(get_basket_by_id({ id: redirectToBank }));
+    }
+
+    if (redirectToBank && basket._id) {
+      modal.open(`public-jar/${redirectToBank}`, {
+        user: basket.ownerId,
+        createdAt: basket.creationData,
+        name: basket.name,
+        image: basket.image,
+        expirationDate: basket.expirationDate,
+        goal: basket.goal,
+        value: basket.value,
+        description: basket.description,
+      });
+      localStorage.removeItem('redirectToBank');
+    }
+
     if (!isFilter && !isUserJars)
       dispatch(fetchPublicJars({ page, sortOrder, jarsPerPage }));
     if (!isFilter && isUserJars) {
@@ -64,7 +86,16 @@ export default function PublicPage() {
         }),
       );
     }
-  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, sortOrder, users]);
+  }, [
+    dispatch,
+    isFilter,
+    isUserJars,
+    jarsPerPage,
+    page,
+    sortOrder,
+    users,
+    basket,
+  ]);
 
   useDebounceEffect(
     () => {
@@ -105,7 +136,8 @@ export default function PublicPage() {
       e.target.parentElement.getAttribute('data-clickable')
     )
       return;
-    modal.open('public-jar/10', data);
+
+    modal.open('public-jar/' + data._id, data);
   }
 
   return (
@@ -149,6 +181,7 @@ export default function PublicPage() {
               bank={jar}
               handleOpenModal={handleOpenModal}
               handleUserClick={handleUserClick}
+              isMyJar={false}
             />
           ))}
         </Box>

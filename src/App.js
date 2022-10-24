@@ -8,6 +8,8 @@ import {
   addMultipleNotification,
   addNotification,
 } from '@redux/notifications/notificationSlice';
+import { getNotifCosExp } from '@redux/notifications/notificationActions';
+
 import removeSeenNofitication from '@utils/notification/removeSeenNotification';
 import loadBackgroundMessages from '@utils/notification/loadBackgroundMessages';
 import notificationChannel from '@utils/notification/notificationChannel';
@@ -27,7 +29,7 @@ import SavingsSchemes from './pages/SavingsSchemes';
 import Settings from './pages/Settings';
 import CreationPage from './pages/CreationPage';
 import Dashboard from './pages/Dashboard';
-import Basket from './pages/Basket';
+import JarPage from './pages/JarPage';
 import ModalWindow from './modal';
 import PublicJarModal from './modal/PublicJarModal';
 import RestorePassword from './pages/RestorePassword';
@@ -35,11 +37,13 @@ import PublicPage from './pages/PublicPage';
 import StripeStatusContainer from './pages/StripeStatusContainer';
 import MoneyStatusContainer from './pages/MoneyStatusContainer';
 import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
+import UpdateJarModal from './modal/UpdateJarModal'
 import DeleteWishlistItemModal from './modal/DeleteWishlistItemModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
 import ReactGA from "react-ga4";
 import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
+import NotFound from './components/NotFound';
 
 const App = () => {
   ReactGA.initialize("G-FNKW7FG3BS");
@@ -47,7 +51,7 @@ const App = () => {
   const location = useLocation();
 
   const { isLoggedIn } = useSelector(state => state.auth);
-  const { notificationToken, isFCMSupported } = useSelector(
+  const { notificationToken, isFCMSupported, areMessagesLoaded } = useSelector(
     state => state.notification,
   );
 
@@ -63,6 +67,7 @@ const App = () => {
     if (notificationToken && !isMessageListenerOn) {
       onMessageListener();
       setIsMessageListenerOn(true);
+      dispatch(getNotifCosExp());
     }
 
     const channel = notificationChannel.getInstance();
@@ -72,7 +77,12 @@ const App = () => {
       removeSeenNofitication();
     };
 
-    if (isLoggedIn && isFCMSupported && notificationToken) {
+    if (
+      isLoggedIn &&
+      isFCMSupported &&
+      notificationToken &&
+      !areMessagesLoaded
+    ) {
       const firstLoadMessages = async () => {
         let messages;
 
@@ -83,7 +93,6 @@ const App = () => {
         }
 
         if (messages) {
-          console.log('Hello');
           dispatch(addMultipleNotification(messages));
         }
       };
@@ -96,6 +105,7 @@ const App = () => {
       };
     }
   }, [
+    areMessagesLoaded,
     dispatch,
     isFCMSupported,
     isLoggedIn,
@@ -107,7 +117,13 @@ const App = () => {
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
         <Route path="/" element={<IntroChecker />} />
-        <Route path="/basket/:basketID" element={<Basket />} />
+        <Route path="/*" element={<NotFound />} />
+        <Route exect element={<Login />} path="/login/:basketId" />
+        <Route 
+          exect 
+          element={<ProtectedRoute component={JarPage} />} 
+          path="/jar/:basketID"
+        />
         <Route exect element={<Login />} path="/login" />
         <Route exect element={<Register />} path="/register" />
         <Route exect element={<ConfirmEmail />} path="/confirm-email" />
@@ -180,6 +196,7 @@ const App = () => {
           <Route path="modal" element={<ModalWindow />}>
             <Route path="/modal/public-jar/:id" element={<PublicJarModal />} />
             <Route path="/modal/update-photo" element={<UpdatePhotoModal />} />
+            <Route path="/modal/update-jar" element={<UpdateJarModal />} />
             <Route path="/modal/intro-page" element={<IntroSwiper />} />
             <Route
               path="/modal/confirm-delete-wishlist-item"

@@ -32,7 +32,7 @@ const WithdrawalIndex = () => {
     <>
       <Button
         sx={{
-          width: 330,
+          width: '100%',
           fontSize: 15,
           mt: 3,
           mb: 3,
