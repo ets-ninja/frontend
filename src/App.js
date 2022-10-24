@@ -115,6 +115,7 @@ const App = () => {
       <Routes location={location.state?.backgroundLocation || location}>
         <Route path="/" element={<IntroChecker />} />
         <Route path="/*" element={<NotFound />} />
+        <Route exect element={<Login />} path="/login/:basketId" />
         <Route 
           exect 
           element={<ProtectedRoute component={JarPage} />} 
