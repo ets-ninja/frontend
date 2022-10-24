@@ -24,6 +24,8 @@ const DeleteWishlistItemModal = () => {
           justifyContent: 'center',
           flexDirection: 'column',
           alignItems: 'center',
+          minWidth: { xs: '100%', sm: '500px' },
+          py: 2,
         }}
       >
         <Typography
