@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ResponsiveContainer from '../components/styled/ResponsiveContainer';
 import JarDashboard from '../components/Dashboard/JarDashboard';
 import JarDashboardHeader from '../components/Dashboard/JarDashboardHeader';

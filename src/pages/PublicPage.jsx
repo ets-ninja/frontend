@@ -30,7 +30,7 @@ import {
   CardSkeleton,
   SettingsBar,
 } from '../components/publicPage';
-import { get_basket_by_id } from '../redux/basket/basketActions';
+import { get_basket_by_id } from '../redux/jar/basketActions';
 
 export default function PublicPage() {
   const modal = useModal();
