@@ -101,6 +101,8 @@ const App = () => {
     notificationToken,
   ]);
 
+  console.log(process.env.REACT_APP_API_URL);
+
   return (
     <div className="App">
       <Routes location={location.state?.backgroundLocation || location}>
