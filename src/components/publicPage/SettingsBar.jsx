@@ -153,6 +153,7 @@ export default function SettingsBar({ setSortOrder, setPage }) {
           transform: isOpen ? 'rotate(1turn)' : 'rotate(0)',
           transition: theme => theme.icon.hover.transition,
           '&:hover': {
+            fill: '#fcc13b',
             cursor: 'pointer',
           },
         }}
