@@ -85,16 +85,7 @@ export default function PublicPage() {
         }),
       );
     }
-  }, [
-    dispatch,
-    isFilter,
-    isUserJars,
-    jarsPerPage,
-    page,
-    sortOrder,
-    users,
-    basket,
-  ]);
+  }, [dispatch, isFilter, isUserJars, jarsPerPage, page, sortOrder, users]);
 
   useDebounceEffect(
     () => {
