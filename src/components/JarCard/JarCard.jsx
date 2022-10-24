@@ -13,6 +13,7 @@ import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { jarStepHandler, transformTransactionTime } from './utils';
+import { useNavigate } from 'react-router-dom';
 import SumLinearProgress from '../SumLinearProgress';
 import DonateForm from '../forms/Stripe/DonateForm';
 import { useState } from 'react';
@@ -22,6 +23,7 @@ export default function JarCard({
   idx,
   handleOpenModal = null,
   handleUserClick = null,
+  isMyJar = false,
 }) {
   const [showDonateMenu, setShowDonateMenu] = useState(false);
   const { userPhoto = null, publicName = null } = jar.user;

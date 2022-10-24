@@ -22,26 +22,59 @@ const ErrorMessage = () => {
     Transition: Fade,
     vertical: 'top',
     horizontal: 'right',
+    value: '',
   });
 
   useEffect(() => {
-    if (user.error || snackbar.error || auth.error) {
-      setState(prevValue => ({ ...prevValue, open: true }));
+    if (snackbar.error) {
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: snackbar.error,
+      }));
     } else {
-      setState(prevValue => ({ ...prevValue, open: false }));
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
     }
-  }, [user.error, snackbar.error, auth.error]);
-  
+  }, [snackbar.error]);
+
   useEffect(() => {
-    if (creationBasket.errorInfo || snackbar.error) {
-      setState(prevValue => ({ ...prevValue, open: true }));
+    if (user.error) {
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: user.error,
+      }));
     } else {
-      setState(prevValue => ({ ...prevValue, open: false }));
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
     }
-  }, [creationBasket.errorInfo, snackbar.error]);
+  }, [user.error]);
+
+  useEffect(() => {
+    if (auth.error) {
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: auth.error,
+      }));
+    } else {
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
+    }
+  }, [auth.error]);
+
+  useEffect(() => {
+    if (creationBasket.errorInfo) {
+      setState(prevValue => ({
+        ...prevValue,
+        open: true,
+        value: creationBasket.errorInfo,
+      }));
+    } else {
+      setState(prevValue => ({ ...prevValue, open: false, value: '' }));
+    }
+  }, [creationBasket.errorInfo]);
 
   const handleClose = () => {
-    setState({ ...state, open: false });
+    setState({ ...state, open: false, value: '' });
     if (snackbar.error) {
       dispatch(clearError());
     }
@@ -61,7 +94,7 @@ const ErrorMessage = () => {
         onClose={handleClose}
       >
         <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
-          {user.error || auth.error || creationBasket.errorInfo || snackbar.error}
+          {state.value}
         </Alert>
       </Snackbar>
     </>

@@ -10,12 +10,17 @@ import Button from '@mui/material/Button';
 
 import LoadingSpinner from '../../UIElements/LoadingSpinner';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { get_jar_finance_by_id } from '../../../redux/jar/basketActions';
+
 const DonateForm = ({ id }) => {
   const { loading, sendRequest } = request();
   let { basketID = id } = useParams();
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm();
+
+  const dispatch = useDispatch();
 
   let paymentSecret;
   const submitForm = async data => {
@@ -44,7 +49,10 @@ const DonateForm = ({ id }) => {
       return;
     }
 
-    if (payment.status === 'success') {
+    // it will be better if this won't be there in future
+    // dispatch(get_jar_finance_by_id({ id: basketID }));
+
+    if (payment) {
       navigate(`/donate-status`);
     }
   };
@@ -68,6 +76,7 @@ const DonateForm = ({ id }) => {
             })}
             label="Amount"
             autoComplete=""
+            onWheel={e => e.target.blur()}
           />
           <TextField
             type="text"
@@ -83,6 +92,7 @@ const DonateForm = ({ id }) => {
               minLength: 4,
             })}
             label="Card last 4 numbers"
+            onWheel={e => e.target.blur()}
           />
           <Button type="submit" variant="contained">
             Submit donation

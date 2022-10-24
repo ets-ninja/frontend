@@ -181,6 +181,7 @@ export default function PublicPage() {
               jar={jar}
               handleOpenModal={handleOpenModal}
               handleUserClick={handleUserClick}
+              isMyJar={false}
             />
           ))}
         </Box>
