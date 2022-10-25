@@ -46,8 +46,12 @@ import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import NotFound from './components/NotFound';
 
 const App = () => {
-  ReactGA.initialize("G-FNKW7FG3BS");
-  ReactGA.send("pageview");
+
+  useEffect(()=>{
+    ReactGA.initialize("G-FNKW7FG3BS")
+    ReactGA.send("pageview")
+  },[])
+
   const location = useLocation();
 
   const { isLoggedIn } = useSelector(state => state.auth);

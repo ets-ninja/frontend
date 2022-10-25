@@ -34,7 +34,7 @@ import {
 import { get_basket_by_id } from '../redux/jar/basketActions';
 
 export default function PublicPage() {
-  ReactGA.send("pageview");
+  
   const modal = useModal();
   const dispatch = useDispatch();
   const { register, control, reset } = useForm();
@@ -53,6 +53,10 @@ export default function PublicPage() {
   const status = useSelector(getPublicStatus);
   const { basket } = useSelector(state => state.basket);
 
+  useEffect(() => (
+    ReactGA.send("pageview")
+  ),[])
+  
   useEffect(() => {
     const redirectToBank = localStorage.getItem('redirectToBank');
 
