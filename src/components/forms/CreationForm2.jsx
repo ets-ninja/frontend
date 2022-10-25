@@ -2,14 +2,15 @@ import { Card, CardMedia, Switch, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBasket, setExpirationDate, setIsPublic} from '../../redux/jar/createBasketSlice'
+import { selectBasket, setExpirationDate, setGaTag, setIsPublic} from '../../redux/jar/createBasketSlice'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import jarPicture4 from '../JarCard/images/JarStep4.png'
 
-const CreationForm2 = ({setIsChecked1, isChecked1, isChecked3, setIsChecked3}) => {
+const CreationForm2 = ({setIsChecked1, isChecked1, setIsChecked2, isChecked2, isChecked3, setIsChecked3 }) => {
 
   const basket = useSelector(selectBasket);
   const dispatch = useDispatch()
@@ -18,6 +19,13 @@ const CreationForm2 = ({setIsChecked1, isChecked1, isChecked3, setIsChecked3}) =
     setIsChecked1(e)
     if(basket.expirationDate) {
       dispatch(setExpirationDate(null))
+    }
+  }
+  
+  const switchHandler2 = (e) => {
+    setIsChecked2(e)
+    if(basket.gaTag) {
+      dispatch(setGaTag(''))
     }
   }
 
@@ -84,6 +92,27 @@ const CreationForm2 = ({setIsChecked1, isChecked1, isChecked3, setIsChecked3}) =
             onChange={e => dispatch(setIsPublic(e.target.checked))}
           />
         </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Typography>Google analytics?</Typography>
+          <Switch
+            checked={isChecked2}
+            onChange={e => switchHandler2(e.target.checked)}
+          />
+        </Box>
+
+        {isChecked2 ? (<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>          
+          <TextField type="text" label="Measurement ID (ga4)" value={basket.gaTag} onChange={(e)=> dispatch(setGaTag(e.target.value))}/>
+          <a href="https://support.google.com/analytics/answer/10269537?hl=en" target='_blank'>
+            <HelpOutlineIcon sx={{fontSize: '32px', mb: '8px', ml: '2px', color: 'gray' }}/>
+          </a>
+        </Box>) : (<></>)}
+
         <Box
           className="jwhenl"
           sx={{

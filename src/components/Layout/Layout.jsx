@@ -130,7 +130,7 @@ const Layout = props => {
           <SuccessMessage />
           <InfoMessage />
           <Header />
-          <main style={{ backgroundColor: 'white', flex: '1 0 auto' }}>
+          <main style={{ backgroundColor: 'white',  minHeight: '74.9vh' }}>
             {props.children}
           </main>
           <Footer />

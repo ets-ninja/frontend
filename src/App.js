@@ -40,11 +40,18 @@ import UpdatePhotoModal from './modal/UpdatePhotoModal/UpdatePhotoModal';
 import UpdateJarModal from './modal/UpdateJarModal'
 import DeleteWishlistItemModal from './modal/DeleteWishlistItemModal';
 import ConfirmEmail from './pages/Register/ConfirmEmail';
+import ReactGA from "react-ga4";
 import IntroChecker from './components/IntroChecker/IntroChecker';
 import IntroSwiper from './pages/IntoPage/IntroSwiper';
 import NotFound from './components/NotFound';
 
 const App = () => {
+
+  useEffect(()=>{
+    ReactGA.initialize("G-FNKW7FG3BS")
+    ReactGA.send("pageview")
+  },[])
+
   const location = useLocation();
 
   const { isLoggedIn } = useSelector(state => state.auth);

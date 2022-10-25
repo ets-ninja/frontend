@@ -17,6 +17,7 @@ import {
 import { Box } from '@mui/system';
 import { Pagination } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ReactGA from "react-ga4";
 
 import useModal from '../hooks/useModal';
 import { useDebounceEffect } from '../hooks/useDebounceEffect';
@@ -33,6 +34,7 @@ import {
 import { get_basket_by_id } from '../redux/jar/basketActions';
 
 export default function PublicPage() {
+  
   const modal = useModal();
   const dispatch = useDispatch();
   const { register, control, reset } = useForm();
@@ -51,6 +53,10 @@ export default function PublicPage() {
   const status = useSelector(getPublicStatus);
   const { basket } = useSelector(state => state.basket);
 
+  useEffect(() => (
+    ReactGA.send("pageview")
+  ),[])
+  
   useEffect(() => {
     const redirectToBank = localStorage.getItem('redirectToBank');
 

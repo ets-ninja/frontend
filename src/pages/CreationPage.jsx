@@ -19,14 +19,23 @@ import { deleteWishlistItem } from '../redux/wishlist/wishlistActions';
 import { setItemToDelete } from '../redux/wishlist/wishlistSlice';
 import CreationResult from '../components/CreationResult';
 import { setError } from '../redux/snackbar/snackbarSlice';
+import ReactGA from "react-ga4";
+import { useEffect } from 'react';
 
 const steps = ['TextInfo', 'AdditionalSettings', 'Finishing!'];
 
 const CreationPage = () => {
+
+  useEffect(() => (
+    ReactGA.send("pageview")
+  ), [])
+  
+  
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
   const [isChecked1, setIsChecked1] = useState(false);
+  const [isChecked2, setIsChecked2] = useState(false);
   const [isChecked3, setIsChecked3] = useState(false);
 
   const navigate = useNavigate();
@@ -72,6 +81,12 @@ const CreationPage = () => {
       }
       setIsChecked1(false);
       setIsChecked3(false);
+      ReactGA.event({
+        category: "Jar",
+        action: "Jar Creation",
+        label: "User created a jar", // optional
+        value: 1, // optional, must be a number
+      });
     }
   };
 
@@ -130,6 +145,8 @@ const CreationPage = () => {
             <CreationForm2
               setIsChecked1={setIsChecked1}
               isChecked1={isChecked1}
+              setIsChecked2={setIsChecked2}
+              isChecked2={isChecked2}
               setIsChecked3={setIsChecked3}
               isChecked3={isChecked3}
             />

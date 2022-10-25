@@ -7,13 +7,14 @@ export const createBasket = createAsyncThunk(
   async (arg, { rejectWithValue, getState }) => {
     const basketState = getState().creationBasket;
     const newBasket = {
-      basketName: basketState.basketName,
-      description: basketState.description,
-      moneyGoal: basketState.moneyGoal,
-      expirationDate: basketState.expirationDate,
-      isPublic: basketState.isPublic,
-      photoTag: basketState.photoTag,
-    };
+        basketName: basketState.basketName,
+        description: basketState.description,
+        moneyGoal: basketState.moneyGoal,
+        expirationDate: basketState.expirationDate,
+        isPublic: basketState.isPublic,
+        photoTag: basketState.photoTag,
+        gaTag: basketState.gaTag
+      };
     try {
       await axios.post('/api/jar/create_basket', newBasket);
     } catch (error) {
@@ -40,6 +41,7 @@ const initialState = {
   successInfo: '',
   error: null,
   errorInfo: '',
+  gaTag: '',
 };
 
 const basketSlice = createSlice({
@@ -66,6 +68,10 @@ const basketSlice = createSlice({
     },
     setPhotoTag: (state, action) => {
       state.photoTag = action.payload;
+    },
+    setGaTag: (state, action) => {
+      if (action.payload.length > 20 ) return
+      state.gaTag = action.payload
     },
     cancelCreation: state => {
       state.basketName = '';
@@ -122,6 +128,7 @@ export const {
   pushBasketToSomewhere,
   cancelCreation,
   setPhotoTag,
+  setGaTag
 } = basketSlice.actions;
 
 export const selectBasket = state => state.creationBasket;
