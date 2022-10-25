@@ -20,6 +20,7 @@ import { setItemToDelete } from '../redux/wishlist/wishlistSlice';
 import CreationResult from '../components/CreationResult';
 import { setError } from '../redux/snackbar/snackbarSlice';
 import ReactGA from "react-ga4";
+import { useEffect } from 'react';
 
 const steps = ['TextInfo', 'AdditionalSettings', 'Finishing!'];
 
