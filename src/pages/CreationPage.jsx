@@ -24,7 +24,12 @@ import ReactGA from "react-ga4";
 const steps = ['TextInfo', 'AdditionalSettings', 'Finishing!'];
 
 const CreationPage = () => {
-  ReactGA.send("pageview");
+
+  useEffect(() => (
+    ReactGA.send("pageview")
+  ), [])
+  
+  
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
