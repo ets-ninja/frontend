@@ -3,7 +3,7 @@ import { Avatar, Button, Fade, Modal, Typography, Zoom } from '@mui/material';
 import { Box } from '@mui/system';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import { jarStepHandler, transformTransactionTime } from './utils';
+import { isImage, jarStepHandler, transformTransactionTime } from './utils';
 import { useNavigate } from 'react-router-dom';
 import SumLinearProgress from '../SumLinearProgress';
 import DonateForm from '../forms/Stripe/DonateForm';
@@ -26,7 +26,7 @@ export default function JarCard({
   const {
     _id,
     name,
-    image = null,
+    image,
     value,
     goal,
     isPublic,
@@ -159,15 +159,27 @@ export default function JarCard({
                 },
               }}
             >
-              {image ? (
-                <img
-                  src={image}
-                  alt={`${name}`}
-                  style={{
-                    display: 'block',
-                    maxWidth: '100%',
+              {isImage(image) && image ? (
+                <Box
+                  sx={{
+                    height: {
+                      xs: '248px',
+                      smd: '189px',
+                      md: '230px',
+                      lg: '205px',
+                      xl: '242px',
+                    },
                   }}
-                />
+                >
+                  <img
+                    src={image}
+                    alt={`${name}`}
+                    style={{
+                      display: 'block',
+                      maxWidth: '100%',
+                    }}
+                  />
+                </Box>
               ) : (
                 <Box
                   sx={{
@@ -262,7 +274,7 @@ export default function JarCard({
                   }}
                 >
                   <Typography component="p" sx={{ fontWeight: '500' }}>
-                    {`${value} of ${goal}`}
+                    {`${value.toFixed()} of ${goal.toFixed()}`}
                   </Typography>
                   {expirationDate && (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -278,7 +290,7 @@ export default function JarCard({
                 </Box>
                 <SumLinearProgress
                   variant="determinate"
-                  value={(value * 100) / goal}
+                  value={value >= goal ? 100 : (value * 100) / goal}
                   sx={{
                     height: '5px',
                   }}
