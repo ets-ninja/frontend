@@ -30,12 +30,11 @@ export default function JarCard({
     value,
     goal,
     isPublic,
-    creationDate = new Date(Date.now()),
+    creationDate,
     expirationDate = null,
     description,
     transactions = [],
   } = jar;
-
   return (
     <>
       <Zoom
@@ -285,7 +284,7 @@ export default function JarCard({
                   }}
                 />
                 <Typography component="p" sx={{ fontSize: '13px', pl: 1 }}>
-                  {transformTransactionTime(transactions[0]?.creationDate)}
+                  {transformTransactionTime(transactions[0]?.createdAt)}
                 </Typography>
               </Box>
               {image && (

@@ -16,6 +16,7 @@ import { get_jar_finance_by_id } from '../../../redux/jar/basketActions';
 const DonateForm = ({ id }) => {
   const { loading, sendRequest } = request();
   let { basketID = id } = useParams();
+
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm();
