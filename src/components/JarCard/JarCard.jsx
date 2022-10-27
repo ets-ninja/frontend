@@ -3,7 +3,7 @@ import { Avatar, Button, Fade, Modal, Typography, Zoom } from '@mui/material';
 import { Box } from '@mui/system';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import { jarStepHandler, transformTransactionTime } from './utils';
+import { isImage, jarStepHandler, transformTransactionTime } from './utils';
 import { useNavigate } from 'react-router-dom';
 import SumLinearProgress from '../SumLinearProgress';
 import DonateForm from '../forms/Stripe/DonateForm';
@@ -26,16 +26,15 @@ export default function JarCard({
   const {
     _id,
     name,
-    image = null,
+    image,
     value,
     goal,
     isPublic,
-    creationDate = new Date(Date.now()),
+    creationDate,
     expirationDate = null,
     description,
     transactions = [],
   } = jar;
-
   return (
     <>
       <Zoom
@@ -160,15 +159,27 @@ export default function JarCard({
                 },
               }}
             >
-              {image ? (
-                <img
-                  src={image}
-                  alt={`${name}`}
-                  style={{
-                    display: 'block',
-                    maxWidth: '100%',
+              {isImage(image) && image ? (
+                <Box
+                  sx={{
+                    height: {
+                      xs: '248px',
+                      smd: '189px',
+                      md: '230px',
+                      lg: '205px',
+                      xl: '242px',
+                    },
                   }}
-                />
+                >
+                  <img
+                    src={image}
+                    alt={`${name}`}
+                    style={{
+                      display: 'block',
+                      maxWidth: '100%',
+                    }}
+                  />
+                </Box>
               ) : (
                 <Box
                   sx={{
@@ -263,29 +274,31 @@ export default function JarCard({
                   }}
                 >
                   <Typography component="p" sx={{ fontWeight: '500' }}>
-                    {`${value} of ${goal}`}
+                    {`${value.toFixed()} of ${goal.toFixed()}`}
                   </Typography>
                   {expirationDate && (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <TimerOutlinedIcon />
                       <Typography component="p" sx={{ fontWeight: '500' }}>
-                        {`${Math.floor(
-                          new Date(new Date(expirationDate) - Date.now()) /
-                            (24 * 60 * 60 * 1000),
-                        )} d.`}
+                        {new Date(expirationDate) - Date.now() < 0
+                          ? 'Expired'
+                          : `${Math.floor(
+                              new Date(new Date(expirationDate) - Date.now()) /
+                                (24 * 60 * 60 * 1000),
+                            )} d.`}
                       </Typography>
                     </Box>
                   )}
                 </Box>
                 <SumLinearProgress
                   variant="determinate"
-                  value={(value * 100) / goal}
+                  value={value >= goal ? 100 : (value * 100) / goal}
                   sx={{
                     height: '5px',
                   }}
                 />
                 <Typography component="p" sx={{ fontSize: '13px', pl: 1 }}>
-                  {transformTransactionTime(transactions[0]?.creationDate)}
+                  {transformTransactionTime(transactions[0]?.createdAt)}
                 </Typography>
               </Box>
               {image && (
