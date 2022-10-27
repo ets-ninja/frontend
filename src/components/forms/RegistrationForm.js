@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate, Link as RouterLink, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,7 +23,11 @@ const RegistrationForm = () => {
     formState: { errors },
   } = useForm();
 
+  const { basketId } = useParams();
+
   useEffect(() => {
+    localStorage.setItem('redirectToBank', basketId);
+
     success && userInfo?.id && navigate('/confirm-email');
   }, [navigate, userInfo, success]);
 
